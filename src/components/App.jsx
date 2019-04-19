@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import '../../styles.scss';
+
 
 class App extends React.Component {
   constructor() {
@@ -12,7 +12,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>{this.state.greeting}</div>
+      <div className="hey">{this.state.greeting}</div>
     );
   }
 }

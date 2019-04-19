@@ -25,12 +25,12 @@ let mainConfig = {
     __filename: false,
   },
   resolve: {
-    extensions: ['.js', '.json', '.ts'],
+    extensions: ['.js', '.json', '.jsx'],
   },
   module: {
     rules: [
       {
-        test: /\.scss$/,
+        test: /\.(scss|css)$/,
         use: [
           {
             loader: "style-loader"
@@ -44,17 +44,9 @@ let mainConfig = {
             }
           },
           {
-            loader: "sass-loader"
+            loader: "sass-loader?sourceMap"
           }
         ]
-      },
-      {
-        // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
-        test: /\.(ts)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'ts-loader',
-        },
       },
       {
         test: /\.(jpg|png|svg|ico|icns)$/,
