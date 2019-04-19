@@ -1,20 +1,21 @@
 const path = require('path');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const isDevelopment = process.env.NODE_ENV !== 'production'
 
 const htmlWebpackPlugin = new HtmlWebPackPlugin({
   template: "./src/index.html",
   filename: "./index.html"
 });
 
-let mainConfig = {
+module.exports = {
   optimization: {
     splitChunks: {
       //     chunks: 'all',
     }
   },
-  mode: 'development',
+  mode: isDevelopment ? 'development' : 'production',
   entry: ['babel-polyfill', './src/index.js'],
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -25,26 +26,42 @@ let mainConfig = {
     __filename: false,
   },
   resolve: {
-    extensions: ['.js', '.json', '.jsx'],
+    extensions: ['.js', '.json', '.jsx', '.scss'],
   },
   module: {
     rules: [
       {
-        test: /\.(scss|css)$/,
-        use: [
+        test: /\.module\.s(a|c)ss$/,
+        loader: [
+          isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
           {
-            loader: "style-loader"
-          },
-          {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
-              sourceMap: true,
               modules: true,
-              localIdentName: "[local]___[hash:base64:5]"
+              localIdentName: '[name]__[local]___[hash:base64:5]',
+              camelCase: true,
+              sourceMap: isDevelopment
             }
           },
           {
-            loader: "sass-loader?sourceMap"
+            loader: 'sass-loader',
+            options: {
+              sourceMap: isDevelopment
+            }
+          }
+        ]
+      },
+      {
+        test: /\.s(a|c)ss$/,
+        exclude: /\.module.(s(a|c)ss)$/,
+        loader: [
+          isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: isDevelopment
+            }
           }
         ]
       },
@@ -69,6 +86,15 @@ let mainConfig = {
           loader: "babel-loader"
         }
       },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: 'html-loader',
+            options: { minimize: !isDevelopment }
+          }
+        ]
+      }
     ],
   },
   devServer: {
@@ -84,7 +110,12 @@ let mainConfig = {
       });
     }
   },
-  plugins: [new CleanWebpackPlugin(['build']), htmlWebpackPlugin]
+  plugins: [
+    new CleanWebpackPlugin(['dist']),
+    htmlWebpackPlugin,
+    new MiniCssExtractPlugin({
+      filename: isDevelopment ? '[name].css' : '[name].[hash].css',
+      chunkFilename: isDevelopment ? '[id].css' : '[id].[hash].css'
+    })
+  ]
 };
-
-module.exports = [mainConfig];

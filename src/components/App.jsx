@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import local from './local.module';
 
 
 class App extends React.Component {
@@ -12,7 +13,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="hey">{this.state.greeting}</div>
+      <div className={local.large}>{this.state.greeting}</div>
     );
   }
 }
