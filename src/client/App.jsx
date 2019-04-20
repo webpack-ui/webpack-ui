@@ -7,7 +7,7 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      greeting: 'hello worldd'
+      greeting: 'hello wdorldd'
     }
   }
 
