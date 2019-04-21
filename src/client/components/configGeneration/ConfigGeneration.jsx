@@ -1,6 +1,6 @@
 import React from 'react';
 
-class TabThree extends React.Component {
+class ConfigGeneration extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -15,4 +15,4 @@ class TabThree extends React.Component {
   }
 }
 
-export default TabThree;
+export default ConfigGeneration;

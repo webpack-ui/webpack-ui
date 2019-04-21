@@ -1,9 +1,22 @@
 {
   "presets": [
+    "mobx",
     "@babel/preset-env",
     "@babel/preset-react"
   ],
   "plugins": [
-    "react-hot-loader/babel"
+    "react-hot-loader/babel",
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ],
+    [
+      "@babel/plugin-proposal-class-properties",
+      {
+        "loose": true
+      }
+    ]
   ]
 }

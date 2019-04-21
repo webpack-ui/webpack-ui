@@ -1,12 +1,9 @@
 import { observable, action } from 'mobx';
-import { initializeInstance } from 'mobx/lib/internal';
+// import { initializeInstance } from 'mobx/lib/internal';
 
 export default class Store {
   @observable
-  name = "ken";
-
-  @observable
-  age = 21;
+  name = "rodney";
 
   @observable
   path = "";
@@ -48,10 +45,7 @@ export default class Store {
   isHomeSelected = true;
 
   @observable
-  isTabTwoSelected = false;
-
-  @observable
-  isTabThreeSelected = false;
+  isConfigGenerationSelected = false;
 
   @observable
   isSunburstSelected = false;
@@ -316,22 +310,13 @@ export default class Store {
   @action.bound
   setHomeSelected() {
     this.isHomeSelected = true;
-    this.isTabTwoSelected = false;
-    this.isTabThreeSelected = false;
+    this.isConfigGenerationSelected = false;
   }
 
   @action.bound
-  setTabTwoSelected() {
-    this.isTabTwoSelected = true;
+  setConfigGenerationSelected() {
+    this.isConfigGenerationSelected = true;
     this.isHomeSelected = false;
-    this.isTabThreeSelected = false;
-  }
-
-  @action.bound
-  setTabThreeSelected() {
-    this.isTabThreeSelected = true;
-    this.isHomeSelected = false;
-    this.isTabTwoSelected = false;
   }
 
   @action.bound

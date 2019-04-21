@@ -83,7 +83,16 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
+          loader: "babel-loader",
+          options: {
+            presets: [
+              "mobx"
+            ],
+            // plugins: [
+            //   "transform-decorators-legacy",
+            //   "transform-async-to-generator"
+            // ]
+          }
         }
       },
       {
