@@ -160,3 +160,43 @@
   justify-content: space-between;
 }
 
+.tabOne_Heading2 {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: darken($text-black, 2%);
+  font-family: 'Roboto', sans-serif;
+}
+
+.configMessageText {
+  font-size: 15px;
+  padding-bottom: 0px;
+}
+
+.codeText {
+  background-color: white;
+  padding: 2px;
+  margin: 0 1px;
+  color: $text-primary;
+  font-family: 'Monaco';
+  font-size: 13px;
+}
+
+.homeRowFlexContainer {
+  display: flex;
+  flex-direction: row;
+  margin-top: 40px;
+  animation: whiteCardFadeIn 1s;
+}
+
+.greenCheck {
+  color: #9cedaa;
+  font-size: 28px;
+  margin-right: 2px;
+}
+
+.modalButtonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+

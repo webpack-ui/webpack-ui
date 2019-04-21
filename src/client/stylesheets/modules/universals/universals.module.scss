@@ -5,3 +5,44 @@
   padding: 20px;
 }
 
+.btn {
+  transition: 0.3s;
+  background-color:none;
+  background-color: white;
+  border-radius: 4px;
+  outline: none;
+  border:none;
+  color:rgb(225, 102, 114);
+  font-size: 14px;
+  padding: 10px 10px 10px 10px;
+  cursor: pointer;
+}
+
+.stats {
+  margin: 20px 0 10px 0;
+}
+
+.btn.stats:disabled {
+  color: #ebe6e6;
+  animation: buttonFadeIn 0.6s;
+  cursor: default;
+}
+
+.btn.stats {
+  animation: buttonFadeIn 0.3s;
+}
+
+.btn.stats:disabled:hover {
+  color: #ebe6e6;
+  cursor: default;
+  background-color: white;
+  outline: none;
+  border:none;
+  box-shadow: none;
+}
+
+.btn:hover {
+  box-shadow: $box-shadow;
+  color: white;
+  background: rgb(247, 101, 116);
+}

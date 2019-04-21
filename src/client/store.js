@@ -27,16 +27,10 @@ export default class Store {
   isTreemapZoomDisplayed = false;
 
   @observable
-  isConfigSelectionDisplayed = false;
-
-  @observable
   data_array = [['']];
 
   @observable
   beforeRoot = {};
-
-  @observable
-  isPackageSelected = false;
 
   @observable
   isChartNavDisplayed = true;
@@ -263,16 +257,6 @@ export default class Store {
   }
 
   @action.bound
-  setDisplayConfigSelectionTrue() {
-    this.isConfigSelectionDisplayed = true;
-  }
-
-  @action.bound
-  setDisplayConfigSelectionFalse() {
-    this.isConfigSelectionDisplayed = false;
-  }
-
-  @action.bound
   setListOfConfigs(listOfConfigs) {
     this.listOfConfigs = listOfConfigs;
   }
@@ -295,11 +279,6 @@ export default class Store {
   @action.bound
   storeDataArray(data) {
     this.data_array = data;
-  }
-
-  @action.bound
-  setIsPackageSelectedTrue() {
-    this.isPackageSelected = true;
   }
 
   @action.bound

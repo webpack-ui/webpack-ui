@@ -4,9 +4,9 @@ import HomeHeadingBox from './HomeHeadingBox';
 import WhiteCardWelcome from './WhiteCardWelcome';
 // import WhiteCardPackageJSON from './WhiteCardPackageJSON';
 // import WhiteCardWebpackConfig from './WhiteCardWebpackConfig';
-// import WhiteCardStatsJSON from './WhiteCardStatsJSON';
+import WhiteCardStatsJSON from './WhiteCardStatsJSON';
 import D3ChartContainerCard from './D3ChartContainerCard';
-// import ModalHome from './ModalHome';
+import ModalHome from './ModalHome';
 import styles from '../../stylesheets/modules/home/home.module';
 
 @inject('store')
@@ -110,31 +110,20 @@ class Home extends React.Component {
 
         <WhiteCardWelcome
           isWelcomeCardDisplayed={store.isWelcomeCardDisplayed}
-          isPackageSelected={store.isPackageSelected}
         />
 
-        {/*{!store.isPackageSelected &&
-          <WhiteCardPackageJSON
-            isPackageSelected={store.isPackageSelected}
-            getPackageJson={this.getPackageJson}
+        {this.props.store.isLoadStatsDisplayed &&
+
+          <WhiteCardStatsJSON
+            isStatsFileGenerated={store.isStatsFileGenerated}
+            getWebpackStats={this.getWebpackStats}
+            generateStatsFile={this.generateStatsFile}
+            isOriginalStatsGenerated={store.isOriginalStatsGenerated}
           />
         }
 
-        {this.props.store.isConfigSelectionDisplayed && store.isPackageSelected &&
-          <WhiteCardWebpackConfig
-            getWebpackConfig={this.getWebpackConfig}
-            listOfConfigs={this.state.listOfConfigs}
-          />
-        }
-
-        {this.state.isModalDisplayed ? (
-          <ModalHome
-            onClose={this.handleCloseModal}
-            isModalDisplayed={this.state.isModalDisplayed}
-          >
-            Attention:
-            </ModalHome>
-        ) : null}
+        {/* 
+          
 
         {store.isPackageSelected && !this.props.store.isConfigSelectionDisplayed && this.props.store.isLoadStatsDisplayed &&
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styles from '../stylesheets/modules/universals/universal.module';
+import styles from '../../stylesheets/modules/universals/universals.module';
 
 const Button = (props) => {
   const { idName, classes } = props;
@@ -8,7 +8,7 @@ const Button = (props) => {
 
   return (
     <button
-      className={classes}
+      className={`${styles.btn} ${styles.stats}`}
       disabled={props.condition}
       id={idName ? `${styles.idName}` : ''}
       onClick={props.func}

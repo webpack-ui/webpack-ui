@@ -1,7 +1,7 @@
 import * as React from 'react';
 import MDSpinner from "react-md-spinner";
 
-import styles from '../stylesheets/modules/universals/universal.module';
+import styles from '../../stylesheets/modules/universals/universals.module';
 
 export default class Spinner extends React.Component {
   render() {
