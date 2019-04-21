@@ -1,0 +1,202 @@
+@import "../../utils/styles";
+
+.whiteCard {
+  background-color: rgba(250, 250, 250, 1);
+  padding: 20px;
+  margin: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  width: 90%;
+  border-radius: 4px;
+  box-shadow: $box-shadow;
+  animation: whiteCardFadeIn 1s;
+}
+
+.whiteCardOff {
+  background-color: $body-bg-color;
+  padding: 20px;
+  margin: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  width: 90%;
+  border-radius: 4px;
+}
+
+.d3DisplayOn {
+  display: block;
+}
+
+.displayOff {
+  display: none;
+}
+
+.d3DisplayOff {
+  display: none;
+}
+
+.mainContainerHome {
+  padding: 20px;
+  width: 1500px;
+}
+
+#filename {
+  color: $text-black;
+  font-family: 'Yantramanav', sans-serif;
+  font-size: 17px;
+}
+
+#percentage {
+  color: $text-black;
+  font-family: 'Yantramanav', sans-serif;
+  font-size: 17px;
+}
+
+#filesize {
+  color: $text-black;
+  font-family: 'Yantramanav', sans-serif;
+  font-size: 17px;
+}
+
+.chartSVGContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#ancestors {
+  margin-bottom: -15px;
+}
+
+.zoomTreemapColumnContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.up {
+  background: white;
+  width: 45px;
+  height: 18px;
+  padding: 8px;
+  margin-bottom: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  border-radius: 4px;
+  box-shadow: $box-shadow;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.feature {
+	position: relative;
+	width: 700px;
+	height: 700px;
+	margin: $m * 1px;
+	overflow: hidden;
+}
+
+#zoomContainer {
+  margin-top: 3px;
+}
+
+.chartStatsHeadingBoxes {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 836px;
+  height: 100px;
+  background: white;
+  margin-left: 20px;
+}
+
+.chartStatsHeadingBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 130px;
+  border-radius: 3px;
+}
+
+.boxTextContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: darken($text-black, 2%);
+  font-size: 22px;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 530;
+}
+
+.textPrimaryColor {
+  color: lighten($text-primary, 3%);
+  font-size: 17px;
+  font-family: 'Oswald', sans-serif;
+}
+
+.welcomeCard {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 24px;
+}
+
+#welcomeHeader {
+  font-family: 'Oswald', sans-serif;
+  font-size: 36px;
+  color: darken($text-black, 2%);
+}
+
+#welcomeMessage {
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  padding-top: 10px;
+  color: darken($text-black, 2%);
+}
+
+.boxLine {
+  border-right: 1px solid $bg-color;
+  height: 70px;
+}
+
+.boxContainer {
+  display: flex;
+  flex-direction: row;
+  padding: 0 20px;
+  justify-content: space-between;
+}
+
+.tabOne_Heading2 {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: darken($text-black, 2%);
+  font-family: 'Roboto', sans-serif;
+}
+
+.configMessageText {
+  font-size: 15px;
+  padding-bottom: 0px;
+}
+
+.codeText {
+  background-color: white;
+  padding: 2px;
+  margin: 0 1px;
+  color: $text-primary;
+  font-family: 'Monaco';
+  font-size: 13px;
+}
+
+.homeRowFlexContainer {
+  display: flex;
+  flex-direction: row;
+  margin-top: 40px;
+  animation: whiteCardFadeIn 1s;
+}
+
+.greenCheck {
+  color: #9cedaa;
+  font-size: 28px;
+  margin-right: 2px;
+}
+
+.modalButtonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
