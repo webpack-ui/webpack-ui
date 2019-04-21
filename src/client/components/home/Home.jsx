@@ -2,8 +2,6 @@ import React from 'react';
 import { observer, inject } from 'mobx-react';
 import HomeHeadingBox from './HomeHeadingBox';
 import WhiteCardWelcome from './WhiteCardWelcome';
-// import WhiteCardPackageJSON from './WhiteCardPackageJSON';
-// import WhiteCardWebpackConfig from './WhiteCardWebpackConfig';
 import WhiteCardStatsJSON from './WhiteCardStatsJSON';
 import D3ChartContainerCard from './D3ChartContainerCard';
 import ModalHome from './ModalHome';
