@@ -10,10 +10,10 @@ const D3ChartContainerCard = (props) => {
             <div id="chart">
               <div id="sequence"></div>
               <div id="explanation">
-                <span id={styles.filename}></span><br />
-                <span id={styles.percentage}></span><br />
+                <span id="filename"></span><br />
+                <span id="percentage"></span><br />
                 <div>
-                  <span id={styles.filesize}></span> <br />
+                  <span id="filesize"></span> <br />
                 </div>
                 <div>
                   <span id="issuerPath"></span> <br />
@@ -28,7 +28,7 @@ const D3ChartContainerCard = (props) => {
           <div className={props.isTreemapDisplayed ? `${styles.d3DisplayOn}` : `${styles.d3DisplayOff}`}>
             <div id="sequenceTreeMap"></div>
             <div id="explanationTree">
-              <div id={styles.ancestors}></div>
+              <div id="ancestors"></div>
               <span id="treemapText"></span>
               <span id="filenameTree"></span><br />
               <span id="percentageTree"></span><br />
@@ -64,7 +64,7 @@ const D3ChartContainerCard = (props) => {
             </div>
           </div>
 
-          <div id={styles.zoomContainer} className={props.isSunburstZoomDisplayed ? `${styles.d3DisplayOn}` : `${styles.d3DisplayOff}`}>
+          <div id="zoomContainer" className={props.isSunburstZoomDisplayed ? `${styles.d3DisplayOn}` : `${styles.d3DisplayOff}`}>
           </div>
         </div>
       </div>

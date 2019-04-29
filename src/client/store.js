@@ -207,6 +207,7 @@ export default class Store {
 
     this.isChartCardDisplayed = true;
     this.isWelcomeCardDisplayed = false;
+    this.isLoadStatsDisplayed = false;
     this.isWelcomeCardBottomDisplayed = false;
     this.isSunburstSelected = true;
     this.isSunburstZoomSelected = false;
