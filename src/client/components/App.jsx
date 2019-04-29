@@ -19,6 +19,7 @@ class Nav extends React.Component {
 
   doSetDisplaySunburstZoom = () => {
     this.props.store.setDisplaySunburstZoom();
+    console.log(this.props.store.isSunburstZoomDisplayed)
   }
   doSetDisplayTreemap = () => {
     this.props.store.setDisplayTreemap();
@@ -59,7 +60,7 @@ class Nav extends React.Component {
             <li className={styles.Nav__item} onClick={this.doSetChartNavClassOn}>
               <Link
                 className={store.isHomeSelected ? `${styles.Nav__link} ${styles.selected}` : `${styles.Nav__link}`}
-                to="/"
+                to="/webpackui/"
                 onClick={this.doSetHomeSelected}
               >
                 <FaHome style={iconStyle} />
@@ -74,30 +75,30 @@ class Nav extends React.Component {
               >
                 Sunburst
               </li>
-              <li
+              {/* <li
                 className={store.isSunburstZoomSelected ? `${styles.chartNavLinks} ${styles.chartNavLinkSelected}` : `${styles.chartNavLinks}`}
                 onClick={this.doSetDisplaySunburstZoom}
               >
                 Zoomable Sunburst
-              </li>
+              </li> */}
               <li
                 className={store.isTreemapSelected ? `${styles.chartNavLinks} ${styles.chartNavLinkSelected}` : `${styles.chartNavLinks}`}
                 onClick={this.doSetDisplayTreemap}
               >
                 Treemap
               </li>
-              <li
+              {/* <li
                 className={store.isTreemapZoomSelected ? `${styles.chartNavLinks} ${styles.chartNavLinkSelected}` : `${styles.chartNavLinks}`}
                 onClick={this.doSetDisplayTreemapZoom}
               >
                 Zoomable Treemap
-              </li>
+              </li> */}
             </ul>}
 
             <li className={store.isChartCardDisplayed ? `${styles.Nav__item}` : `${styles.Nav__itemPre}`} onClick={this.doSetChartNavClassOff}>
               <Link
                 className={store.isConfigGenerationSelected ? `${styles.Nav__link} ${styles.selected}` : `${styles.Nav__link}`}
-                to="/configgeneration"
+                to="/webpackui/configgeneration"
                 onClick={this.doSetConfigGenerationSelected}
               >
                 <IoLogoBuffer style={iconStyle} />
@@ -113,13 +114,15 @@ class Nav extends React.Component {
 
 export default class App extends React.Component {
   render() {
+    let {store} =this.props
+    console.log(store)
     return (
       <Router>
         <div className={styles.fullAppContainer}>
           <Nav />
           <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/configgeneration" component={ConfigGeneration} />
+            <Route exact path="/webpackui/" component={Home} />
+            <Route exact path="/webpackui/configgeneration" component={ConfigGeneration} />
           </Switch>
         </div>
       </Router>

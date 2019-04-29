@@ -1,6 +1,7 @@
 @import "../utils/styles";
 
 .Nav {
+  position: fixed;
   background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
   width: 174px;
   height: 100%;
