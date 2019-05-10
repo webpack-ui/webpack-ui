@@ -70,6 +70,6 @@
     "react-md-spinner": "^0.3.0",
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
-    "react-syntax-highlighter": "^10.1.2"
+    "react-syntax-highlighter": "^10.2.1"
   }
 }

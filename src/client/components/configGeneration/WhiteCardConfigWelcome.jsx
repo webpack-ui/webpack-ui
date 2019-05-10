@@ -5,7 +5,10 @@ const WhiteCardConfigWelcome = (props) => {
   return (
     <div className={`${styles.whiteCard} ${styles.welcomeCard}`}>
       <div id={styles.welcomeHeaderTabThree}>Build Customized Webpack.config File</div>
-      {!props.isRootSelected && <div id={styles.welcomeMessageTabThree}>Select your project's root directory where you would like to generate your <span className={styles.codeTextStatsTabThree}>Webpack.config</span> file</div>}
+      {!props.isFrameWorkSelected && 
+        <div id={styles.welcomeMessageTabThree}>
+          Select whether you want to start a React or Vue Project 
+        </div>}
     </div>
   );
 }
