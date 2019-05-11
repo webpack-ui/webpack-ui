@@ -19,11 +19,6 @@ class Home extends React.Component {
       width: 550,
       height: 550,
       listOfConfigs: [],
-      totalSizeTemp: '',
-      initialBuildSize: 0,
-      totalNodeCount: 0,
-      totalAssets: 0,
-      totalChunks: 0,
       isModalDisplayed: false,
       root: {} 
     }
@@ -76,6 +71,7 @@ class Home extends React.Component {
             name: module.name,
             size: module.size,
             id: module.id,
+            issuerPath: module.issuerPath
           }))
           : [],
       }));
@@ -83,77 +79,73 @@ class Home extends React.Component {
       Pdata.push(returnObj);
       //loops through assets, or the first stats.json
       let i = 0; 
-      let path
-      let sizeStr
+      let path;
+      let sizeStr;
+      let issuerPath;
       let data = [];
-  
   
       for (var k = 0; k < Pdata[i].chunks.length; k++) {
         for (var l = 0; l < Pdata[i].chunks[k].modules.length; l++) {
           sizeStr = Pdata[i].chunks[k].modules[l].size.toString();
           path = Pdata[i].chunks[k].modules[l].name.replace("./", "");
-          data.push([path, sizeStr]);
+          issuerPath = Pdata[i].chunks[k].modules[l].issuerPath;
+          data.push([path, sizeStr, issuerPath]);
         }
-  
-  
-      const returnObjData = {
-        chunks: returnObj.chunks,
-        assets: returnObj.assets
-      }
 
-      let root = { "name": "root", "children": [] };
-      for (let i = 0; i < data.length; i++) {
-        let sequence = data[i][0];
-        let size = +data[i][1];
-        if (isNaN(size)) { // e.g. if this is a header row
-          continue;
-        }
-        let parts = sequence.split("/");
-        let currentNode = root;
-        for (let j = 0; j < parts.length; j++) {
-          let children = currentNode["children"];
-          let nodeName = parts[j];
-          let childNode;
-          if (j + 1 < parts.length) {
-            // Not yet at the end of the sequence; move down the tree.
-            var foundChild = false;
-            for (var k = 0; k < children.length; k++) {
-              if (children[k]["name"] == nodeName) {
-                childNode = children[k];
-                foundChild = true;
-                break;
+      // const returnObjData = {
+      //   chunks: returnObj.chunks,
+      //   assets: returnObj.assets
+      // }
+
+        let root = { "name": "root", "children": [] };
+        for (let i = 0; i < data.length; i++) {
+          let sequence = data[i][0];
+
+          if (data[i][2]) {
+            var issuerPathdata = data[i][2].map(el => el.name);
+          }
+
+          let size = +data[i][1];
+          if (isNaN(size)) { // e.g. if this is a header row
+            continue;
+          }
+          let parts = sequence.split("/");
+          let currentNode = root;
+          for (let j = 0; j < parts.length; j++) {
+            let children = currentNode["children"];
+            let nodeName = parts[j];
+            let childNode;
+            if (j + 1 < parts.length) {
+              // Not yet at the end of the sequence; move down the tree.
+              var foundChild = false;
+              for (var k = 0; k < children.length; k++) {
+                if (children[k]["name"] == nodeName) {
+                  childNode = children[k];
+                  foundChild = true;
+                  break;
+                }
               }
-            }
-            // If we don't already have a child node for this branch, create it.
-            if (!foundChild) {
-              childNode = { "name": nodeName, "children": [] };
+              // If we don't already have a child node for this branch, create it.
+              if (!foundChild) {
+                childNode = { "name": nodeName, "children": [], "issuerPath": issuerPathdata  };
+                children.push(childNode);
+              }
+              currentNode = childNode;
+            } else {
+              // Reached the end of the sequence; create a leaf node.
+              childNode = { "name": nodeName, "value": size, "issuerPath": issuerPathdata };
               children.push(childNode);
             }
-            currentNode = childNode;
-          } else {
-            // Reached the end of the sequence; create a leaf node.
-            childNode = { "name": nodeName, "value": size };
-            children.push(childNode);
           }
         }
+        that.props.store.setBeforeRoot(root)
       }
-      console.log(that)
-
-      that.props.store.setBeforeRoot(root)
-      console.log(that.props.store)
+      console.log(data)
       that.drawChart(that.props.store.beforeRoot);
-      console.log(that.drawChart)
-
-      that.drawZoom(that.props.store.beforeRoot);
+      // that.drawZoom(that.props.store.beforeRoot);
       that.drawTreemap(that.props.store.beforeRoot);
-      that.drawTreemapZoom(that.props.store.beforeRoot);
-      that.doSetDisplaySunburst();
-      console.log(that.props.store)
-
-      that.props.store.setWereChartsEverDrawn();
-
-      }
-
+      // that.drawTreemapZoom(that.props.store.beforeRoot);
+      that.doSetDisplaySunburstAndStats(returnObj.size, data.length, returnObj.assets.length, returnObj.chunks.length);
     }
     acceptedFiles.forEach(file => reader.readAsText(file))
   }
@@ -167,9 +159,7 @@ class Home extends React.Component {
     };
 
     const radius = (Math.min(this.state.width, this.state.height) / 2) - 10;
-
     const root = d3.hierarchy(jsonData);
-
     const sunburstLayout = d3.partition();
 
     sunburstLayout.size([2 * Math.PI, radius]);
@@ -230,7 +220,6 @@ class Home extends React.Component {
       }
     }
     let loopColors = color();
-
     let i = 0;
     const path = main.data([jsonData]).selectAll("path")
       .data(nodes)
@@ -244,16 +233,19 @@ class Home extends React.Component {
 
     let totalSize = path.datum().value;
 
-    this.setState({
-      totalSizeTemp: (totalSize / 1000000).toPrecision(3) + ' Mb',
-      initialBuildSize: totalSize
-    });
-
     function mouseover(d) {
+
       var percentage = (100 * d.value / totalSize).toPrecision(3);
       var percentageString = percentage + "%";
       if (Number(percentage) < 0.1) {
         percentageString = "< 0.1%";
+      }
+
+      let issuerPathArr = Object.values(d.data.issuerPath);
+      let issuerPath = '';
+
+      for (let i = issuerPathArr.length - 1; i >= 0; i -= 1) {
+        issuerPath += issuerPathArr[i] + '  >  ';
       }
 
       d3.select("#percentage")
@@ -269,6 +261,9 @@ class Home extends React.Component {
 
       d3.select("#explanation")
         .style("visibility", "");
+      
+      d3.select("#issuerPath")
+        .text('issuerPath: ' + issuerPath)
 
       var sequenceArray = d.ancestors().reverse();
       sequenceArray.shift(); // remove root node from the array
@@ -371,7 +366,7 @@ class Home extends React.Component {
         .style("visibility", "hidden");
 
       // Deactivate all segments during transition.
-      d3.selectAll("path").on("mouseover", null);
+      // d3.selectAll("path").on("issuer", null);
 
       // Transition each segment to full opacity and then reactivate it.
       d3.selectAll("#chart").selectAll("path")
@@ -595,7 +590,6 @@ class Home extends React.Component {
     const b = {
       w: 50, h: 20, s: 1, t: 5
     };
-
     const root = d3.hierarchy(jsonData);
     const treemapLayout = d3.treemap();
 
@@ -860,21 +854,13 @@ class Home extends React.Component {
     this.props.store.setBeforeRoot(root);
   }
 
-  doSetInitialBuildSize = () => {
-    this.props.store.setInitialBuildSize(this.state.initialBuildSize);
+  doSetDisplaySunburstAndStats = (size, node, assets, chunks) => {
+    this.props.store.setDisplaySunburstAndStats(size, node, assets, chunks);
+    
   }
 
   doSetDisplaySunburst = () => {
     this.props.store.setDisplaySunburst();
-    if (!this.props.store.totalSizeTemp) {
-      this.props.store.setUpdateCards(
-        this.state.totalSizeTemp,
-        this.state.totalNodeCount,
-        this.state.totalAssets,
-        this.state.totalChunks
-      );
-      this.doSetInitialBuildSize();
-    }
   }
 
   doSetDisplaySunburstZoom = () => {
@@ -910,7 +896,7 @@ class Home extends React.Component {
 
             <HomeHeadingBox
               textContent="Modules"
-              displayData={store.totalNodeCount}
+              displayData={store.totalNodes}
             />
 
             <div className={styles.boxLine}></div>
