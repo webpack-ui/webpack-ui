@@ -6,7 +6,10 @@ import WhiteCardWelcome from './WhiteCardWelcome';
 import WhiteCardStatsJSON from './WhiteCardStatsJSON';
 import D3ChartContainerCard from './D3ChartContainerCard';
 import ModalHome from './ModalHome';
+
 import styles from '../../stylesheets/modules/home/home.module';
+
+
 
 @inject('store')
 @observer
@@ -20,7 +23,7 @@ class Home extends React.Component {
       height: 550,
       listOfConfigs: [],
       isModalDisplayed: false,
-      root: {} 
+      root: {}
     }
 
     this.setRoot = this.setRoot.bind(this);
@@ -28,24 +31,24 @@ class Home extends React.Component {
   }
 
   setRoot(root) {
-    this.setState({root})
+    this.setState({ root })
   }
 
-  onDropFunction (acceptedFiles) {
+  onDropFunction(acceptedFiles) {
     let that = this
     const reader = new FileReader()
-    let arr = [] 
+    let arr = []
     reader.onabort = () => console.log('file reading was aborted')
     reader.onerror = () => console.log('file reading has failed')
-    reader.onload = function() {
+    reader.onload = function () {
       // Do whatever you want with the file contents
       let content = reader.result
       content = content.substr(content.indexOf("{"));
-          // //splits multiple JSON objects if more than one exists in file
+      // //splits multiple JSON objects if more than one exists in file
       content = content.split(/}[\n\r\s]+{/);
       if (content.length > 1) {
         for (let i = 0; i < content.length; i++) {
-        content[i] = (i > 0) ? "{" : "" + content[i] + (i < content.length - 1) ? "}" : "";
+          content[i] = (i > 0) ? "{" : "" + content[i] + (i < content.length - 1) ? "}" : "";
         }
       }
       content = JSON.parse(content[0]);
@@ -78,12 +81,12 @@ class Home extends React.Component {
       let Pdata = [];
       Pdata.push(returnObj);
       //loops through assets, or the first stats.json
-      let i = 0; 
+      let i = 0;
       let path;
       let sizeStr;
       let issuerPath;
       let data = [];
-  
+
       for (var k = 0; k < Pdata[i].chunks.length; k++) {
         for (var l = 0; l < Pdata[i].chunks[k].modules.length; l++) {
           sizeStr = Pdata[i].chunks[k].modules[l].size.toString();
@@ -92,10 +95,10 @@ class Home extends React.Component {
           data.push([path, sizeStr, issuerPath]);
         }
 
-      // const returnObjData = {
-      //   chunks: returnObj.chunks,
-      //   assets: returnObj.assets
-      // }
+        // const returnObjData = {
+        //   chunks: returnObj.chunks,
+        //   assets: returnObj.assets
+        // }
 
         let root = { "name": "root", "children": [] };
         for (let i = 0; i < data.length; i++) {
@@ -127,7 +130,7 @@ class Home extends React.Component {
               }
               // If we don't already have a child node for this branch, create it.
               if (!foundChild) {
-                childNode = { "name": nodeName, "children": [], "issuerPath": issuerPathdata  };
+                childNode = { "name": nodeName, "children": [], "issuerPath": issuerPathdata };
                 children.push(childNode);
               }
               currentNode = childNode;
@@ -142,7 +145,7 @@ class Home extends React.Component {
       }
       console.log(data)
       that.drawChart(that.props.store.beforeRoot);
-      // that.drawZoom(that.props.store.beforeRoot);
+      that.drawZoom(that.props.store.beforeRoot);
       that.drawTreemap(that.props.store.beforeRoot);
       // that.drawTreemapZoom(that.props.store.beforeRoot);
       that.doSetDisplaySunburstAndStats(returnObj.size, data.length, returnObj.assets.length, returnObj.chunks.length);
@@ -261,7 +264,7 @@ class Home extends React.Component {
 
       d3.select("#explanation")
         .style("visibility", "");
-      
+
       d3.select("#issuerPath")
         .text('issuerPath: ' + issuerPath)
 
@@ -489,7 +492,7 @@ class Home extends React.Component {
     const svg = d3
       .select('#zoomContainer')
       .append('svg')
-      .attr('viewBox', `${-width / 2} ${-height / 2} ${width} ${height}`)
+      .attr('viewBox', `${(-width / 2) - 100} ${-height / 2} ${width + 200} ${height}`)
       .on('click', () => focusOn()) // Reset zoom on canvas click
       .attr('id', 'viewBox');
 
@@ -509,6 +512,8 @@ class Home extends React.Component {
       .append('g')
       .attr('class', 'slice')
       .style('dominant-baseline', 'middle')
+      .style('cursor', 'pointer')
+      .style('text-anchor', 'middle')
       .on('click', (d) => {
         d3.event.stopPropagation();
         focusOn(d);
@@ -522,12 +527,15 @@ class Home extends React.Component {
     newSlice
       .append('path')
       .attr('class', 'main-arc')
+      .style('stroke', '#E5E2E0')
+      .style('stroke-width', '1px')
       .style('fill', (d) => color((d.children ? d : d.parent).data.name))
       .attr("d", (d) => arc(d));
 
     newSlice
       .append('path')
       .attr('class', 'hidden-arc')
+      .style('fill', 'none')
       .attr('id', (_, i) => `hiddenArc${i}`)
       .attr('d', middleArcLine);
 
@@ -856,7 +864,7 @@ class Home extends React.Component {
 
   doSetDisplaySunburstAndStats = (size, node, assets, chunks) => {
     this.props.store.setDisplaySunburstAndStats(size, node, assets, chunks);
-    
+
   }
 
   doSetDisplaySunburst = () => {
@@ -911,9 +919,9 @@ class Home extends React.Component {
 
         {store.isWelcomeCardDisplayed && <WhiteCardWelcome />}
 
-        {store.isLoadStatsDisplayed && <WhiteCardStatsJSON onDropFunction = {this.onDropFunction}/>}
+        {store.isLoadStatsDisplayed && <WhiteCardStatsJSON onDropFunction={this.onDropFunction} />}
 
-        
+
         <D3ChartContainerCard
           isChartCardDisplayed={store.isChartCardDisplayed}
           isSunburstDisplayed={store.isSunburstDisplayed}
@@ -922,7 +930,7 @@ class Home extends React.Component {
           isTreemapDisplayed={store.isTreemapDisplayed}
           isTreemapZoomDisplayed={store.isTreemapZoomDisplayed}
           isSunburstZoomDisplayed={store.isSunburstZoomDisplayed}
-      />
+        />
       </div>
     );
   }

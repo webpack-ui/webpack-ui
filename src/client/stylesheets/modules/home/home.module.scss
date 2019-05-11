@@ -33,6 +33,11 @@
   display: none;
 }
 
+.mainContainer {
+  padding: 20px;
+  width: 900px;
+}
+
 .mainContainerHome {
   margin-left: 220px;
   padding: 20px;
@@ -204,4 +209,38 @@
   flex-direction: row;
   justify-content: flex-end;
 }
+
+#viewBox {
+  margin-top: -20px;
+}
+
+.slice {
+  cursor: pointer;
+}
+  
+.slice .main-arc {
+  stroke: #E5E2E0;
+  stroke-width: 1px;
+}
+  
+.slice .hidden-arc {
+  fill: none;
+}
+
+.hidden {
+  display: none;
+}
+  
+.slice text {
+  pointer-events: none;
+  text-anchor: middle;
+}
+
+.smallermainContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+}
+
 
