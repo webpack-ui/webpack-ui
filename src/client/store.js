@@ -117,7 +117,7 @@ export default class Store {
   totalSizeTemp = '';
 
   @observable
-  totalNodeCount = 0;
+  totalNodes = 0;
 
   @observable
   totalAssets = 0;
@@ -169,8 +169,25 @@ export default class Store {
   }
 
   @action.bound
-  setInitialBuildSize(input) {
-    this.initialBuildSize = input;
+  setDisplaySunburstAndStats(size, node, assets, chunks) {
+    this.isSunburstDisplayed = true;
+    this.isSunburstZoomDisplayed = false;
+    this.isTreemapDisplayed = false;
+    this.isTreemapZoomDisplayed = false;
+
+    this.isChartCardDisplayed = true;
+    this.isWelcomeCardDisplayed = false;
+    this.isLoadStatsDisplayed = false;
+    this.isWelcomeCardBottomDisplayed = false;
+    this.isSunburstSelected = true;
+    this.isSunburstZoomSelected = false;
+    this.isTreemapSelected = false;
+    this.isTreemapZoomSelected = false;
+
+    this.totalSizeTemp = (size / 1000000).toPrecision(3) + ' Mb'
+    this.totalChunks = chunks;
+    this.totalAssets = assets;
+    this.totalNodes = node;
   }
 
   @action.bound
@@ -302,14 +319,6 @@ export default class Store {
   @action.bound
   setCustomConfigSavedTrue() {
     this.isCustomConfigSaved = true;
-  }
-
-  @action.bound
-  setUpdateCards(a, b, c, d) {
-    this.totalSizeTemp = a;
-    this.totalNodeCount = b;
-    this.totalAssets = c;
-    this.totalChunks = d;
   }
 
   @action.bound

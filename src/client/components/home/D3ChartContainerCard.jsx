@@ -36,8 +36,8 @@ const D3ChartContainerCard = (props) => {
                 <span id="filesizeTree"></span> <br />
               </div>
             </div>
-            <div style={{ paddingTop: '10px' }} id="chartTreeMap">
-              <div className="chartSVGContainer">
+            <div style={{ paddingTop: '30px' }} id="chartTreeMap">
+              <div className={styles.chartSVGContainer}>
                 <svg width='650px' height={props.height} id="treemap" />
               </div>
             </div>
@@ -54,7 +54,7 @@ const D3ChartContainerCard = (props) => {
               </div>
             </div>
             <div id="sequenceTreeMapZoom"></div>
-            <div className="chartSVGContainer">
+            <div className={styles.chartSVGContainer}>
               <div className={styles.zoomTreemapColumnContainer}>
                 <div className={styles.up}>&larr; UP</div>
                 <div style={{ paddingTop: '10px' }} className={styles.feature} id="chartTreeMapZoom">

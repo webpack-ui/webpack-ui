@@ -10,7 +10,6 @@ class WhiteCardStatsJSON extends React.Component {
     super(props)
   }
 
-  
   render() {
   return (
     <div className={styles.whiteCard}>
