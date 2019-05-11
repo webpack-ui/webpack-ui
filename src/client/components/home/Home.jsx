@@ -71,6 +71,7 @@ class Home extends React.Component {
             name: module.name,
             size: module.size,
             id: module.id,
+            issuerPath: module.issuerPath
           }))
           : [],
       }));
@@ -78,18 +79,19 @@ class Home extends React.Component {
       Pdata.push(returnObj);
       //loops through assets, or the first stats.json
       let i = 0; 
-      let path
-      let sizeStr
+      let path;
+      let sizeStr;
+      let issuerPath;
       let data = [];
   
       for (var k = 0; k < Pdata[i].chunks.length; k++) {
         for (var l = 0; l < Pdata[i].chunks[k].modules.length; l++) {
           sizeStr = Pdata[i].chunks[k].modules[l].size.toString();
           path = Pdata[i].chunks[k].modules[l].name.replace("./", "");
-          data.push([path, sizeStr]);
+          issuerPath = Pdata[i].chunks[k].modules[l].issuerPath;
+          data.push([path, sizeStr, issuerPath]);
         }
 
-  
       // const returnObjData = {
       //   chunks: returnObj.chunks,
       //   assets: returnObj.assets
@@ -98,6 +100,11 @@ class Home extends React.Component {
         let root = { "name": "root", "children": [] };
         for (let i = 0; i < data.length; i++) {
           let sequence = data[i][0];
+
+          if (data[i][2]) {
+            var issuerPathdata = data[i][2].map(el => el.name);
+          }
+
           let size = +data[i][1];
           if (isNaN(size)) { // e.g. if this is a header row
             continue;
@@ -120,19 +127,20 @@ class Home extends React.Component {
               }
               // If we don't already have a child node for this branch, create it.
               if (!foundChild) {
-                childNode = { "name": nodeName, "children": [] };
+                childNode = { "name": nodeName, "children": [], "issuerPath": issuerPathdata  };
                 children.push(childNode);
               }
               currentNode = childNode;
             } else {
               // Reached the end of the sequence; create a leaf node.
-              childNode = { "name": nodeName, "value": size };
+              childNode = { "name": nodeName, "value": size, "issuerPath": issuerPathdata };
               children.push(childNode);
             }
           }
         }
         that.props.store.setBeforeRoot(root)
       }
+      console.log(data)
       that.drawChart(that.props.store.beforeRoot);
       // that.drawZoom(that.props.store.beforeRoot);
       that.drawTreemap(that.props.store.beforeRoot);
@@ -212,7 +220,6 @@ class Home extends React.Component {
       }
     }
     let loopColors = color();
-    console.log('beforePath')
     let i = 0;
     const path = main.data([jsonData]).selectAll("path")
       .data(nodes)
@@ -225,17 +232,21 @@ class Home extends React.Component {
       .on("mouseover", mouseover);
 
     let totalSize = path.datum().value;
-    console.log('2')
 
     function mouseover(d) {
-      console.log('1')
 
       var percentage = (100 * d.value / totalSize).toPrecision(3);
       var percentageString = percentage + "%";
       if (Number(percentage) < 0.1) {
         percentageString = "< 0.1%";
       }
-      console.log('2')
+
+      let issuerPathArr = Object.values(d.data.issuerPath);
+      let issuerPath = '';
+
+      for (let i = issuerPathArr.length - 1; i >= 0; i -= 1) {
+        issuerPath += issuerPathArr[i] + '  >  ';
+      }
 
       d3.select("#percentage")
         .text('% of Total: ' + percentageString);
@@ -250,7 +261,9 @@ class Home extends React.Component {
 
       d3.select("#explanation")
         .style("visibility", "");
-        console.log('3')
+      
+      d3.select("#issuerPath")
+        .text('issuerPath: ' + issuerPath)
 
       var sequenceArray = d.ancestors().reverse();
       sequenceArray.shift(); // remove root node from the array
@@ -353,7 +366,7 @@ class Home extends React.Component {
         .style("visibility", "hidden");
 
       // Deactivate all segments during transition.
-      d3.selectAll("path").on("mouseover", null);
+      // d3.selectAll("path").on("issuer", null);
 
       // Transition each segment to full opacity and then reactivate it.
       d3.selectAll("#chart").selectAll("path")

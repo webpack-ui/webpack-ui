@@ -75,12 +75,12 @@ class Nav extends React.Component {
               >
                 Sunburst
               </li>
-              {/* <li
+              <li
                 className={store.isSunburstZoomSelected ? `${styles.chartNavLinks} ${styles.chartNavLinkSelected}` : `${styles.chartNavLinks}`}
                 onClick={this.doSetDisplaySunburstZoom}
               >
                 Zoomable Sunburst
-              </li> */}
+              </li>
               <li
                 className={store.isTreemapSelected ? `${styles.chartNavLinks} ${styles.chartNavLinkSelected}` : `${styles.chartNavLinks}`}
                 onClick={this.doSetDisplayTreemap}
