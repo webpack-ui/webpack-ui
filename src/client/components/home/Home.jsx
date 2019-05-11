@@ -6,7 +6,10 @@ import WhiteCardWelcome from './WhiteCardWelcome';
 import WhiteCardStatsJSON from './WhiteCardStatsJSON';
 import D3ChartContainerCard from './D3ChartContainerCard';
 import ModalHome from './ModalHome';
+
 import styles from '../../stylesheets/modules/home/home.module';
+
+
 
 @inject('store')
 @observer
@@ -489,7 +492,7 @@ class Home extends React.Component {
     const svg = d3
       .select('#zoomContainer')
       .append('svg')
-      .attr('viewBox', `${-width / 2} ${-height / 2} ${width} ${height}`)
+      .attr('viewBox', `${(-width / 2) - 100} ${-height / 2} ${width + 200} ${height}`)
       .on('click', () => focusOn()) // Reset zoom on canvas click
       .attr('id', 'viewBox');
 
@@ -509,6 +512,8 @@ class Home extends React.Component {
       .append('g')
       .attr('class', 'slice')
       .style('dominant-baseline', 'middle')
+      .style('cursor', 'pointer')
+      .style('text-anchor', 'middle')
       .on('click', (d) => {
         d3.event.stopPropagation();
         focusOn(d);
@@ -522,12 +527,15 @@ class Home extends React.Component {
     newSlice
       .append('path')
       .attr('class', 'main-arc')
+      .style('stroke', '#E5E2E0')
+      .style('stroke-width', '1px')
       .style('fill', (d) => color((d.children ? d : d.parent).data.name))
       .attr("d", (d) => arc(d));
 
     newSlice
       .append('path')
       .attr('class', 'hidden-arc')
+      .style('fill', 'none')
       .attr('id', (_, i) => `hiddenArc${i}`)
       .attr('d', middleArcLine);
 

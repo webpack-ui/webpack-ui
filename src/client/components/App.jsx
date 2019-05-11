@@ -7,6 +7,8 @@ import { FaCube } from "react-icons/fa";
 import { IoLogoBuffer } from "react-icons/io";
 import { observer, inject } from 'mobx-react';
 
+// import '../styles';
+
 import styles from '../stylesheets/modules/app.module';
 
 @inject('store')
@@ -87,12 +89,12 @@ class Nav extends React.Component {
               >
                 Treemap
               </li>
-              <li
+              {/*<li
                 className={store.isTreemapZoomSelected ? `${styles.chartNavLinks} ${styles.chartNavLinkSelected}` : `${styles.chartNavLinks}`}
                 onClick={this.doSetDisplayTreemapZoom}
               >
                 Zoomable Treemap
-              </li>
+              </li>*/}
             </ul>}
 
             <li className={store.isChartCardDisplayed ? `${styles.Nav__item}` : `${styles.Nav__itemPre}`} onClick={this.doSetChartNavClassOff}>
