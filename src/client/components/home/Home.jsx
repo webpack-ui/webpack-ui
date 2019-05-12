@@ -5,11 +5,8 @@ import HomeHeadingBox from './HomeHeadingBox';
 import WhiteCardWelcome from './WhiteCardWelcome';
 import WhiteCardStatsJSON from './WhiteCardStatsJSON';
 import D3ChartContainerCard from './D3ChartContainerCard';
-import ModalHome from './ModalHome';
 
 import styles from '../../stylesheets/modules/home/home.module';
-
-
 
 @inject('store')
 @observer
@@ -95,11 +92,6 @@ class Home extends React.Component {
           data.push([path, sizeStr, issuerPath]);
         }
 
-        // const returnObjData = {
-        //   chunks: returnObj.chunks,
-        //   assets: returnObj.assets
-        // }
-
         let root = { "name": "root", "children": [] };
         for (let i = 0; i < data.length; i++) {
           let sequence = data[i][0];
@@ -143,7 +135,7 @@ class Home extends React.Component {
         }
         that.props.store.setBeforeRoot(root)
       }
-      console.log(data)
+      // console.log(data)
       that.drawChart(that.props.store.beforeRoot);
       that.drawZoom(that.props.store.beforeRoot);
       that.drawTreemap(that.props.store.beforeRoot);
@@ -920,7 +912,6 @@ class Home extends React.Component {
         {store.isWelcomeCardDisplayed && <WhiteCardWelcome />}
 
         {store.isLoadStatsDisplayed && <WhiteCardStatsJSON onDropFunction={this.onDropFunction} />}
-
 
         <D3ChartContainerCard
           isChartCardDisplayed={store.isChartCardDisplayed}

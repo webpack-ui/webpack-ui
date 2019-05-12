@@ -69,7 +69,7 @@ class ConfigGeneration extends React.Component {
       customASTPropertyKey.push(el.key.name)
     })
     if (!checkedReact) {
-      //Add React AST 
+      // Add React AST 
       if (numberOfRules === 0) {
         customAST.body[customAST.body.length - 1].expression.right.properties.push(
           JSON.parse(JSON.stringify(ReactAST.body[0].expression.right.properties[0]))
@@ -479,14 +479,12 @@ class ConfigGeneration extends React.Component {
   }
 
   saveWebpackConfig = () => {
-    console.log('this.state.rootCustomDirectory: ', this.state.rootCustomDirectory)
-    console.log('formattedCode: ', this.state.formattedCode)
-
     const link = document.createElement('a');
     link.download = 'webpack.config.js';
     const blob = new Blob([this.state.formattedCode], { type: 'text/plain' });
     link.href = window.URL.createObjectURL(blob);
     link.click();
+    this.doSetCustomConfigSaved();
   }
 
   doSetCustomConfigSaved() {
@@ -518,6 +516,7 @@ class ConfigGeneration extends React.Component {
             checkedStylus={this.state.checkedStylus}
             checkedSVG={this.state.checkedSVG}
             checkedPNG={this.state.checkedPNG}
+            isCustomConfigSaved={this.props.store.isCustomConfigSaved}
           />
         </div>
       </div>

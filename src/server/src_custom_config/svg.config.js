@@ -1,10 +1,10 @@
 module.exports = {
-    module: {
-      rules: [
-        {
-          test: /\.svg$/,
-          use: 'file-loader'
-        }
-      ]
-    }
+  module: {
+    rules: [
+      {
+        test: /\.svg$/,
+        use: 'file-loader'
+      }
+    ]
   }
+}

@@ -7,8 +7,6 @@ import { FaCube } from "react-icons/fa";
 import { IoLogoBuffer } from "react-icons/io";
 import { observer, inject } from 'mobx-react';
 
-// import '../styles';
-
 import styles from '../stylesheets/modules/app.module';
 
 @inject('store')

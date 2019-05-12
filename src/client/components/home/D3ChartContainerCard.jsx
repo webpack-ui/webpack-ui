@@ -1,7 +1,5 @@
 import * as React from 'react';
 import styles from '../../stylesheets/modules/home/home.module';
-import { FaCheck } from "react-icons/fa";
-
 
 const D3ChartContainerCard = (props) => {
   return (
