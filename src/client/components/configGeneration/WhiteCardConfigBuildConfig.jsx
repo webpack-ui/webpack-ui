@@ -1,8 +1,8 @@
 import * as React from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { paraisoLight } from 'react-syntax-highlighter/dist/styles/hljs';
+import Button from '../universals/Button';
 import styles from '../../stylesheets/modules/tab3/WhiteCardConfigBuildConfig.module';
-
 
 const WhiteCardTabThreeBuildConfig = (props) => {
   return (
@@ -79,18 +79,17 @@ const WhiteCardTabThreeBuildConfig = (props) => {
           'opacity': '0.7'
         }}>{props.formattedCode}</SyntaxHighlighter>
       </div>
-        {/* <Button
-          classes="btn stats"
-          func={props.selectGenerateWebConfigRoot}
-          textContent="Create Webpack Config File" /> */}
-      {/* {props.customConfigSaved && props.isRootSelected &&
+      <Button
+        classes="btn stats"
+        func={props.saveWebpackConfig}
+        textContent="Save Webpack Config File" />
+      {props.customConfigSaved && props.isRootSelected &&
         <div className="tabThreeRowFlexContainer">
-          < FaCheck className="greenCheck" />
+          <FaCheck className="greenCheck" />
           <div id="webpackConfigSaveText">
             webpack.config.js saved
           </div>
-        </div> */}
-      
+        </div>}
     </div>
   );
 }
