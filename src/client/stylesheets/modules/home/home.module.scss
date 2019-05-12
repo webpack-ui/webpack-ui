@@ -33,6 +33,11 @@
   display: none;
 }
 
+.mainContainer {
+  padding: 20px;
+  width: 900px;
+}
+
 .mainContainerHome {
   margin-left: 220px;
   padding: 20px;
@@ -139,6 +144,10 @@
   font-size: 24px;
 }
 
+#welcomeMargin {
+  margin-top: 8px;
+}
+
 #welcomeHeader {
   font-family: 'Oswald', sans-serif;
   font-size: 36px;
@@ -205,6 +214,10 @@
   justify-content: flex-end;
 }
 
+#viewBox {
+  margin-top: -20px;
+}
+
 .slice {
   cursor: pointer;
 }
@@ -217,8 +230,19 @@
 .slice .hidden-arc {
   fill: none;
 }
+
+.hidden {
+  display: none;
+}
   
 .slice text {
   pointer-events: none;
   text-anchor: middle;
+}
+
+.smallermainContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
 }

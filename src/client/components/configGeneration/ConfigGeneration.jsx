@@ -46,16 +46,16 @@ class ConfigGeneration extends React.Component {
         const formattedCode = generate(json.customAST, {
           comments: true,
         })
-        this.setState({ 
-          customAST: json.customAST, 
-          ReactAST : json.ReactAST, 
-          CSSAST : json.CSSAST, 
-          SassAST : json.SassAST, 
+        this.setState({
+          customAST: json.customAST,
+          ReactAST: json.ReactAST,
+          CSSAST: json.CSSAST,
+          SassAST: json.SassAST,
           LessAST: json.LessAST,
           StylusAST: json.StylusAST,
-          pngAST : json.pngAST,
-          svgAST : json.svgAST,
-          formattedCode, 
+          pngAST: json.pngAST,
+          svgAST: json.svgAST,
+          formattedCode,
         })
       })
   }
@@ -66,10 +66,10 @@ class ConfigGeneration extends React.Component {
     let formattedCode;
     const customASTPropertyKey = [];
     customAST.body[customAST.body.length - 1].expression.right.properties.forEach((el) => {
-     customASTPropertyKey.push(el.key.name)
+      customASTPropertyKey.push(el.key.name)
     })
     if (!checkedReact) {
-      //Add React AST 
+      // Add React AST 
       if (numberOfRules === 0) {
         customAST.body[customAST.body.length - 1].expression.right.properties.push(
           JSON.parse(JSON.stringify(ReactAST.body[0].expression.right.properties[0]))
@@ -79,7 +79,7 @@ class ConfigGeneration extends React.Component {
       } else {
         customAST.body[customAST.body.length - 1].expression.right.properties.forEach((el, i) => {
           if (el.key.name === "module") {
-            let moduleArr = el.value.properties    
+            let moduleArr = el.value.properties
             moduleArr.forEach((moduleEl) => {
               if (moduleEl.key.name === "rules") {
                 moduleEl.value.elements.unshift(
@@ -113,8 +113,8 @@ class ConfigGeneration extends React.Component {
         for (let j = 0; j < customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements.length; j += 1) {
           if (customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements[j].properties[0].value.raw.includes("js|jsx")) {
             tempCustomAST = [
-              ...customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements.slice(0,j),
-              ...customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements.slice(j+1)
+              ...customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements.slice(0, j),
+              ...customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements.slice(j + 1)
             ]
             numberOfRules -= 1;
           }
@@ -125,16 +125,16 @@ class ConfigGeneration extends React.Component {
         if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === "resolve") resolve_index = i
       }
       customAST.body[customAST.body.length - 1].expression.right.properties = [
-        ...customAST.body[customAST.body.length - 1].expression.right.properties.slice(0,resolve_index),
-        ...customAST.body[customAST.body.length - 1].expression.right.properties.slice(resolve_index+1)
+        ...customAST.body[customAST.body.length - 1].expression.right.properties.slice(0, resolve_index),
+        ...customAST.body[customAST.body.length - 1].expression.right.properties.slice(resolve_index + 1)
       ]
       for (let i = 0; i < customAST.body[customAST.body.length - 1].expression.right.properties.length; i += 1) {
         if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === "devServer") devServer_index = i
       }
 
       customAST.body[customAST.body.length - 1].expression.right.properties = [
-        ...customAST.body[customAST.body.length - 1].expression.right.properties.slice(0,devServer_index),
-        ...customAST.body[customAST.body.length - 1].expression.right.properties.slice(devServer_index+1)
+        ...customAST.body[customAST.body.length - 1].expression.right.properties.slice(0, devServer_index),
+        ...customAST.body[customAST.body.length - 1].expression.right.properties.slice(devServer_index + 1)
       ]
     }
     formattedCode = generate(customAST, {
@@ -162,7 +162,7 @@ class ConfigGeneration extends React.Component {
           if (el.key.name === "module") {
             let moduleArr = el.value.properties
             moduleArr.forEach((moduleEl) => {
-              if (moduleEl.key.name === "rules") {   
+              if (moduleEl.key.name === "rules") {
                 moduleEl.value.elements.push(JSON.parse(JSON.stringify(CSSAST.body[0].expression.right.properties[0].value.properties[0].value.elements[0])))
               }
             })
@@ -186,11 +186,11 @@ class ConfigGeneration extends React.Component {
             numberOfRules -= 1;
           }
         }
-      }  
+      }
     }
     formattedCode = generate(customAST, {
       comments: true,
-    })    
+    })
     this.setState({ checkedCSS: !this.state.checkedCSS, formattedCode, numberOfRules, moduleExist, customAST });
   }
 
@@ -225,8 +225,8 @@ class ConfigGeneration extends React.Component {
       let module_index = 0;
       for (let i = 0; i < customAST.body[customAST.body.length - 1].expression.right.properties.length; i += 1) {
         if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === "module") module_index = i
-      }  
-      if (numberOfRules === 1 && customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length === 1) {  
+      }
+      if (numberOfRules === 1 && customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length === 1) {
         customAST.body[customAST.body.length - 1].expression.right.properties.splice(module_index, 1)
         numberOfRules -= 1;
       } else if (numberOfRules > 1 && customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length === 1) {
@@ -246,7 +246,8 @@ class ConfigGeneration extends React.Component {
       numberOfRules,
       moduleExist,
       customAST,
-      formattedCode });
+      formattedCode
+    });
   }
 
   handleChangeCheckboxLess = () => {
@@ -294,12 +295,12 @@ class ConfigGeneration extends React.Component {
             numberOfRules -= 1;
           }
         }
-      }  
+      }
     }
     formattedCode = generate(customAST, {
       comments: true,
     })
-    this.setState({ 
+    this.setState({
       checkedLess: !this.state.checkedLess,
       numberOfRules,
       moduleExist,
@@ -353,16 +354,16 @@ class ConfigGeneration extends React.Component {
       }
     }
     formattedCode = generate(customAST, {
-        comments: true,
-      })
-      this.setState({ 
-        checkedStylus: !this.state.checkedStylus,
-        numberOfRules,
-        moduleExist,
-        customAST,
-        formattedCode
-      });
-    }
+      comments: true,
+    })
+    this.setState({
+      checkedStylus: !this.state.checkedStylus,
+      numberOfRules,
+      moduleExist,
+      customAST,
+      formattedCode
+    });
+  }
 
   handleChangeCheckboxSVG = () => {
     let { checkedSVG, svgAST, numberOfRules, moduleExist } = this.state
@@ -411,7 +412,7 @@ class ConfigGeneration extends React.Component {
     formattedCode = generate(customAST, {
       comments: true,
     });
-    this.setState({ 
+    this.setState({
       checkedSVG: !this.state.checkedSVG,
       numberOfRules,
       moduleExist,
@@ -452,7 +453,7 @@ class ConfigGeneration extends React.Component {
       for (let i = 0; i < customAST.body[customAST.body.length - 1].expression.right.properties.length; i += 1) {
         if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === "module") module_index = i
       }
-    
+
       if (numberOfRules === 1 && customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length === 1) {
         customAST.body[customAST.body.length - 1].expression.right.properties.splice(module_index, 1)
         numberOfRules -= 1;
@@ -468,19 +469,21 @@ class ConfigGeneration extends React.Component {
     formattedCode = generate(customAST, {
       comments: true,
     })
-    this.setState({ 
+    this.setState({
       checkedPNG: !this.state.checkedPNG,
       numberOfRules,
       moduleExist,
       customAST,
       formattedCode
-    });  
+    });
   }
 
-
-  selectGenerateWebConfigRoot = (event) => {
-    // ipcRenderer.send('saveCustomConfig', this.state.rootCustomDirectory);
-
+  saveWebpackConfig = () => {
+    const link = document.createElement('a');
+    link.download = 'webpack.config.js';
+    const blob = new Blob([this.state.formattedCode], { type: 'text/plain' });
+    link.href = window.URL.createObjectURL(blob);
+    link.click();
     this.doSetCustomConfigSaved();
   }
 
@@ -496,7 +499,7 @@ class ConfigGeneration extends React.Component {
           <WhiteCardConfigWelcome
             isFrameWorkSelected={this.state.isFrameWorkSelected}
           />
-          <WhiteCardConfigBuildConfig 
+          <WhiteCardConfigBuildConfig
             handleChangeCheckboxReact={this.handleChangeCheckboxReact}
             handleChangeCheckboxCSS={this.handleChangeCheckboxCSS}
             handleChangeCheckboxSass={this.handleChangeCheckboxSass}
@@ -504,7 +507,7 @@ class ConfigGeneration extends React.Component {
             handleChangeCheckboxStylus={this.handleChangeCheckboxStylus}
             handleChangeCheckboxSVG={this.handleChangeCheckboxSVG}
             handleChangeCheckboxPNG={this.handleChangeCheckboxPNG}
-            selectGenerateWebConfigRoot={this.selectGenerateWebConfigRoot}
+            saveWebpackConfig={this.saveWebpackConfig}
             formattedCode={this.state.formattedCode}
             checkedReact={this.state.checkedReact}
             checkedCSS={this.state.checkedCSS}
@@ -513,7 +516,8 @@ class ConfigGeneration extends React.Component {
             checkedStylus={this.state.checkedStylus}
             checkedSVG={this.state.checkedSVG}
             checkedPNG={this.state.checkedPNG}
-            />
+            isCustomConfigSaved={this.props.store.isCustomConfigSaved}
+          />
         </div>
       </div>
     );
