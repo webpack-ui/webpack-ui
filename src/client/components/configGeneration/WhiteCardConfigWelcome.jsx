@@ -8,7 +8,7 @@ class WhiteCardConfigWelcome extends PureComponent {
 
   render() {
     return (
-      <div className={`${styles.whiteCard} ${styles.welcomeCard}`}>
+      <div className={`${styles.whiteCard} ${styles.welcomeCard}`} id={styles.welcomeMarginConfig}>
         <div id={styles.welcomeHeaderTabThree}>Build Customized Webpack.config File</div>
         {!this.props.isFrameWorkSelected && 
           <div id={styles.welcomeMessageTabThree}>

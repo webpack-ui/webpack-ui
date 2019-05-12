@@ -28,8 +28,8 @@ app.get('/AST', async (req, res) => {
   const ASTObj = {};
   fs.readFile(__dirname + '/src_custom_config/webpack.config.js', (err, data) => {
     ASTObj.customAST = acorn.parse(data.toString(), {
-        ecmaVersion: 6,
-        locations: true,
+      ecmaVersion: 6,
+      locations: true,
     });
     fs.readFile(__dirname + '/src_custom_config/React.config.js', (err, data) => {
       ASTObj.ReactAST = acorn.parse(data.toString(), {
@@ -66,18 +66,19 @@ app.get('/AST', async (req, res) => {
                     ecmaVersion: 6,
                     locations: true,
                   });
-                  res.send(ASTObj);  
+                  res.send(ASTObj);
                 })
               })
             })
           })
         })
-      })  
+      })
     })
   })
 })
+
 // 
 app.listen(PORT, (err) => {
   if (err) console.log(err);
   console.log(`Listening on PORT ${PORT}`);
-})
+});

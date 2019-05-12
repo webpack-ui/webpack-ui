@@ -1,8 +1,10 @@
+@import "../../utils/styles";
+@import '~pretty-checkbox/src/pretty-checkbox.scss';
+
 @keyframes whiteCardFadeIn {
   0%   { opacity: 0; }
   100% { opacity: 1; }
 }
-
 
 $m: 0; // margin
 
@@ -22,8 +24,6 @@ $afterNavHover: rgba(237, 237, 237, 0.9);
 $beforeNavLinkHover: rgba(255, 255, 255, 0.6);
 $afterNavLinkHover: rgba(237, 237, 237, 1);
 
-
-
 .tabTwoThreeHeading {
     font-size: 30px;
     margin-bottom: 10px;
@@ -35,7 +35,7 @@ $afterNavLinkHover: rgba(237, 237, 237, 1);
 .tabThreeRowFlexContainer {
   display: flex;
   flex-direction: row;
-  margin-top: 10px;
+  margin-top: 0px;
   animation: whiteCardFadeIn 1s;
 }
 
@@ -55,7 +55,6 @@ $afterNavLinkHover: rgba(237, 237, 237, 1);
   flex-direction: row;
   justify-content:space-between;
 }
-// .tabThreeSelectionContainer
 
 .checkboxContainer {
   display: flex;
@@ -70,6 +69,15 @@ $afterNavLinkHover: rgba(237, 237, 237, 1);
   margin-right: 8px;
 }
 
-// .tabThreeCodeContainer {
+.greenCheck {
+  color: #9cedaa;
+  font-size: 28px;
+  margin-right: 2px;
+}
 
-// }
+#webpackConfigSaveText {
+  margin-left: 8px;
+  font-family: 'Oswald';
+  font-size: 24px;
+  color: $text-black;
+}
