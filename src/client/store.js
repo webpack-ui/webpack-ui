@@ -39,6 +39,9 @@ export default class Store {
   isHomeSelected = true;
 
   @observable
+  isConfigModificationSelected = false;
+
+  @observable
   isConfigGenerationSelected = false;
 
   @observable
@@ -307,13 +310,23 @@ export default class Store {
   @action.bound
   setHomeSelected() {
     this.isHomeSelected = true;
+    this.isConfigModificationSelected = false;
     this.isConfigGenerationSelected = false;
   }
 
   @action.bound
-  setConfigGenerationSelected() {
-    this.isConfigGenerationSelected = true;
+  setConfigModificationSelected() {
     this.isHomeSelected = false;
+    this.isConfigModificationSelected = true;
+    this.isConfigGenerationSelected = false;
+
+  }
+
+  @action.bound
+  setConfigGenerationSelected() {
+    this.isHomeSelected = false;
+    this.isConfigModificationSelected = false;
+    this.isConfigGenerationSelected = true;
   }
 
   @action.bound

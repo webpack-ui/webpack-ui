@@ -77,6 +77,17 @@ app.get('/AST', async (req, res) => {
   })
 })
 
+
+app.get('/mod', (req, res) => {
+  const ASTObjPlugins = {};
+  fs.readFile(__dirname + '/src_custom_config/momentLocalsPlugin.config.js', (err, data) => {
+    ASTObjPlugins.momentLocaleAST = acorn.parse(data.toString(), {
+      ecmaVersion: 6,
+      locations: true,
+    });
+  res.send(ASTObjPlugins);
+  })
+})
 // 
 app.listen(PORT, (err) => {
   if (err) console.log(err);

@@ -34,7 +34,6 @@ class Home extends React.Component {
   onDropFunction(acceptedFiles) {
     let that = this
     const reader = new FileReader()
-    let arr = []
     reader.onabort = () => console.log('file reading was aborted')
     reader.onerror = () => console.log('file reading has failed')
     reader.onload = function () {

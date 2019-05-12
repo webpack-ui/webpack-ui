@@ -1,0 +1,36 @@
+@import "../../utils/styles";
+
+#welcomeHeaderTabThree {
+  font-family: 'Oswald', sans-serif;
+  font-size: 36px;
+  color: darken($text-black, 2%);
+}
+
+#welcomeMessageTabThree {
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  padding-top: 10px;
+  color: darken($text-black, 2%);
+}
+
+.codeTextStatsTabThree {
+  color: $text-primary;
+}
+
+.mainContainerHome {
+  margin-left: 220px;
+  padding: 20px;
+  width: 1400px;
+}
+
+.tabThreeHeading {
+  font-size: 30px;
+  margin-bottom: 10px;
+  color: darken($text-black, 2%);
+  font-family: 'Oswald', sans-serif;
+  padding-left: 8px;
+}
+
+#welcomeMarginConfig {
+  margin-top: 8px;
+}
