@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styles from '../../stylesheets/modules/home/home.module';
 
-
 const HomeHeadingBox = (props) => {
   return (
     <div className={styles.chartStatsHeadingBox}>

@@ -18,9 +18,7 @@
 }
 
 .mainContainerHome {
-  margin-left: 220px;
-  padding: 20px;
-  width: 1400px;
+
 }
 
 .tabThreeHeading {
@@ -29,4 +27,8 @@
   color: darken($text-black, 2%);
   font-family: 'Oswald', sans-serif;
   padding-left: 8px;
+}
+
+#welcomeMarginConfig {
+  margin-top: 8px;
 }
