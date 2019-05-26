@@ -1,0 +1,79 @@
+@import "../utils/styles";
+
+.mainContainer {
+  display:flex;
+  flex-direction:column;
+}
+
+
+.lowerContainer {
+  padding-top:30px;
+  display: flex;
+  flex-direction: row;
+
+  .lowerLeftTopContainer{
+    display:flex;
+    flex-direction: row;
+  }
+}
+
+.lowerRightContainer{
+  margin-left:50px;
+}
+
+.header {
+  font-size: 33px;
+}
+
+.optionContainer {
+  display:flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;
+  height:190px;
+  width:190px;
+  background-color: #f1f6fa93;
+  border: 1px solid darken(#f1f6fa93, 20%);
+  border-radius: 5px;
+  margin: 15px;
+
+  .optionHeader{
+    color: black;
+    font-size: 18px;
+    margin:10px;
+  }
+
+  .description{
+    font-size:13px;
+    width:130px;
+    text-align: center;
+    color:#999999;
+    margin: 3px;
+  }
+}
+
+
+
+.optionIcon{
+  height: 2.5rem;
+  width: 2.5rem;
+  stroke-width: 1;
+  color:#999999;
+}
+
+.headerContainer{
+  display:flex;
+  align-items: center;
+
+  .chevronLeft{
+    color:#999999;
+    height:2rem;
+    width: 2rem;
+    margin-right: 20px;
+  }
+}
+
+.searchContainer{
+  width:310px;
+}
+
