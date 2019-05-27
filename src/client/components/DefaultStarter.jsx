@@ -59,6 +59,7 @@ class DefaultStarter extends React.Component {
         pngAST: json.pngAST,
         svgAST: json.svgAST,
         momentLocaleAST: json.momentLocaleAST,
+        terserAST: json.terserAST,
         formattedCode
       });
     });
@@ -733,7 +734,13 @@ class DefaultStarter extends React.Component {
       comments: true
     });
 
-    this.setState({ checkedMomentLocale: !this.state.checkedMomentLocale, formattedCode, customAST });
+    this.setState({
+      checkedMomentLocale: !this.state.checkedMomentLocale,
+      numberOfRules,
+      moduleExist,
+      formattedCode,
+      customAST
+    });
   };
 
   handleChangeCheckboxTerser = () => {
@@ -750,18 +757,27 @@ class DefaultStarter extends React.Component {
     webpackObjEntries.properties.forEach((el) => {
       customASTPropertyKey.push(el.key.name);
     });
-    if (!checkedMomentLocale) {
+    if (!checkedTerser) {
+      // add const at start of webpack config before module.exports
+      for (let i = 0; i < customAST.body.length; i += 1) {
+        if (customAST.body[i].type === 'ExpressionStatement') {
+          customAST.body.splice(i, 0, JSON.parse(JSON.stringify(terserAST.body[0])));
+          break;
+        }
+      }
       moduleExist = true;
       numberOfRules += 1;
-      if (customASTPropertyKey.indexOf(momentLocaleAST.body[0].expression.right.properties[0].key.name) === -1) {
+      if (customASTPropertyKey.indexOf(terserAST.body[1].expression.right.properties[0].key.name) === -1) {
         webpackObjEntries.properties.unshift(
-          JSON.parse(JSON.stringify(momentLocaleAST.body[0].expression.right.properties[0]))
+          JSON.parse(JSON.stringify(terserAST.body[1].expression.right.properties[0]))
         );
       } else {
         webpackObjEntries.properties.forEach((el) => {
-          if (el.key.name === 'plugins') {
-            el.value.elements.unshift(
-              JSON.parse(JSON.stringify(momentLocaleAST.body[0].expression.right.properties[0].value.elements[0]))
+          if (el.key.name === 'optimization') {
+            el.value.properties[0].value.elements.unshift(
+              JSON.parse(
+                JSON.stringify(terserAST.body[1].expression.right.properties[0].value.properties[0].value.elements[0])
+              )
             );
           }
         });
@@ -769,16 +785,21 @@ class DefaultStarter extends React.Component {
         numberOfRules += 1;
       }
     } else {
+      //remove the const statement for terser plugin
+      customAST.body.forEach((el, index) => {
+        if (el.declarations) {
+          if (el.declarations[0].id.name === 'TerserPlugin') {
+            customAST.body.splice(index, 1);
+          }
+        }
+      });
+
       webpackObjEntries.properties.forEach((el) => {
-        if (el.key.name === 'plugins') {
-          for (let j = 0; j < el.value.elements.length; j += 1) {
-            if (el.value.elements[j].callee) {
-              console.log('el.value.elements[j].callee: ', el.value.elements[j].callee);
-              if (
-                el.value.elements[j].callee.object.name === 'webpack' ||
-                el.value.elements[j].callee.property.name === 'IgnorePlugin'
-              ) {
-                el.value.elements.splice(j, 1);
+        if (el.key.name === 'optimization') {
+          for (let j = 0; j < el.value.properties[0].value.elements.length; j += 1) {
+            if (el.value.properties[0].value.elements[j].callee) {
+              if (el.value.properties[0].value.elements[j].callee.name === 'TerserPlugin') {
+                el.value.properties[0].value.elements.splice(j, 1);
                 numberOfRules -= 1;
               }
             }
@@ -790,7 +811,13 @@ class DefaultStarter extends React.Component {
       comments: true
     });
 
-    this.setState({ checkedMomentLocale: !this.state.checkedMomentLocale, formattedCode, customAST });
+    this.setState({
+      checkedTerser: !this.state.checkedTerser,
+      numberOfRules,
+      moduleExist,
+      formattedCode,
+      customAST
+    });
   };
 
   saveWebpackConfig = () => {
