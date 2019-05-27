@@ -61,12 +61,18 @@ app.get('/AST', async (req, res) => {
                   ecmaVersion: 6,
                   locations: true,
                 });
-                fs.readFile(__dirname + '/src_custom_config/png.config.js', (err, data) => {
-                  ASTObj.pngAST = acorn.parse(data.toString(), {
+                fs.readFile(__dirname + '/src_custom_config/momentLocalePlugin.config.js', (err, data) => {
+                  ASTObj.momentLocaleAST = acorn.parse(data.toString(), {
                     ecmaVersion: 6,
                     locations: true,
                   });
-                  res.send(ASTObj);
+                  fs.readFile(__dirname + '/src_custom_config/png.config.js', (err, data) => {
+                    ASTObj.pngAST = acorn.parse(data.toString(), {
+                      ecmaVersion: 6,
+                      locations: true,
+                    });
+                    res.send(ASTObj);
+                  })
                 })
               })
             })
@@ -85,7 +91,7 @@ app.get('/mod', (req, res) => {
       ecmaVersion: 6,
       locations: true,
     });
-  res.send(ASTObjPlugins);
+    res.send(ASTObjPlugins);
   })
 })
 // 

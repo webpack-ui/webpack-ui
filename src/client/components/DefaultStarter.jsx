@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { paraisoLight, docco, dark } from 'react-syntax-highlighter/dist/styles/hljs';
 import { generate } from 'astring';
@@ -9,7 +9,6 @@ import styles from '../stylesheets/modules/DefaultStarter.module';
 @inject('store')
 @observer
 class DefaultStarter extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -25,6 +24,9 @@ class DefaultStarter extends React.Component {
       checkedStylus: false,
       checkedSVG: false,
       checkedPNG: false,
+      checkedTerser: false,
+      checkedHTMLPlugin: false,
+      checkedMomentLocale: false,
       formattedCode: '',
       customAST: null,
       ReactAST: null,
@@ -34,31 +36,32 @@ class DefaultStarter extends React.Component {
       StylusAST: null,
       svgAST: null,
       pngAST: null,
+      momentLocaleAST: null,
+      terserAST: null,
       numberOfRules: 0,
-      moduleExist: false,
-    }
+      moduleExist: false
+    };
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/AST/')
-      .then((res) => res.json())
-      .then((json) => {
-        //turn AST back to string for display
-        const formattedCode = generate(json.customAST, {
-          comments: true,
-        })
-        this.setState({
-          customAST: json.customAST,
-          ReactAST: json.ReactAST,
-          CSSAST: json.CSSAST,
-          SassAST: json.SassAST,
-          LessAST: json.LessAST,
-          StylusAST: json.StylusAST,
-          pngAST: json.pngAST,
-          svgAST: json.svgAST,
-          formattedCode,
-        })
-      })
+    fetch('http://localhost:3000/AST/').then((res) => res.json()).then((json) => {
+      //turn AST back to string for display
+      const formattedCode = generate(json.customAST, {
+        comments: true
+      });
+      this.setState({
+        customAST: json.customAST,
+        ReactAST: json.ReactAST,
+        CSSAST: json.CSSAST,
+        SassAST: json.SassAST,
+        LessAST: json.LessAST,
+        StylusAST: json.StylusAST,
+        pngAST: json.pngAST,
+        svgAST: json.svgAST,
+        momentLocaleAST: json.momentLocaleAST,
+        formattedCode
+      });
+    });
   }
 
   handleChangeCheckboxReact = () => {
@@ -67,180 +70,269 @@ class DefaultStarter extends React.Component {
     let formattedCode;
     const customASTPropertyKey = [];
     customAST.body[customAST.body.length - 1].expression.right.properties.forEach((el) => {
-      customASTPropertyKey.push(el.key.name)
-    })
+      customASTPropertyKey.push(el.key.name);
+    });
     if (!checkedReact) {
-      // Add React AST 
+      // Add React AST
       if (numberOfRules === 0) {
         customAST.body[customAST.body.length - 1].expression.right.properties.push(
           JSON.parse(JSON.stringify(ReactAST.body[0].expression.right.properties[0]))
-        )
+        );
         moduleExist = true;
         numberOfRules += 1;
       } else {
         customAST.body[customAST.body.length - 1].expression.right.properties.forEach((el, i) => {
-          if (el.key.name === "module") {
-            let moduleArr = el.value.properties
+          if (el.key.name === 'module') {
+            let moduleArr = el.value.properties;
             moduleArr.forEach((moduleEl) => {
-              if (moduleEl.key.name === "rules") {
+              if (moduleEl.key.name === 'rules') {
                 moduleEl.value.elements.unshift(
-                  JSON.parse(JSON.stringify(ReactAST.body[0].expression.right.properties[0].value.properties[0].value.elements[0]))
-                )
+                  JSON.parse(
+                    JSON.stringify(
+                      ReactAST.body[0].expression.right.properties[0].value.properties[0].value.elements[0]
+                    )
+                  )
+                );
               }
-            })
+            });
           }
-        })
+        });
         moduleExist = true;
         numberOfRules += 1;
       }
-      if (customASTPropertyKey.indexOf("resolve") === -1) {
-        customAST.body[customAST.body.length - 1].expression.right.properties.push(JSON.parse(JSON.stringify(ReactAST.body[0].expression.right.properties[1])))
+      if (customASTPropertyKey.indexOf('resolve') === -1) {
+        customAST.body[customAST.body.length - 1].expression.right.properties.push(
+          JSON.parse(JSON.stringify(ReactAST.body[0].expression.right.properties[1]))
+        );
       }
-      if (customASTPropertyKey.indexOf("devServer") === -1) {
-        customAST.body[customAST.body.length - 1].expression.right.properties.push(JSON.parse(JSON.stringify(ReactAST.body[0].expression.right.properties[2])))
+      if (customASTPropertyKey.indexOf('devServer') === -1) {
+        customAST.body[customAST.body.length - 1].expression.right.properties.push(
+          JSON.parse(JSON.stringify(ReactAST.body[0].expression.right.properties[2]))
+        );
       }
     } else {
       let module_index = 0;
       let resolve_index = 0;
       let devServer_index = 0;
       for (let i = 0; i < customAST.body[customAST.body.length - 1].expression.right.properties.length; i += 1) {
-        if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === "module") module_index = i
+        if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === 'module')
+          module_index = i;
       }
-      if (numberOfRules === 1 && customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length === 1) {
-        customAST.body[customAST.body.length - 1].expression.right.properties.splice(module_index, 1)
+      if (
+        numberOfRules === 1 &&
+        customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length ===
+          1
+      ) {
+        customAST.body[customAST.body.length - 1].expression.right.properties.splice(module_index, 1);
         numberOfRules -= 1;
-      } else if (numberOfRules > 1 && customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length === 1) {
+      } else if (
+        numberOfRules > 1 &&
+        customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length ===
+          1
+      ) {
         let tempCustomAST = [];
-        for (let j = 0; j < customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements.length; j += 1) {
-          if (customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements[j].properties[0].value.raw.includes("js|jsx")) {
+        for (
+          let j = 0;
+          j <
+          customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value
+            .elements.length;
+          j += 1
+        ) {
+          if (
+            customAST.body[customAST.body.length - 1].expression.right.properties[
+              module_index
+            ].value.properties[0].value.elements[j].properties[0].value.raw.includes('js|jsx')
+          ) {
             tempCustomAST = [
-              ...customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements.slice(0, j),
-              ...customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements.slice(j + 1)
-            ]
+              ...customAST.body[customAST.body.length - 1].expression.right.properties[
+                module_index
+              ].value.properties[0].value.elements.slice(0, j),
+              ...customAST.body[customAST.body.length - 1].expression.right.properties[
+                module_index
+              ].value.properties[0].value.elements.slice(j + 1)
+            ];
             numberOfRules -= 1;
           }
         }
-        customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements = tempCustomAST;
+        customAST.body[customAST.body.length - 1].expression.right.properties[
+          module_index
+        ].value.properties[0].value.elements = tempCustomAST;
       }
       for (let i = 0; i < customAST.body[customAST.body.length - 1].expression.right.properties.length; i += 1) {
-        if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === "resolve") resolve_index = i
+        if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === 'resolve')
+          resolve_index = i;
       }
       customAST.body[customAST.body.length - 1].expression.right.properties = [
         ...customAST.body[customAST.body.length - 1].expression.right.properties.slice(0, resolve_index),
         ...customAST.body[customAST.body.length - 1].expression.right.properties.slice(resolve_index + 1)
-      ]
+      ];
       for (let i = 0; i < customAST.body[customAST.body.length - 1].expression.right.properties.length; i += 1) {
-        if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === "devServer") devServer_index = i
+        if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === 'devServer')
+          devServer_index = i;
       }
 
       customAST.body[customAST.body.length - 1].expression.right.properties = [
         ...customAST.body[customAST.body.length - 1].expression.right.properties.slice(0, devServer_index),
         ...customAST.body[customAST.body.length - 1].expression.right.properties.slice(devServer_index + 1)
-      ]
+      ];
     }
     formattedCode = generate(customAST, {
-      comments: true,
-    })
+      comments: true
+    });
     this.setState({ checkedReact: !this.state.checkedReact, formattedCode, moduleExist, numberOfRules, customAST });
-  }
+  };
 
   handleChangeCheckboxCSS = () => {
-    let { checkedCSS, CSSAST, numberOfRules, moduleExist } = this.state
+    let { checkedCSS, CSSAST, numberOfRules, moduleExist } = this.state;
     const customAST = JSON.parse(JSON.stringify(this.state.customAST));
     let formattedCode;
     const customASTPropertyKey = [];
     customAST.body[customAST.body.length - 1].expression.right.properties.forEach((el) => {
-      customASTPropertyKey.push(el.key.name)
-    })
+      customASTPropertyKey.push(el.key.name);
+    });
     if (!checkedCSS) {
       if (customASTPropertyKey.indexOf(CSSAST.body[0].expression.right.properties[0].key.name) === -1) {
-        customAST.body[customAST.body.length - 1].expression.right.properties.push(JSON.parse(JSON.stringify(CSSAST.body[0].expression.right.properties[0])))
+        customAST.body[customAST.body.length - 1].expression.right.properties.push(
+          JSON.parse(JSON.stringify(CSSAST.body[0].expression.right.properties[0]))
+        );
         moduleExist = true;
         numberOfRules += 1;
       } else {
         customAST.body[customAST.body.length - 1].expression.right.properties.forEach((el) => {
-          if (el.key.name === "module") {
-            let moduleArr = el.value.properties
+          if (el.key.name === 'module') {
+            let moduleArr = el.value.properties;
             moduleArr.forEach((moduleEl) => {
-              if (moduleEl.key.name === "rules") {
-                moduleEl.value.elements.push(JSON.parse(JSON.stringify(CSSAST.body[0].expression.right.properties[0].value.properties[0].value.elements[0])))
+              if (moduleEl.key.name === 'rules') {
+                moduleEl.value.elements.push(
+                  JSON.parse(
+                    JSON.stringify(CSSAST.body[0].expression.right.properties[0].value.properties[0].value.elements[0])
+                  )
+                );
               }
-            })
+            });
           }
-        })
+        });
         moduleExist = true;
         numberOfRules += 1;
       }
     } else {
       let module_index = 0;
       for (let i = 0; i < customAST.body[customAST.body.length - 1].expression.right.properties.length; i += 1) {
-        if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === "module") module_index = i
+        if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === 'module')
+          module_index = i;
       }
-      if (numberOfRules === 1 && customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length === 1) {
-        customAST.body[customAST.body.length - 1].expression.right.properties.splice(module_index, 1)
+      if (
+        numberOfRules === 1 &&
+        customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length ===
+          1
+      ) {
+        customAST.body[customAST.body.length - 1].expression.right.properties.splice(module_index, 1);
         numberOfRules -= 1;
-      } else if (numberOfRules > 1 && customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length === 1) {
-        for (let j = 0; j < customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements.length; j += 1) {
-          if (customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements[j].properties[0].value.raw.includes(".css")) {
-            customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements.splice(j, 1)
+      } else if (
+        numberOfRules > 1 &&
+        customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length ===
+          1
+      ) {
+        for (
+          let j = 0;
+          j <
+          customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value
+            .elements.length;
+          j += 1
+        ) {
+          if (
+            customAST.body[customAST.body.length - 1].expression.right.properties[
+              module_index
+            ].value.properties[0].value.elements[j].properties[0].value.raw.includes('.css')
+          ) {
+            customAST.body[customAST.body.length - 1].expression.right.properties[
+              module_index
+            ].value.properties[0].value.elements.splice(j, 1);
             numberOfRules -= 1;
           }
         }
       }
     }
     formattedCode = generate(customAST, {
-      comments: true,
-    })
+      comments: true
+    });
     this.setState({ checkedCSS: !this.state.checkedCSS, formattedCode, numberOfRules, moduleExist, customAST });
-  }
+  };
 
   handleChangeCheckboxSass = () => {
-    let { checkedSass, SassAST, numberOfRules, moduleExist } = this.state
+    let { checkedSass, SassAST, numberOfRules, moduleExist } = this.state;
     const customAST = JSON.parse(JSON.stringify(this.state.customAST));
     let formattedCode;
     const customASTPropertyKey = [];
     customAST.body[customAST.body.length - 1].expression.right.properties.forEach((el) => {
-      customASTPropertyKey.push(el.key.name)
-    })
+      customASTPropertyKey.push(el.key.name);
+    });
     if (!checkedSass) {
       if (customASTPropertyKey.indexOf(SassAST.body[0].expression.right.properties[0].key.name) === -1) {
         moduleExist = true;
         numberOfRules += 1;
-        customAST.body[customAST.body.length - 1].expression.right.properties.push(JSON.parse(JSON.stringify(SassAST.body[0].expression.right.properties[0])))
+        customAST.body[customAST.body.length - 1].expression.right.properties.push(
+          JSON.parse(JSON.stringify(SassAST.body[0].expression.right.properties[0]))
+        );
       } else {
         customAST.body[customAST.body.length - 1].expression.right.properties.forEach((el) => {
-          if (el.key.name === "module") {
-            let moduleArr = el.value.properties
+          if (el.key.name === 'module') {
+            let moduleArr = el.value.properties;
             moduleArr.forEach((moduleEl) => {
-              if (moduleEl.key.name === "rules") {
-                moduleEl.value.elements.push(JSON.parse(JSON.stringify(SassAST.body[0].expression.right.properties[0].value.properties[0].value.elements[0])))
+              if (moduleEl.key.name === 'rules') {
+                moduleEl.value.elements.push(
+                  JSON.parse(
+                    JSON.stringify(SassAST.body[0].expression.right.properties[0].value.properties[0].value.elements[0])
+                  )
+                );
               }
-            })
+            });
           }
-        })
+        });
         moduleExist = true;
         numberOfRules += 1;
       }
     } else {
       let module_index = 0;
       for (let i = 0; i < customAST.body[customAST.body.length - 1].expression.right.properties.length; i += 1) {
-        if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === "module") module_index = i
+        if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === 'module')
+          module_index = i;
       }
-      if (numberOfRules === 1 && customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length === 1) {
-        customAST.body[customAST.body.length - 1].expression.right.properties.splice(module_index, 1)
+      if (
+        numberOfRules === 1 &&
+        customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length ===
+          1
+      ) {
+        customAST.body[customAST.body.length - 1].expression.right.properties.splice(module_index, 1);
         numberOfRules -= 1;
-      } else if (numberOfRules > 1 && customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length === 1) {
-        for (let j = 0; j < customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements.length; j += 1) {
-          if (customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements[j].properties[0].value.raw.includes(".scss")) {
-            customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements.splice(j, 1)
+      } else if (
+        numberOfRules > 1 &&
+        customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length ===
+          1
+      ) {
+        for (
+          let j = 0;
+          j <
+          customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value
+            .elements.length;
+          j += 1
+        ) {
+          if (
+            customAST.body[customAST.body.length - 1].expression.right.properties[
+              module_index
+            ].value.properties[0].value.elements[j].properties[0].value.raw.includes('.scss')
+          ) {
+            customAST.body[customAST.body.length - 1].expression.right.properties[
+              module_index
+            ].value.properties[0].value.elements.splice(j, 1);
             numberOfRules -= 1;
           }
         }
       }
     }
     formattedCode = generate(customAST, {
-      comments: true,
-    })
+      comments: true
+    });
     this.setState({
       checkedSass: !this.state.checkedSass,
       numberOfRules,
@@ -248,58 +340,85 @@ class DefaultStarter extends React.Component {
       customAST,
       formattedCode
     });
-  }
+  };
 
   handleChangeCheckboxLess = () => {
-    let { checkedLess, LessAST, numberOfRules, moduleExist } = this.state
+    let { checkedLess, LessAST, numberOfRules, moduleExist } = this.state;
     const customAST = JSON.parse(JSON.stringify(this.state.customAST));
     let formattedCode;
     const customASTPropertyKey = [];
     customAST.body[customAST.body.length - 1].expression.right.properties.forEach((el) => {
-      customASTPropertyKey.push(el.key.name)
-    })
+      customASTPropertyKey.push(el.key.name);
+    });
     if (!checkedLess) {
       if (customASTPropertyKey.indexOf(LessAST.body[0].expression.right.properties[0].key.name) === -1) {
         moduleExist = true;
         numberOfRules += 1;
-        customAST.body[customAST.body.length - 1].expression.right.properties.push(JSON.parse(JSON.stringify(LessAST.body[0].expression.right.properties[0])))
+        customAST.body[customAST.body.length - 1].expression.right.properties.push(
+          JSON.parse(JSON.stringify(LessAST.body[0].expression.right.properties[0]))
+        );
       } else {
         customAST.body[customAST.body.length - 1].expression.right.properties.forEach((el) => {
-          if (el.key.name === "module") {
+          if (el.key.name === 'module') {
             let moduleArr = el.value.properties;
             moduleArr.forEach((moduleEl) => {
-              if (moduleEl.key.name === "rules") {
-                moduleEl.value.elements.push(JSON.parse(JSON.stringify(LessAST.body[0].expression.right.properties[0].value.properties[0].value.elements[0])))
+              if (moduleEl.key.name === 'rules') {
+                moduleEl.value.elements.push(
+                  JSON.parse(
+                    JSON.stringify(LessAST.body[0].expression.right.properties[0].value.properties[0].value.elements[0])
+                  )
+                );
               }
-            })
+            });
           }
-        })
+        });
         moduleExist = true;
         numberOfRules += 1;
       }
       formattedCode = generate(customAST, {
-        comments: true,
-      })
+        comments: true
+      });
     } else {
       let module_index = 0;
       for (let i = 0; i < customAST.body[customAST.body.length - 1].expression.right.properties.length; i += 1) {
-        if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === "module") module_index = i
+        if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === 'module')
+          module_index = i;
       }
-      if (numberOfRules === 1 && customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length === 1) {
-        customAST.body[customAST.body.length - 1].expression.right.properties.splice(module_index, 1)
+      if (
+        numberOfRules === 1 &&
+        customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length ===
+          1
+      ) {
+        customAST.body[customAST.body.length - 1].expression.right.properties.splice(module_index, 1);
         numberOfRules -= 1;
-      } else if (numberOfRules > 1 && customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length === 1) {
-        for (let j = 0; j < customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements.length; j += 1) {
-          if (customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements[j].properties[0].value.raw.includes(".less")) {
-            customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements.splice(j, 1)
+      } else if (
+        numberOfRules > 1 &&
+        customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length ===
+          1
+      ) {
+        for (
+          let j = 0;
+          j <
+          customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value
+            .elements.length;
+          j += 1
+        ) {
+          if (
+            customAST.body[customAST.body.length - 1].expression.right.properties[
+              module_index
+            ].value.properties[0].value.elements[j].properties[0].value.raw.includes('.less')
+          ) {
+            customAST.body[customAST.body.length - 1].expression.right.properties[
+              module_index
+            ].value.properties[0].value.elements.splice(j, 1);
             numberOfRules -= 1;
           }
         }
       }
     }
     formattedCode = generate(customAST, {
-      comments: true,
-    })
+      comments: true
+    });
     this.setState({
       checkedLess: !this.state.checkedLess,
       numberOfRules,
@@ -307,55 +426,84 @@ class DefaultStarter extends React.Component {
       customAST,
       formattedCode
     });
-  }
+  };
 
   handleChangeCheckboxStylus = () => {
-    let { checkedStylus, StylusAST, numberOfRules, moduleExist } = this.state
+    let { checkedStylus, StylusAST, numberOfRules, moduleExist } = this.state;
     const customAST = JSON.parse(JSON.stringify(this.state.customAST));
     let formattedCode;
     const customASTPropertyKey = [];
     customAST.body[customAST.body.length - 1].expression.right.properties.forEach((el) => {
-      customASTPropertyKey.push(el.key.name)
-    })
+      customASTPropertyKey.push(el.key.name);
+    });
     if (!checkedStylus) {
       if (customASTPropertyKey.indexOf(StylusAST.body[0].expression.right.properties[0].key.name) === -1) {
         moduleExist = true;
         numberOfRules += 1;
-        customAST.body[customAST.body.length - 1].expression.right.properties.push(JSON.parse(JSON.stringify(StylusAST.body[0].expression.right.properties[0])))
+        customAST.body[customAST.body.length - 1].expression.right.properties.push(
+          JSON.parse(JSON.stringify(StylusAST.body[0].expression.right.properties[0]))
+        );
       } else {
         customAST.body[customAST.body.length - 1].expression.right.properties.forEach((el) => {
-          if (el.key.name === "module") {
-            let moduleArr = el.value.properties
+          if (el.key.name === 'module') {
+            let moduleArr = el.value.properties;
             moduleArr.forEach((moduleEl) => {
-              if (moduleEl.key.name === "rules") {
-                moduleEl.value.elements.push(JSON.parse(JSON.stringify(StylusAST.body[0].expression.right.properties[0].value.properties[0].value.elements[0])))
+              if (moduleEl.key.name === 'rules') {
+                moduleEl.value.elements.push(
+                  JSON.parse(
+                    JSON.stringify(
+                      StylusAST.body[0].expression.right.properties[0].value.properties[0].value.elements[0]
+                    )
+                  )
+                );
               }
-            })
+            });
           }
-        })
+        });
         moduleExist = true;
         numberOfRules += 1;
       }
     } else {
       let module_index = 0;
       for (let i = 0; i < customAST.body[customAST.body.length - 1].expression.right.properties.length; i += 1) {
-        if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === "module") module_index = i
+        if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === 'module')
+          module_index = i;
       }
-      if (numberOfRules === 1 && customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length === 1) {
-        customAST.body[customAST.body.length - 1].expression.right.properties.splice(module_index, 1)
+      if (
+        numberOfRules === 1 &&
+        customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length ===
+          1
+      ) {
+        customAST.body[customAST.body.length - 1].expression.right.properties.splice(module_index, 1);
         numberOfRules -= 1;
-      } else if (numberOfRules > 1 && customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length === 1) {
-        for (let j = 0; j < customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements.length; j += 1) {
-          if (customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements[j].properties[0].value.raw.includes(".styl")) {
-            customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements.splice(j, 1)
+      } else if (
+        numberOfRules > 1 &&
+        customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length ===
+          1
+      ) {
+        for (
+          let j = 0;
+          j <
+          customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value
+            .elements.length;
+          j += 1
+        ) {
+          if (
+            customAST.body[customAST.body.length - 1].expression.right.properties[
+              module_index
+            ].value.properties[0].value.elements[j].properties[0].value.raw.includes('.styl')
+          ) {
+            customAST.body[customAST.body.length - 1].expression.right.properties[
+              module_index
+            ].value.properties[0].value.elements.splice(j, 1);
             numberOfRules -= 1;
           }
         }
       }
     }
     formattedCode = generate(customAST, {
-      comments: true,
-    })
+      comments: true
+    });
     this.setState({
       checkedStylus: !this.state.checkedStylus,
       numberOfRules,
@@ -363,54 +511,81 @@ class DefaultStarter extends React.Component {
       customAST,
       formattedCode
     });
-  }
+  };
 
   handleChangeCheckboxSVG = () => {
-    let { checkedSVG, svgAST, numberOfRules, moduleExist } = this.state
-    const customAST = JSON.parse(JSON.stringify(this.state.customAST))
+    let { checkedSVG, svgAST, numberOfRules, moduleExist } = this.state;
+    const customAST = JSON.parse(JSON.stringify(this.state.customAST));
     let formattedCode;
     const customASTPropertyKey = [];
     customAST.body[customAST.body.length - 1].expression.right.properties.forEach((el) => {
-      customASTPropertyKey.push(el.key.name)
-    })
+      customASTPropertyKey.push(el.key.name);
+    });
     if (!checkedSVG) {
       if (customASTPropertyKey.indexOf(svgAST.body[0].expression.right.properties[0].key.name) === -1) {
         moduleExist = true;
         numberOfRules += 1;
-        customAST.body[customAST.body.length - 1].expression.right.properties.push(JSON.parse(JSON.stringify(svgAST.body[0].expression.right.properties[0])))
+        customAST.body[customAST.body.length - 1].expression.right.properties.push(
+          JSON.parse(JSON.stringify(svgAST.body[0].expression.right.properties[0]))
+        );
       } else {
         customAST.body[customAST.body.length - 1].expression.right.properties.forEach((el) => {
-          if (el.key.name === "module") {
-            let moduleArr = el.value.properties
+          if (el.key.name === 'module') {
+            let moduleArr = el.value.properties;
             moduleArr.forEach((moduleEl) => {
-              if (moduleEl.key.name === "rules") {
-                moduleEl.value.elements.push(JSON.parse(JSON.stringify(svgAST.body[0].expression.right.properties[0].value.properties[0].value.elements[0])))
+              if (moduleEl.key.name === 'rules') {
+                moduleEl.value.elements.push(
+                  JSON.parse(
+                    JSON.stringify(svgAST.body[0].expression.right.properties[0].value.properties[0].value.elements[0])
+                  )
+                );
               }
-            })
+            });
           }
-        })
+        });
         moduleExist = true;
         numberOfRules += 1;
       }
     } else {
       let module_index = 0;
       for (let i = 0; i < customAST.body[customAST.body.length - 1].expression.right.properties.length; i += 1) {
-        if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === "module") module_index = i
+        if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === 'module')
+          module_index = i;
       }
-      if (numberOfRules === 1 && customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length === 1) {
-        customAST.body[customAST.body.length - 1].expression.right.properties.splice(module_index, 1)
+      if (
+        numberOfRules === 1 &&
+        customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length ===
+          1
+      ) {
+        customAST.body[customAST.body.length - 1].expression.right.properties.splice(module_index, 1);
         numberOfRules -= 1;
-      } else if (numberOfRules > 1 && customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length === 1) {
-        for (let j = 0; j < customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements.length; j += 1) {
-          if (customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements[j].properties[0].value.raw.includes(".svg")) {
-            customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements.splice(j, 1);
+      } else if (
+        numberOfRules > 1 &&
+        customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length ===
+          1
+      ) {
+        for (
+          let j = 0;
+          j <
+          customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value
+            .elements.length;
+          j += 1
+        ) {
+          if (
+            customAST.body[customAST.body.length - 1].expression.right.properties[
+              module_index
+            ].value.properties[0].value.elements[j].properties[0].value.raw.includes('.svg')
+          ) {
+            customAST.body[customAST.body.length - 1].expression.right.properties[
+              module_index
+            ].value.properties[0].value.elements.splice(j, 1);
             numberOfRules -= 1;
           }
         }
       }
     }
     formattedCode = generate(customAST, {
-      comments: true,
+      comments: true
     });
     this.setState({
       checkedSVG: !this.state.checkedSVG,
@@ -419,7 +594,7 @@ class DefaultStarter extends React.Component {
       customAST,
       formattedCode
     });
-  }
+  };
 
   handleChangeCheckboxPNG = () => {
     let { checkedPNG, pngAST, numberOfRules, moduleExist } = this.state;
@@ -427,48 +602,75 @@ class DefaultStarter extends React.Component {
     let formattedCode;
     const customASTPropertyKey = [];
     customAST.body[customAST.body.length - 1].expression.right.properties.forEach((el) => {
-      customASTPropertyKey.push(el.key.name)
-    })
+      customASTPropertyKey.push(el.key.name);
+    });
     if (!checkedPNG) {
       if (customASTPropertyKey.indexOf(pngAST.body[0].expression.right.properties[0].key.name) === -1) {
         moduleExist = true;
         numberOfRules += 1;
-        customAST.body[customAST.body.length - 1].expression.right.properties.push(JSON.parse(JSON.stringify(pngAST.body[0].expression.right.properties[0])));
+        customAST.body[customAST.body.length - 1].expression.right.properties.push(
+          JSON.parse(JSON.stringify(pngAST.body[0].expression.right.properties[0]))
+        );
       } else {
         customAST.body[customAST.body.length - 1].expression.right.properties.forEach((el) => {
-          if (el.key.name === "module") {
-            let moduleArr = el.value.properties
+          if (el.key.name === 'module') {
+            let moduleArr = el.value.properties;
             moduleArr.forEach((moduleEl) => {
-              if (moduleEl.key.name === "rules") {
-                moduleEl.value.elements.push(JSON.parse(JSON.stringify(pngAST.body[0].expression.right.properties[0].value.properties[0].value.elements[0])));
+              if (moduleEl.key.name === 'rules') {
+                moduleEl.value.elements.push(
+                  JSON.parse(
+                    JSON.stringify(pngAST.body[0].expression.right.properties[0].value.properties[0].value.elements[0])
+                  )
+                );
               }
-            })
+            });
           }
-        })
+        });
         moduleExist = true;
         numberOfRules += 1;
       }
     } else {
       let module_index = 0;
       for (let i = 0; i < customAST.body[customAST.body.length - 1].expression.right.properties.length; i += 1) {
-        if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === "module") module_index = i
+        if (customAST.body[customAST.body.length - 1].expression.right.properties[i].key.name === 'module')
+          module_index = i;
       }
 
-      if (numberOfRules === 1 && customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length === 1) {
-        customAST.body[customAST.body.length - 1].expression.right.properties.splice(module_index, 1)
+      if (
+        numberOfRules === 1 &&
+        customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length ===
+          1
+      ) {
+        customAST.body[customAST.body.length - 1].expression.right.properties.splice(module_index, 1);
         numberOfRules -= 1;
-      } else if (numberOfRules > 1 && customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length === 1) {
-        for (let j = 0; j < customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements.length; j += 1) {
-          if (customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements[j].properties[0].value.raw.includes(".png")) {
-            customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value.elements.splice(j, 1)
+      } else if (
+        numberOfRules > 1 &&
+        customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties.length ===
+          1
+      ) {
+        for (
+          let j = 0;
+          j <
+          customAST.body[customAST.body.length - 1].expression.right.properties[module_index].value.properties[0].value
+            .elements.length;
+          j += 1
+        ) {
+          if (
+            customAST.body[customAST.body.length - 1].expression.right.properties[
+              module_index
+            ].value.properties[0].value.elements[j].properties[0].value.raw.includes('.png')
+          ) {
+            customAST.body[customAST.body.length - 1].expression.right.properties[
+              module_index
+            ].value.properties[0].value.elements.splice(j, 1);
             numberOfRules -= 1;
           }
         }
       }
     }
     formattedCode = generate(customAST, {
-      comments: true,
-    })
+      comments: true
+    });
     this.setState({
       checkedPNG: !this.state.checkedPNG,
       numberOfRules,
@@ -476,36 +678,156 @@ class DefaultStarter extends React.Component {
       customAST,
       formattedCode
     });
-  }
+  };
+
+  handleChangeCheckboxMomentLocale = () => {
+    let { checkedMomentLocale, momentLocaleAST, numberOfRules, moduleExist } = this.state;
+    const customAST = JSON.parse(JSON.stringify(this.state.customAST));
+    let formattedCode;
+    const customASTPropertyKey = [];
+    let webpackObjEntries = { properties: [] };
+    for (let index in customAST.body) {
+      if (customAST.body[index].type === 'ExpressionStatement') {
+        webpackObjEntries = customAST.body[index].expression.right;
+      }
+    }
+    webpackObjEntries.properties.forEach((el) => {
+      customASTPropertyKey.push(el.key.name);
+    });
+    if (!checkedMomentLocale) {
+      moduleExist = true;
+      numberOfRules += 1;
+      if (customASTPropertyKey.indexOf(momentLocaleAST.body[0].expression.right.properties[0].key.name) === -1) {
+        webpackObjEntries.properties.unshift(
+          JSON.parse(JSON.stringify(momentLocaleAST.body[0].expression.right.properties[0]))
+        );
+      } else {
+        webpackObjEntries.properties.forEach((el) => {
+          if (el.key.name === 'plugins') {
+            el.value.elements.unshift(
+              JSON.parse(JSON.stringify(momentLocaleAST.body[0].expression.right.properties[0].value.elements[0]))
+            );
+          }
+        });
+        moduleExist = true;
+        numberOfRules += 1;
+      }
+    } else {
+      webpackObjEntries.properties.forEach((el) => {
+        if (el.key.name === 'plugins') {
+          for (let j = 0; j < el.value.elements.length; j += 1) {
+            if (el.value.elements[j].callee) {
+              if (
+                el.value.elements[j].callee.object.name === 'webpack' ||
+                el.value.elements[j].callee.property.name === 'IgnorePlugin'
+              ) {
+                el.value.elements.splice(j, 1);
+                numberOfRules -= 1;
+              }
+            }
+          }
+        }
+      });
+    }
+    formattedCode = generate(customAST, {
+      comments: true
+    });
+
+    this.setState({ checkedMomentLocale: !this.state.checkedMomentLocale, formattedCode, customAST });
+  };
+
+  handleChangeCheckboxTerser = () => {
+    let { checkedTerser, terserAST, numberOfRules, moduleExist } = this.state;
+    const customAST = JSON.parse(JSON.stringify(this.state.customAST));
+    let formattedCode;
+    const customASTPropertyKey = [];
+    let webpackObjEntries = { properties: [] };
+    for (let index in customAST.body) {
+      if (customAST.body[index].type === 'ExpressionStatement') {
+        webpackObjEntries = customAST.body[index].expression.right;
+      }
+    }
+    webpackObjEntries.properties.forEach((el) => {
+      customASTPropertyKey.push(el.key.name);
+    });
+    if (!checkedMomentLocale) {
+      moduleExist = true;
+      numberOfRules += 1;
+      if (customASTPropertyKey.indexOf(momentLocaleAST.body[0].expression.right.properties[0].key.name) === -1) {
+        webpackObjEntries.properties.unshift(
+          JSON.parse(JSON.stringify(momentLocaleAST.body[0].expression.right.properties[0]))
+        );
+      } else {
+        webpackObjEntries.properties.forEach((el) => {
+          if (el.key.name === 'plugins') {
+            el.value.elements.unshift(
+              JSON.parse(JSON.stringify(momentLocaleAST.body[0].expression.right.properties[0].value.elements[0]))
+            );
+          }
+        });
+        moduleExist = true;
+        numberOfRules += 1;
+      }
+    } else {
+      webpackObjEntries.properties.forEach((el) => {
+        if (el.key.name === 'plugins') {
+          for (let j = 0; j < el.value.elements.length; j += 1) {
+            if (el.value.elements[j].callee) {
+              console.log('el.value.elements[j].callee: ', el.value.elements[j].callee);
+              if (
+                el.value.elements[j].callee.object.name === 'webpack' ||
+                el.value.elements[j].callee.property.name === 'IgnorePlugin'
+              ) {
+                el.value.elements.splice(j, 1);
+                numberOfRules -= 1;
+              }
+            }
+          }
+        }
+      });
+    }
+    formattedCode = generate(customAST, {
+      comments: true
+    });
+
+    this.setState({ checkedMomentLocale: !this.state.checkedMomentLocale, formattedCode, customAST });
+  };
 
   saveWebpackConfig = () => {
     const link = document.createElement('a');
     link.download = 'webpack.config.js';
-    const blob = new Blob([this.state.formattedCode], { type: 'text/plain' });
+    const blob = new Blob(
+      [
+        this.state.formattedCode
+      ],
+      { type: 'text/plain' }
+    );
     link.href = window.URL.createObjectURL(blob);
     link.click();
     this.doSetCustomConfigSaved();
-  }
+  };
 
   render() {
     const { store } = this.props;
 
-    const frameWorkQuestion =
+    const frameWorkQuestion = (
       <div className={styles.questionContainer}>
-        <div className={styles.question}>
-          What type of project would you want?
-      </div>
-        <div className={styles.questionDescription}>
-          No description provided
-      </div>
+        <div className={styles.question}>What type of project would you want?</div>
+        <div className={styles.questionDescription}>No description provided</div>
         <label>
-          <input type="checkbox" name="framework" value="react" checked={this.state.checkedReact} onChange={this.handleChangeCheckboxReact} />
+          <input
+            type='checkbox'
+            name='framework'
+            value='react'
+            checked={this.state.checkedReact}
+            onChange={this.handleChangeCheckboxReact}
+          />
           React
-      </label>
+        </label>
         <label>
-          <input type="checkbox" name="framework" value="vue" disabled={true} />
+          <input type='checkbox' name='framework' value='vue' disabled={true} />
           Vue
-      </label>
+        </label>
         <div className={styles.navigationContainer}>
           <button disabled={true}>
             <FiChevronLeft className={styles.navIcon} />
@@ -515,37 +837,70 @@ class DefaultStarter extends React.Component {
           </button>
         </div>
       </div>
+    );
 
-    const LoaderMenu =
+    const LoaderMenu = (
       <div className={styles.questionContainer}>
-        <div className={styles.question}>
-          What loaders would you want?
-      </div>
-        <div className={styles.questionDescription}>
-          No description provided
-      </div>
+        <div className={styles.question}>What loaders would you want?</div>
+        <div className={styles.questionDescription}>No description provided</div>
         <label>
-          <input type="checkbox" name="framework" value="CSS" checked={this.state.checkedCSS} onChange={this.handleChangeCheckboxCSS} />
+          <input
+            type='checkbox'
+            name='framework'
+            value='CSS'
+            checked={this.state.checkedCSS}
+            onChange={this.handleChangeCheckboxCSS}
+          />
           css-loader
-      </label>
+        </label>
         <label>
-          <input type="checkbox" name="framework" value="SASS" checked={this.state.checkedSass} onChange={this.handleChangeCheckboxSass} />
+          <input
+            type='checkbox'
+            name='framework'
+            value='SASS'
+            checked={this.state.checkedSass}
+            onChange={this.handleChangeCheckboxSass}
+          />
           sass-loader
         </label>
         <label>
-          <input type="checkbox" name="framework" value="LESS" checked={this.state.checkedLess} onChange={this.handleChangeCheckboxLess} />
+          <input
+            type='checkbox'
+            name='framework'
+            value='LESS'
+            checked={this.state.checkedLess}
+            onChange={this.handleChangeCheckboxLess}
+          />
           less-loader
         </label>
         <label>
-          <input type="checkbox" name="framework" value="STYLUS" checked={this.state.checkedStylus} onChange={this.handleChangeCheckboxStylus} />
+          <input
+            type='checkbox'
+            name='framework'
+            value='STYLUS'
+            checked={this.state.checkedStylus}
+            onChange={this.handleChangeCheckboxStylus}
+          />
           stylus-loader
         </label>
         <label>
-          <input type="checkbox" name="framework" value="SVG" checked={this.state.checkedSVG} onChange={this.handleChangeCheckboxSVG} />
+          <input
+            type='checkbox'
+            name='framework'
+            value='SVG'
+            checked={this.state.checkedSVG}
+            onChange={this.handleChangeCheckboxSVG}
+          />
           svg-loader
         </label>
         <label>
-          <input type="checkbox" name="framework" value="PNG" checked={this.state.checkedPNG} onChange={this.handleChangeCheckboxPNG} />
+          <input
+            type='checkbox'
+            name='framework'
+            value='PNG'
+            checked={this.state.checkedPNG}
+            onChange={this.handleChangeCheckboxPNG}
+          />
           png-loader
         </label>
         <div className={styles.navigationContainer}>
@@ -557,38 +912,66 @@ class DefaultStarter extends React.Component {
           </button>
         </div>
       </div>
+    );
 
-    const PluginsMenu =
+    const PluginsMenu = (
       <div className={styles.questionContainer}>
-        <div className={styles.question}>
-          What plugins would you want?
-      </div>
-        <div className={styles.questionDescription}>
-          No description provided
-      </div>
+        <div className={styles.question}>What plugins would you want?</div>
+        <div className={styles.questionDescription}>No description provided</div>
         <label>
-          <input type="checkbox" name="framework" value="TerserWebpackPlugin" checked={this.state.checkedReact} onChange={this.handleChangeCheckboxReact} />
+          <input
+            type='checkbox'
+            name='framework'
+            value='TerserWebpackPlugin'
+            checked={this.state.checkedTerser}
+            onChange={this.handleChangeCheckboxTerser}
+          />
           TerserWebpackPlugin
-      </label>
+        </label>
         <label>
-          <input type="checkbox" name="framework" value="HTMLWebpackPlugin" />
+          <input
+            type='checkbox'
+            name='framework'
+            value='HTMLWebpackPlugin'
+            checked={this.state.checkedHTMLPlugin}
+            onChange={this.handleChangeCheckboxReact}
+          />
           HTMLWebpackPlugin
-      </label>
+        </label>
+        <label>
+          <input
+            type='checkbox'
+            name='framework'
+            value='MomentLocaleIgnorePlugin'
+            checked={this.state.checkedMomentLocale}
+            onChange={this.handleChangeCheckboxMomentLocale}
+          />
+          Moment Locale Ignore Plugin
+        </label>
         <div className={styles.navigationContainer}>
-          <button onClick={() => this.setState({ displayPlugin: false, displayLoader: true })}>
+          <button
+            onClick={() =>
+              this.setState({
+                displayPlugin: false,
+                displayLoader: true
+              })}>
             <FiChevronLeft className={styles.navIcon} />
           </button>
-          <button onClick={() => this.setState({ displayPlugin: false, displaySavePage: true })}>
+          <button
+            onClick={() =>
+              this.setState({
+                displayPlugin: false,
+                displaySavePage: true
+              })}>
             <FiChevronRight className={styles.navIcon} />
           </button>
         </div>
       </div>
+    );
 
-    const SaveMenu =
+    const SaveMenu = (
       <div className={styles.questionContainer}>
-        <div className={styles.question}>
-          Go Ahead and save your config!
-      </div>
+        <div className={styles.question}>Go Ahead and save your config!</div>
         <div style={{ marginTop: '405px' }} className={styles.navigationContainer}>
           <button onClick={() => this.setState({ displayLoader: true, displaySavePage: false })}>
             <FiChevronLeft className={styles.navIcon} />
@@ -598,11 +981,15 @@ class DefaultStarter extends React.Component {
           </button>
         </div>
       </div>
+    );
 
     return (
       <div className={styles.mainContainer}>
         <div className={styles.headerContainer}>
-          <div onClick={() => { this.props.history.push("/selectStarterPack") }}>
+          <div
+            onClick={() => {
+              this.props.history.push('/selectStarterPack');
+            }}>
             <FiChevronLeft className={styles.chevronLeft} />
           </div>
           <div className={styles.header}>Default Starter</div>
@@ -615,23 +1002,25 @@ class DefaultStarter extends React.Component {
             {this.state.displaySavePage && SaveMenu}
           </div>
           <div style={{ position: 'relative' }} className={styles.lowerRightContainer}>
-            <SyntaxHighlighter language='javascript' style={dark} customStyle={{
-              'borderRadius': '5px',
-              'padding': '15px',
-              'width': '570px',
-              'height': '420px',
-              'backgroundColor': '#2b3a42',
-              'opacity': '0.95',
-              'marginTop': '28px'
-            }}>{this.state.formattedCode}</SyntaxHighlighter>
-            {this.state.displaySavePage &&
-              <button
-                style={{ position: 'absolute', top: '417', left: '450' }}
-                onClick={this.saveWebpackConfig}
-              >
+            <SyntaxHighlighter
+              language='javascript'
+              style={dark}
+              customStyle={{
+                borderRadius: '5px',
+                padding: '15px',
+                width: '570px',
+                height: '420px',
+                backgroundColor: '#2b3a42',
+                opacity: '0.95',
+                marginTop: '28px'
+              }}>
+              {this.state.formattedCode}
+            </SyntaxHighlighter>
+            {this.state.displaySavePage && (
+              <button style={{ position: 'absolute', top: '417', left: '450' }} onClick={this.saveWebpackConfig}>
                 Download
               </button>
-            }
+            )}
           </div>
         </div>
       </div>
