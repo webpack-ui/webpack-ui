@@ -1076,7 +1076,7 @@ class DefaultStarter extends React.Component {
     const SaveMenu = (
       <div className={styles.questionContainer}>
         <div className={styles.question}>Go Ahead and save your config!</div>
-        <div style={{ marginTop: '405px' }} className={styles.navigationContainer}>
+        <div className={styles.navigationContainer}>
           <button onClick={() => this.setState({ displayLoader: true, displaySavePage: false })}>
             <FiChevronLeft className={styles.navIcon} />
           </button>
