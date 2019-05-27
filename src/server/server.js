@@ -56,26 +56,32 @@ app.get('/AST', async (req, res) => {
                 locations: true
               });
               fs.readFile(__dirname + '/src_custom_config/svg.config.js', (err, data) => {
-                ASTObj.svgAST = acorn.parse(data.toString(), {
+                ASTObj.SvgAST = acorn.parse(data.toString(), {
                   ecmaVersion: 6,
                   locations: true
                 });
                 fs.readFile(__dirname + '/src_custom_config/momentLocalePlugin.config.js', (err, data) => {
-                  ASTObj.momentLocaleAST = acorn.parse(data.toString(), {
+                  ASTObj.MomentLocaleAST = acorn.parse(data.toString(), {
                     ecmaVersion: 6,
                     locations: true
                   });
                   fs.readFile(__dirname + '/src_custom_config/terserPlugin.config.js', (err, data) => {
-                    ASTObj.terserAST = acorn.parse(data.toString(), {
+                    ASTObj.TerserAST = acorn.parse(data.toString(), {
                       ecmaVersion: 6,
                       locations: true
                     });
-                    fs.readFile(__dirname + '/src_custom_config/png.config.js', (err, data) => {
-                      ASTObj.pngAST = acorn.parse(data.toString(), {
+                    fs.readFile(__dirname + '/src_custom_config/htmlPlugin.config.js', (err, data) => {
+                      ASTObj.HtmlAST = acorn.parse(data.toString(), {
                         ecmaVersion: 6,
                         locations: true
                       });
-                      res.send(ASTObj);
+                      fs.readFile(__dirname + '/src_custom_config/png.config.js', (err, data) => {
+                        ASTObj.PngAST = acorn.parse(data.toString(), {
+                          ecmaVersion: 6,
+                          locations: true
+                        });
+                        res.send(ASTObj);
+                      });
                     });
                   });
                 });

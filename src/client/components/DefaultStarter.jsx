@@ -34,10 +34,11 @@ class DefaultStarter extends React.Component {
       SassAST: null,
       LessAST: null,
       StylusAST: null,
-      svgAST: null,
-      pngAST: null,
-      momentLocaleAST: null,
-      terserAST: null,
+      SvgAST: null,
+      PngAST: null,
+      HtmlAST: null,
+      MomentLocaleAST: null,
+      TerserAST: null,
       numberOfRules: 0,
       moduleExist: false
     };
@@ -56,10 +57,11 @@ class DefaultStarter extends React.Component {
         SassAST: json.SassAST,
         LessAST: json.LessAST,
         StylusAST: json.StylusAST,
-        pngAST: json.pngAST,
-        svgAST: json.svgAST,
-        momentLocaleAST: json.momentLocaleAST,
-        terserAST: json.terserAST,
+        PngAST: json.PngAST,
+        SvgAST: json.SvgAST,
+        MomentLocaleAST: json.MomentLocaleAST,
+        TerserAST: json.TerserAST,
+        HtmlAST: json.HtmlAST,
         formattedCode
       });
     });
@@ -515,7 +517,7 @@ class DefaultStarter extends React.Component {
   };
 
   handleChangeCheckboxSVG = () => {
-    let { checkedSVG, svgAST, numberOfRules, moduleExist } = this.state;
+    let { checkedSVG, SvgAST, numberOfRules, moduleExist } = this.state;
     const customAST = JSON.parse(JSON.stringify(this.state.customAST));
     let formattedCode;
     const customASTPropertyKey = [];
@@ -523,11 +525,11 @@ class DefaultStarter extends React.Component {
       customASTPropertyKey.push(el.key.name);
     });
     if (!checkedSVG) {
-      if (customASTPropertyKey.indexOf(svgAST.body[0].expression.right.properties[0].key.name) === -1) {
+      if (customASTPropertyKey.indexOf(SvgAST.body[0].expression.right.properties[0].key.name) === -1) {
         moduleExist = true;
         numberOfRules += 1;
         customAST.body[customAST.body.length - 1].expression.right.properties.push(
-          JSON.parse(JSON.stringify(svgAST.body[0].expression.right.properties[0]))
+          JSON.parse(JSON.stringify(SvgAST.body[0].expression.right.properties[0]))
         );
       } else {
         customAST.body[customAST.body.length - 1].expression.right.properties.forEach((el) => {
@@ -537,7 +539,7 @@ class DefaultStarter extends React.Component {
               if (moduleEl.key.name === 'rules') {
                 moduleEl.value.elements.push(
                   JSON.parse(
-                    JSON.stringify(svgAST.body[0].expression.right.properties[0].value.properties[0].value.elements[0])
+                    JSON.stringify(SvgAST.body[0].expression.right.properties[0].value.properties[0].value.elements[0])
                   )
                 );
               }
@@ -598,7 +600,7 @@ class DefaultStarter extends React.Component {
   };
 
   handleChangeCheckboxPNG = () => {
-    let { checkedPNG, pngAST, numberOfRules, moduleExist } = this.state;
+    let { checkedPNG, PngAST, numberOfRules, moduleExist } = this.state;
     const customAST = JSON.parse(JSON.stringify(this.state.customAST));
     let formattedCode;
     const customASTPropertyKey = [];
@@ -606,11 +608,11 @@ class DefaultStarter extends React.Component {
       customASTPropertyKey.push(el.key.name);
     });
     if (!checkedPNG) {
-      if (customASTPropertyKey.indexOf(pngAST.body[0].expression.right.properties[0].key.name) === -1) {
+      if (customASTPropertyKey.indexOf(PngAST.body[0].expression.right.properties[0].key.name) === -1) {
         moduleExist = true;
         numberOfRules += 1;
         customAST.body[customAST.body.length - 1].expression.right.properties.push(
-          JSON.parse(JSON.stringify(pngAST.body[0].expression.right.properties[0]))
+          JSON.parse(JSON.stringify(PngAST.body[0].expression.right.properties[0]))
         );
       } else {
         customAST.body[customAST.body.length - 1].expression.right.properties.forEach((el) => {
@@ -620,7 +622,7 @@ class DefaultStarter extends React.Component {
               if (moduleEl.key.name === 'rules') {
                 moduleEl.value.elements.push(
                   JSON.parse(
-                    JSON.stringify(pngAST.body[0].expression.right.properties[0].value.properties[0].value.elements[0])
+                    JSON.stringify(PngAST.body[0].expression.right.properties[0].value.properties[0].value.elements[0])
                   )
                 );
               }
@@ -682,7 +684,7 @@ class DefaultStarter extends React.Component {
   };
 
   handleChangeCheckboxMomentLocale = () => {
-    let { checkedMomentLocale, momentLocaleAST, numberOfRules, moduleExist } = this.state;
+    let { checkedMomentLocale, MomentLocaleAST, numberOfRules, moduleExist } = this.state;
     const customAST = JSON.parse(JSON.stringify(this.state.customAST));
     let formattedCode;
     const customASTPropertyKey = [];
@@ -698,15 +700,15 @@ class DefaultStarter extends React.Component {
     if (!checkedMomentLocale) {
       moduleExist = true;
       numberOfRules += 1;
-      if (customASTPropertyKey.indexOf(momentLocaleAST.body[0].expression.right.properties[0].key.name) === -1) {
+      if (customASTPropertyKey.indexOf(MomentLocaleAST.body[0].expression.right.properties[0].key.name) === -1) {
         webpackObjEntries.properties.unshift(
-          JSON.parse(JSON.stringify(momentLocaleAST.body[0].expression.right.properties[0]))
+          JSON.parse(JSON.stringify(MomentLocaleAST.body[0].expression.right.properties[0]))
         );
       } else {
         webpackObjEntries.properties.forEach((el) => {
           if (el.key.name === 'plugins') {
             el.value.elements.unshift(
-              JSON.parse(JSON.stringify(momentLocaleAST.body[0].expression.right.properties[0].value.elements[0]))
+              JSON.parse(JSON.stringify(MomentLocaleAST.body[0].expression.right.properties[0].value.elements[0]))
             );
           }
         });
@@ -719,8 +721,8 @@ class DefaultStarter extends React.Component {
           for (let j = 0; j < el.value.elements.length; j += 1) {
             if (el.value.elements[j].callee) {
               if (
-                el.value.elements[j].callee.object.name === 'webpack' ||
-                el.value.elements[j].callee.property.name === 'IgnorePlugin'
+                (el.value.elements[j].callee.object && el.value.elements[j].callee.object.name === 'webpack') ||
+                (el.value.elements[j].callee.property && el.value.elements[j].callee.property.name === 'IgnorePlugin')
               ) {
                 el.value.elements.splice(j, 1);
                 numberOfRules -= 1;
@@ -744,7 +746,7 @@ class DefaultStarter extends React.Component {
   };
 
   handleChangeCheckboxTerser = () => {
-    let { checkedTerser, terserAST, numberOfRules, moduleExist } = this.state;
+    let { checkedTerser, TerserAST, numberOfRules, moduleExist } = this.state;
     const customAST = JSON.parse(JSON.stringify(this.state.customAST));
     let formattedCode;
     const customASTPropertyKey = [];
@@ -761,22 +763,22 @@ class DefaultStarter extends React.Component {
       // add const at start of webpack config before module.exports
       for (let i = 0; i < customAST.body.length; i += 1) {
         if (customAST.body[i].type === 'ExpressionStatement') {
-          customAST.body.splice(i, 0, JSON.parse(JSON.stringify(terserAST.body[0])));
+          customAST.body.splice(i, 0, JSON.parse(JSON.stringify(TerserAST.body[0])));
           break;
         }
       }
       moduleExist = true;
       numberOfRules += 1;
-      if (customASTPropertyKey.indexOf(terserAST.body[1].expression.right.properties[0].key.name) === -1) {
+      if (customASTPropertyKey.indexOf(TerserAST.body[1].expression.right.properties[0].key.name) === -1) {
         webpackObjEntries.properties.unshift(
-          JSON.parse(JSON.stringify(terserAST.body[1].expression.right.properties[0]))
+          JSON.parse(JSON.stringify(TerserAST.body[1].expression.right.properties[0]))
         );
       } else {
         webpackObjEntries.properties.forEach((el) => {
           if (el.key.name === 'optimization') {
             el.value.properties[0].value.elements.unshift(
               JSON.parse(
-                JSON.stringify(terserAST.body[1].expression.right.properties[0].value.properties[0].value.elements[0])
+                JSON.stringify(TerserAST.body[1].expression.right.properties[0].value.properties[0].value.elements[0])
               )
             );
           }
@@ -813,6 +815,81 @@ class DefaultStarter extends React.Component {
 
     this.setState({
       checkedTerser: !this.state.checkedTerser,
+      numberOfRules,
+      moduleExist,
+      formattedCode,
+      customAST
+    });
+  };
+
+  handleChangeCheckboxHTMLPlugin = () => {
+    let { checkedHTMLPlugin, HtmlAST, numberOfRules, moduleExist } = this.state;
+    const customAST = JSON.parse(JSON.stringify(this.state.customAST));
+    let formattedCode;
+    const customASTPropertyKey = [];
+    let webpackObjEntries = { properties: [] };
+    for (let index in customAST.body) {
+      if (customAST.body[index].type === 'ExpressionStatement') {
+        webpackObjEntries = customAST.body[index].expression.right;
+      }
+    }
+    webpackObjEntries.properties.forEach((el) => {
+      customASTPropertyKey.push(el.key.name);
+    });
+    if (!checkedHTMLPlugin) {
+      // add const at start of webpack config before module.exports
+      for (let i = 0; i < customAST.body.length; i += 1) {
+        if (customAST.body[i].type === 'ExpressionStatement') {
+          customAST.body.splice(i, 0, JSON.parse(JSON.stringify(HtmlAST.body[0])));
+          break;
+        }
+      }
+      moduleExist = true;
+      numberOfRules += 1;
+      if (customASTPropertyKey.indexOf(HtmlAST.body[1].expression.right.properties[0].key.name) === -1) {
+        webpackObjEntries.properties.unshift(
+          JSON.parse(JSON.stringify(HtmlAST.body[1].expression.right.properties[0]))
+        );
+      } else {
+        webpackObjEntries.properties.forEach((el) => {
+          if (el.key.name === 'plugins') {
+            el.value.elements.unshift(
+              JSON.parse(JSON.stringify(HtmlAST.body[1].expression.right.properties[0].value.elements[0]))
+            );
+          }
+        });
+        moduleExist = true;
+        numberOfRules += 1;
+      }
+    } else {
+      //remove the const statement for HTML plugin
+      customAST.body.forEach((el, index) => {
+        if (el.declarations) {
+          if (el.declarations[0].id.name === 'HtmlWebpackPlugin') {
+            customAST.body.splice(index, 1);
+          }
+        }
+      });
+
+      webpackObjEntries.properties.forEach((el) => {
+        if (el.key.name === 'plugins') {
+          for (let j = 0; j < el.value.elements.length; j += 1) {
+            if (el.value.elements[j].callee) {
+              if (el.value.elements[j].callee.name === 'HtmlWebpackPlugin') {
+                el.value.elements.splice(j, 1);
+                numberOfRules -= 1;
+              }
+            }
+          }
+        }
+      });
+    }
+    formattedCode = generate(customAST, {
+      comments: true
+    });
+
+    this.setState({
+      checkedHTMLPlugin: !this.state.checkedHTMLPlugin,
       numberOfRules,
       moduleExist,
       formattedCode,
@@ -961,7 +1038,7 @@ class DefaultStarter extends React.Component {
             name='framework'
             value='HTMLWebpackPlugin'
             checked={this.state.checkedHTMLPlugin}
-            onChange={this.handleChangeCheckboxReact}
+            onChange={this.handleChangeCheckboxHTMLPlugin}
           />
           HTMLWebpackPlugin
         </label>
