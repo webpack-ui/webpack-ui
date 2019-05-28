@@ -27,6 +27,7 @@ class DefaultStarter extends React.Component {
       checkedTerser: false,
       checkedHTMLPlugin: false,
       checkedMomentLocale: false,
+      checkedMiniCssExtract: false,
       formattedCode: '',
       customAST: null,
       ReactAST: null,
@@ -39,8 +40,10 @@ class DefaultStarter extends React.Component {
       HtmlAST: null,
       MomentLocaleAST: null,
       TerserAST: null,
+      MiniCSSExtractAST: null,
       numberOfRules: 0,
-      moduleExist: false
+      moduleExist: false,
+      cssOriginallyChecked: false
     };
   }
 
@@ -62,6 +65,7 @@ class DefaultStarter extends React.Component {
         MomentLocaleAST: json.MomentLocaleAST,
         TerserAST: json.TerserAST,
         HtmlAST: json.HtmlAST,
+        MiniCSSExtractAST: json.MiniCSSExtractAST,
         formattedCode
       });
     });
@@ -185,7 +189,8 @@ class DefaultStarter extends React.Component {
     this.setState({ checkedReact: !this.state.checkedReact, formattedCode, moduleExist, numberOfRules, customAST });
   };
 
-  handleChangeCheckboxCSS = () => {
+  handleChangeCheckboxCSS = (originCall) => {
+    // if (!originCall) originCall = false;
     let { checkedCSS, CSSAST, numberOfRules, moduleExist } = this.state;
     const customAST = JSON.parse(JSON.stringify(this.state.customAST));
     let formattedCode;
@@ -259,7 +264,14 @@ class DefaultStarter extends React.Component {
     formattedCode = generate(customAST, {
       comments: true
     });
-    this.setState({ checkedCSS: !this.state.checkedCSS, formattedCode, numberOfRules, moduleExist, customAST });
+    this.setState({
+      checkedCSS: !this.state.checkedCSS,
+      cssOriginallyChecked: !!originCall,
+      formattedCode,
+      numberOfRules,
+      moduleExist,
+      customAST
+    });
   };
 
   handleChangeCheckboxSass = () => {
@@ -897,6 +909,130 @@ class DefaultStarter extends React.Component {
     });
   };
 
+  handleChangeCheckboxMiniCSSExtract = () => {
+    let { checkedMiniCssExtract, MiniCSSExtractAST, numberOfRules, moduleExist } = this.state;
+    const customAST = JSON.parse(JSON.stringify(this.state.customAST));
+    let formattedCode;
+    const customASTPropertyKey = [];
+    let webpackObjEntries = { properties: [] };
+    for (let index in customAST.body) {
+      if (customAST.body[index].type === 'ExpressionStatement') {
+        webpackObjEntries = customAST.body[index].expression.right;
+      }
+    }
+    webpackObjEntries.properties.forEach((el) => {
+      customASTPropertyKey.push(el.key.name);
+    });
+    if (!checkedMiniCssExtract) {
+      // add const at start of webpack config before module.exports
+      for (let i = 0; i < customAST.body.length; i += 1) {
+        if (customAST.body[i].type === 'ExpressionStatement') {
+          customAST.body.splice(i, 0, JSON.parse(JSON.stringify(MiniCSSExtractAST.body[0])));
+          break;
+        }
+      }
+      moduleExist = true;
+      numberOfRules += 1;
+      if (customASTPropertyKey.indexOf(MiniCSSExtractAST.body[1].expression.right.properties[0].key.name) === -1) {
+        webpackObjEntries.properties.unshift(
+          JSON.parse(JSON.stringify(MiniCSSExtractAST.body[1].expression.right.properties[0]))
+        );
+      }
+      if (customASTPropertyKey.indexOf(MiniCSSExtractAST.body[1].expression.right.properties[1].key.name) === -1) {
+        webpackObjEntries.properties.unshift(
+          JSON.parse(JSON.stringify(MiniCSSExtractAST.body[1].expression.right.properties[1]))
+        );
+      } else {
+        webpackObjEntries.properties.forEach((el) => {
+          if (el.key.name === 'plugins') {
+            el.value.elements.unshift(
+              JSON.parse(JSON.stringify(MiniCSSExtractAST.body[1].expression.right.properties[0].value.elements[0]))
+            );
+          }
+          if (el.key.name === 'module') {
+            el.value.properties[0].value.elements.unshift(
+              JSON.parse(
+                JSON.stringify(
+                  MiniCSSExtractAST.body[1].expression.right.properties[1].value.properties[0].value.elements[0]
+                    .properties[1].value.elements[0]
+                )
+              )
+            );
+          }
+        });
+        moduleExist = true;
+        numberOfRules += 1;
+      }
+    } else {
+      //remove the const statement for mini css extract plugin
+      customAST.body.forEach((el, index) => {
+        if (el.declarations) {
+          if (el.declarations[0].id.name === 'MiniCssExtractPlugin') {
+            customAST.body.splice(index, 1);
+          }
+        }
+      });
+
+      webpackObjEntries.properties.forEach((el) => {
+        if (el.key.name === 'plugins') {
+          for (let j = 0; j < el.value.elements.length; j += 1) {
+            if (el.value.elements[j].callee) {
+              if (el.value.elements[j].callee.name === 'MiniCssExtractPlugin') {
+                el.value.elements.splice(j, 1);
+                numberOfRules -= 1;
+              }
+            }
+          }
+        }
+        if (el.key.name === 'module') {
+          console.log('elll: ', el);
+          el.value.properties[0].value.elements[0].properties.splice(1, 1); /////
+
+          // for (let x = 0; x < el.value.properties[0].value.elements[0].properties.length; x += 1) {
+          //   console.log(el.value.properties[0].value.elements[0].properties[x]);
+          //   el.value.properties[0].value.elements.splice(1, 1);
+          //   // if (el.value.properties[0].value.elements[0].properties[x].key.name === 'use') {
+
+          //   //   el.value.properties[0].value.elements[0].properties.splice(x, 1);
+
+          //   //   numberOfRules -= 1;
+          //   // }
+          // }
+
+          // el.value.properties[0].value.elements.unshift(
+          //   JSON.parse(
+          //     JSON.stringify(
+          //       MiniCSSExtractAST.body[1].expression.right.properties[1].value.properties[0].value.elements[0]
+          //         .properties[1].value.elements[0]
+          //     )
+          //   )
+          // );
+        }
+      });
+    }
+    formattedCode = generate(customAST, {
+      comments: true
+    });
+
+    this.setState(
+      {
+        checkedMiniCssExtract: !this.state.checkedMiniCssExtract,
+        numberOfRules,
+        moduleExist,
+        formattedCode,
+        customAST
+      }
+      // () => {
+      //   if (!this.state.checkedCSS && this.state.checkedMiniCssExtract) {
+      //     this.handleChangeCheckboxCSS();
+      //   }
+      //   if (this.state.checkedCSS && !this.state.cssOriginallyChecked && !this.state.checkedMiniCssExtract) {
+      //     this.handleChangeCheckboxCSS();
+      //   }
+      // }
+    );
+  };
+
   saveWebpackConfig = () => {
     const link = document.createElement('a');
     link.download = 'webpack.config.js';
@@ -1041,6 +1177,16 @@ class DefaultStarter extends React.Component {
             onChange={this.handleChangeCheckboxHTMLPlugin}
           />
           HTMLWebpackPlugin
+        </label>
+        <label>
+          <input
+            type='checkbox'
+            name='framework'
+            value='HTMLWebpackPlugin'
+            checked={this.state.checkedMiniCssExtract}
+            onChange={this.handleChangeCheckboxMiniCSSExtract}
+          />
+          MiniCSSExtractPlugin
         </label>
         <label>
           <input

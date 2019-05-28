@@ -75,12 +75,18 @@ app.get('/AST', async (req, res) => {
                         ecmaVersion: 6,
                         locations: true
                       });
-                      fs.readFile(__dirname + '/src_custom_config/png.config.js', (err, data) => {
-                        ASTObj.PngAST = acorn.parse(data.toString(), {
+                      fs.readFile(__dirname + '/src_custom_config/miniCssExtractPlugin.config.js', (err, data) => {
+                        ASTObj.MiniCSSExtractAST = acorn.parse(data.toString(), {
                           ecmaVersion: 6,
                           locations: true
                         });
-                        res.send(ASTObj);
+                        fs.readFile(__dirname + '/src_custom_config/png.config.js', (err, data) => {
+                          ASTObj.PngAST = acorn.parse(data.toString(), {
+                            ecmaVersion: 6,
+                            locations: true
+                          });
+                          res.send(ASTObj);
+                        });
                       });
                     });
                   });
