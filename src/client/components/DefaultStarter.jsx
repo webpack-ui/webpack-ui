@@ -1178,7 +1178,7 @@ class DefaultStarter extends React.Component {
           />
           HTMLWebpackPlugin
         </label>
-        <label>
+        {/*<label>
           <input
             type='checkbox'
             name='framework'
@@ -1187,7 +1187,7 @@ class DefaultStarter extends React.Component {
             onChange={this.handleChangeCheckboxMiniCSSExtract}
           />
           MiniCSSExtractPlugin
-        </label>
+        </label>*/}
         <label>
           <input
             type='checkbox'
