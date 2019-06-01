@@ -1,13 +1,12 @@
 @import "../utils/styles";
 
 .mainContainer {
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
 }
 
-
 .lowerContainer {
-  padding-top:30px;
+  padding-top: 30px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -18,42 +17,43 @@
 }
 
 .optionContainer {
-  display:flex;
+  display: flex;
   flex-direction: column;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
-  height:380px;
-  width:380px;
+  height: 380px;
+  width: 380px;
   background-color: #f1f6fa93;
   border: 1px solid darken(#f1f6fa93, 20%);
   border-radius: 7px;
   margin: 30px;
-  cursor:pointer;
+  cursor: pointer;
 }
 
-.description{
-  font-size:18px;
-  width:200px;
+.description {
+  font-size: 18px;
+  width: 200px;
   text-align: center;
-  color:#999999;
+  color: #999999;
   margin: 20px;
 }
 
-.optionIcon{
+.optionIcon {
   height: 5.5rem;
   width: 5.5rem;
   stroke-width: 1;
-  color:#999999;
+  color: #999999;
 }
 
-.headerContainer{
-  display:flex;
+.headerContainer {
+  display: flex;
   align-items: center;
 }
 
-.chevronLeft{
-  color:#999999;
-  height:2rem;
+.chevronLeft {
+  color: #999999;
+  height: 2rem;
   width: 2rem;
   margin-right: 20px;
+  cursor: pointer;
 }

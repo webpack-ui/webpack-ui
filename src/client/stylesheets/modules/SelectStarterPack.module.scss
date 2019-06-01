@@ -1,24 +1,23 @@
 @import "../utils/styles";
 
 .mainContainer {
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
 }
 
-
 .lowerContainer {
-  padding-top:30px;
+  padding-top: 30px;
   display: flex;
   flex-direction: row;
 
-  .lowerLeftTopContainer{
-    display:flex;
+  .lowerLeftTopContainer {
+    display: flex;
     flex-direction: row;
   }
 }
 
-.lowerRightContainer{
-  margin-left:50px;
+.lowerRightContainer {
+  margin-left: 50px;
 }
 
 .header {
@@ -26,54 +25,52 @@
 }
 
 .optionContainer {
-  display:flex;
+  display: flex;
   flex-direction: column;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
-  height:190px;
-  width:190px;
+  height: 190px;
+  width: 190px;
   background-color: #f1f6fa93;
   border: 1px solid darken(#f1f6fa93, 20%);
   border-radius: 5px;
   margin: 15px;
 
-  .optionHeader{
+  .optionHeader {
     color: black;
     font-size: 18px;
-    margin:10px;
+    margin: 10px;
   }
 
-  .description{
-    font-size:13px;
-    width:130px;
+  .description {
+    font-size: 13px;
+    width: 130px;
     text-align: center;
-    color:#999999;
+    color: #999999;
     margin: 3px;
   }
 }
 
-
-
-.optionIcon{
+.optionIcon {
   height: 2.5rem;
   width: 2.5rem;
   stroke-width: 1;
-  color:#999999;
+  color: #999999;
 }
 
-.headerContainer{
-  display:flex;
+.headerContainer {
+  display: flex;
   align-items: center;
 
-  .chevronLeft{
-    color:#999999;
-    height:2rem;
+  .chevronLeft {
+    color: #999999;
+    height: 2rem;
     width: 2rem;
     margin-right: 20px;
+    cursor: pointer;
   }
 }
 
-.searchContainer{
-  width:310px;
+.searchContainer {
+  width: 310px;
 }
-
