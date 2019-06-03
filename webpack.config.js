@@ -12,7 +12,7 @@ const htmlWebpackPlugin = new HtmlWebPackPlugin({
 module.exports = {
   optimization: {
     splitChunks: {
-      //     chunks: 'all',
+      //chunks: 'all',
     }
   },
   mode: isDevelopment ? 'development' : 'production',
@@ -113,6 +113,7 @@ module.exports = {
       "/api": "http://localhost:3000"
     },
     publicPath: '/',
+    historyApiFallback: true,
     setup(app) {
       app.post('*', (req, res) => {
         res.redirect(req.originalUrl);
