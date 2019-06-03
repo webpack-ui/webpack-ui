@@ -1,12 +1,13 @@
 const path = require('path');
-const HtmlWebPackPlugin = require("html-webpack-plugin");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const isDevelopment = process.env.NODE_ENV !== 'production'
+const HtmlWebPackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const isDevelopment = process.env.NODE_ENV !== 'production';
+const webpack = require('webpack');
 
 const htmlWebpackPlugin = new HtmlWebPackPlugin({
-  template: "./src/index.html",
-  filename: "./index.html"
+  template: './src/index.html',
+  filename: './index.html'
 });
 
 module.exports = {
@@ -16,17 +17,25 @@ module.exports = {
     }
   },
   mode: isDevelopment ? 'development' : 'production',
-  entry: ['babel-polyfill', './src/index.js'],
+  entry: [
+    'babel-polyfill',
+    './src/index.js'
+  ],
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'webpack-bundle.js'
   },
   node: {
     __dirname: false,
-    __filename: false,
+    __filename: false
   },
   resolve: {
-    extensions: ['.js', '.json', '.jsx', '.scss'],
+    extensions: [
+      '.js',
+      '.json',
+      '.jsx',
+      '.scss'
+    ]
   },
   module: {
     rules: [
@@ -69,29 +78,25 @@ module.exports = {
         test: /\.(jpg|png|svg|ico|icns)$/,
         loader: 'file-loader',
         options: {
-          name: '[path][name].[ext]',
-        },
+          name: '[path][name].[ext]'
+        }
       },
       {
         test: /\.(eot|ttf|woff|woff2)$/,
         loader: 'file-loader',
         options: {
-          name: '[path][name].[ext]',
-        },
+          name: '[path][name].[ext]'
+        }
       },
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
             presets: [
-              "mobx"
-            ],
-            // plugins: [
-            //   "transform-decorators-legacy",
-            //   "transform-async-to-generator"
-            // ]
+              'mobx'
+            ]
           }
         }
       },
@@ -104,28 +109,34 @@ module.exports = {
           }
         ]
       }
-    ],
+    ]
   },
   devServer: {
-    port: 8080,
+    port: 3000,
     open: true,
     proxy: {
-      "/api": "http://localhost:3000"
+      '^/api/*': {
+        target: 'http://localhost:8080/api/',
+        secure: false
+      }
     },
     publicPath: '/',
     historyApiFallback: true,
-    setup(app) {
-      app.post('*', (req, res) => {
-        res.redirect(req.originalUrl);
-      });
-    }
+    contentBase: './',
+    hot: true,
+    inline: true
   },
   plugins: [
-    new CleanWebpackPlugin(['dist']),
+    new CleanWebpackPlugin([
+      'dist'
+    ]),
     htmlWebpackPlugin,
     new MiniCssExtractPlugin({
       filename: isDevelopment ? '[name].css' : '[name].[hash].css',
       chunkFilename: isDevelopment ? '[id].css' : '[id].[hash].css'
+    }),
+    new webpack.HotModuleReplacementPlugin({
+      multiStep: false
     })
   ]
 };

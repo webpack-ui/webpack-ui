@@ -48,7 +48,7 @@ class DefaultStarter extends React.Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/AST/').then((res) => res.json()).then((json) => {
+    fetch('http://localhost:8080/AST/').then((res) => res.json()).then((json) => {
       //turn AST back to string for display
       const formattedCode = generate(json.customAST, {
         comments: true
