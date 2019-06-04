@@ -20,14 +20,8 @@ This is the webpack UI project, which tries to help developers having a better e
 git clone https://github.com/catsnakeui/webpack-ui.git
 ```
 
-**2.** Open the repository on your local machine, open your terminal and navigate to the repo, and run the following commands to download all required libraries and generate build:
+**2.** Open the repository on your local machine, open your terminal and navigate to the repo, and run the following commands to download all required libraries/packages and launch webpack UI:
 ```
 npm install
 npm run webpackui
 ```
-
-**3.** Once the build has completed, open a new tab in your terminal and run the following command to launch the application:
-```
-npm run server
-```
-- Navigate to http://localhost:3000 in your browser and begin using webpack UI!

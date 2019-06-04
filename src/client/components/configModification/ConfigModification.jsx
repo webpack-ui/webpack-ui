@@ -20,7 +20,7 @@ export default class ConfigModification extends React.Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/mod/')
+    fetch('http://localhost:8080/mod/')
       .then((res) => res.json())
       .then((json) => {  
         console.log(json)

@@ -42,7 +42,7 @@ class ConfigGeneration extends React.Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/AST/')
+    fetch('http://localhost:8080/AST/')
       .then((res) => res.json())
       .then((json) => {
         console.log(json)
