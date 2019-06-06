@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route, BrowserRouter as Router, Link, Switch, withRouter } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Link, Switch, withRouter, NavLink } from 'react-router-dom';
 import Home from './home/Home';
 import NewProject from './NewProject';
 import SelectStarterPack from './SelectStarterPack';
@@ -20,7 +20,9 @@ class Nav extends React.Component {
     return (
       <nav className={styles.Nav}>
         <div className={styles.NavItemContainer}>
-          <img className={styles.logo}src={logo}/>
+          <NavLink to="/" activeClassName="is-active" exact={true}>
+            <img className={styles.logo}src={logo} />
+          </NavLink>
           <button>
             <span>+</span> New Project
           </button>
