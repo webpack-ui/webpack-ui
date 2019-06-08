@@ -64,7 +64,6 @@ button:hover {
   display: flex;
   width: 1100px;
   justify-content: space-between;
-  position:fixed;
-  bottom:0;
+  transform: translate(0, 800px);
 }
 
