@@ -20,23 +20,39 @@ $beforeNavLinkHover: rgba(255, 255, 255, 0.6);
 $afterNavLinkHover: rgba(237, 237, 237, 1);
 
 @keyframes onHoverNavItem {
-  0%   { color: $beforeNavHover; }
-  100% { color: $afterNavHover; }
+  0% {
+    color: $beforeNavHover;
+  }
+  100% {
+    color: $afterNavHover;
+  }
 }
 
 @keyframes onHoverNavLink {
-  0%   { color: $beforeNavLinkHover; }
-  100% { color: $afterNavLinkHover; }
+  0% {
+    color: $beforeNavLinkHover;
+  }
+  100% {
+    color: $afterNavLinkHover;
+  }
 }
 
 @keyframes whiteCardFadeIn {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes buttonFadeIn {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 html {
@@ -72,7 +88,8 @@ a {
   background-color: rgba(250, 250, 250, 1);
   padding: 20px;
   margin: 20px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+    'Helvetica Neue', sans-serif;
   width: 90%;
   border-radius: 4px;
   box-shadow: $box-shadow;
@@ -80,6 +97,7 @@ a {
 }
 
 .welcomeCard {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+    'Helvetica Neue', sans-serif;
   font-size: 24px;
 }
