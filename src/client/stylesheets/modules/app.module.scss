@@ -18,52 +18,57 @@
   width: 1100px;
   height: 580px;
   border-radius: 8px;
-  background-color:white;
-  box-shadow: 9px 0px 25px 2px rbga(0,0,0,.5);
+  background-color: white;
+  box-shadow: 9px 0px 25px 2px rbga(0, 0, 0, .5);
 }
 
-.fullAppContainer{
-  display:flex;
+.fullAppContainer {
+  display: flex;
   justify-content: center;
+  @media (max-width: 1160px) {
+    justify-content: space-between;
+  }
 }
 
 button {
-  width:130px;
-  background-color:#1d78c1;
+  width: 130px;
+  background-color: #1d78c1;
   border: none;
   border-radius: 5px;
   color: rgba(255, 255, 255, 0.774);
   padding: 10px 15px;
-  font-size:13px;
-  height:40px;
+  font-size: 13px;
+  height: 40px;
   cursor: pointer;
   opacity: .92;
   transition: opacity .2s;
 }
 
 button:hover {
-  opacity:1;
+  opacity: 1;
 }
 
-.logo{
-  height:79px;
-  width:200px;
+.logo {
+  height: 79px;
+  width: 200px;
 }
 
-.NavItemContainer{
-  display: flex; 
-  align-items: center; 
-  height:100px;
+.NavItemContainer {
+  display: flex;
+  align-items: center;
+  height: 100px;
   justify-content: space-between;
-  width:90%;
+  width: 90%;
   margin: 10px 0px;
 }
 
-.footer{
+.footer {
   padding-bottom: 40px;
   display: flex;
   width: 1100px;
   justify-content: space-between;
   transform: translate(0, 800px);
+  @media (max-width: 1160px) {
+    justify-content: space-around;
+  }
 }
-
