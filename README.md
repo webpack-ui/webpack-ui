@@ -9,6 +9,7 @@ This project is currently being developed.
 The Graphical User Interface for webpack<br>
 </div>
 
+## Introduction
 This is the webpack UI project, which tries to help developers having a better experience using webpack with a rich set of features to assist you with development.
 
 ## Installation
