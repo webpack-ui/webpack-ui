@@ -1,5 +1,5 @@
 import * as j from "jscodeshift";
-import pEachSeries = require("p-each-series");
+import pEachSeries from "p-each-series";
 import * as path from "path";
 
 import { Config, TransformConfig } from "./run-action";
