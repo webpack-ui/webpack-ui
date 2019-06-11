@@ -1,20 +1,18 @@
 import * as http from "http";
 import * as ws from 'websocket';
-import * as Generator from 'yeoman-generator';
-import {Answers} from 'inquirer';
 
 export default class Questioner {
 
-	public hasStarted: boolean;
-	private httpServer: http.Server;
-	public client: ws.connection;
-	public server: ws.server;
+	hasStarted;
+	httpServer;
+	client;
+	server;
 
-	public constructor() {
+	constructor() {
 		this.hasStarted = false;
 	}
 
-	public question(ques: Generator.Question|Generator.Question[]): Promise<Answers> {
+	question(ques) {
 		if(!ques){
 			return;
 		}
@@ -32,7 +30,7 @@ export default class Questioner {
 				this.server.on('request', (req) => {
 					this.client = req.accept(null, req.origin);
 					this.client.sendUTF(JSON.stringify(ques));
-					this.client.on("message", (data: ws.IMessage) => {
+					this.client.on("message", (data) => {
 						resolve(JSON.parse(data.utf8Data).answer);
 					});
 					this.client.on("close", (err) => {
@@ -47,7 +45,7 @@ export default class Questioner {
 					resolve();
 				}
 				this.client.sendUTF(JSON.stringify(ques));
-				this.client.on("message", (data: ws.IMessage) => {
+				this.client.on("message", (data) => {
 					resolve(JSON.parse(data.utf8Data).answer);
 				});
 				this.client.on("close", (err) => {
