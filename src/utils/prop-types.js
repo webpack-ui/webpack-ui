@@ -5,7 +5,7 @@
  * @returns {Set} A new set with accepted webpack properties
  */
 
-const PROP_TYPES: Set<string> = new Set([
+const PROP_TYPES = new Set([
 	"amd",
 	"bail",
 	"cache",
