@@ -8,9 +8,9 @@ import * as validateIdentifier from "./validate-identifier";
  * @param {Array} paths - Array of strings containing the traversal path
  * @returns {Any} Value at given traversal path
  */
-function safeTraverse(obj: INode, paths: string[]): any {
-	let val: INode = obj;
-	let idx: number = 0;
+function safeTraverse(obj, paths) {
+	let val = obj;
+	let idx = 0;
 
 	while (idx < paths.length) {
 		if (!val) {
@@ -28,13 +28,13 @@ function safeTraverse(obj: INode, paths: string[]): any {
  * @param {Node} path - AST node
  * @returns {String|Boolean} type at given path.
  */
-function safeTraverseAndGetType(path: INode): string | boolean {
-	const pathValue: INode = safeTraverse(path, ["value", "value"]);
+function safeTraverseAndGetType(path) {
+	const pathValue = safeTraverse(path, ["value", "value"]);
 	return pathValue ? pathValue.type : false;
 }
 
 // Convert nested MemberExpressions to strings like webpack.optimize.DedupePlugin
-function memberExpressionToPathString(path: INode) {
+function memberExpressionToPathString(path) {
 	if (path && path.object) {
 		return [memberExpressionToPathString(path.object), path.property.name].join(
 			".",
@@ -44,14 +44,14 @@ function memberExpressionToPathString(path: INode) {
 }
 
 // Convert Array<string> like ['webpack', 'optimize', 'DedupePlugin'] to nested MemberExpressions
-function pathsToMemberExpression(j: IJSCodeshift, paths: string[]): INode {
+function pathsToMemberExpression(j, paths) {
 	if (!paths.length) {
 		return null;
 	} else if (paths.length === 1) {
 		return j.identifier(paths[0]);
 	} else {
-		const first: string[] = paths.slice(0, 1);
-		const rest: string[] = paths.slice(1);
+		const first = paths.slice(0, 1);
+		const rest = paths.slice(1);
 		return j.memberExpression(
 			pathsToMemberExpression(j, rest),
 			pathsToMemberExpression(j, first),
@@ -70,12 +70,12 @@ function pathsToMemberExpression(j: IJSCodeshift, paths: string[]): INode {
  * @returns {Node} Node that has the pluginName
  */
 
-function findPluginsByName(j: IJSCodeshift, node: INode, pluginNamesArray: string[]): INode {
+function findPluginsByName(j, node, pluginNamesArray) {
 	return node
 		.find(j.NewExpression)
-		.filter((path: INode): boolean => {
+		.filter((path) => {
 			return pluginNamesArray.some(
-				(plugin: string) =>
+				(plugin) =>
 					memberExpressionToPathString(path.get("callee").value) === plugin,
 			);
 	});
@@ -88,11 +88,11 @@ function findPluginsByName(j: IJSCodeshift, node: INode, pluginNamesArray: strin
  * @returns {Node} rootNode modified AST.
  */
 
-function findPluginsArrayAndRemoveIfEmpty(j: IJSCodeshift, rootNode: INode): INode {
+function findPluginsArrayAndRemoveIfEmpty(j, rootNode) {
 	return rootNode
 		.find(j.Identifier, { name: "plugins" })
-		.forEach((node: INode) => {
-			const elements: INode[] = safeTraverse(node, [
+		.forEach((node) => {
+			const elements = safeTraverse(node, [
 				"parent",
 				"value",
 				"value",
@@ -114,7 +114,7 @@ function findPluginsArrayAndRemoveIfEmpty(j: IJSCodeshift, rootNode: INode): INo
  * @returns {Node} found node and
  */
 
-function findRootNodesByName(j: IJSCodeshift, node: INode, propName: string): INode {
+function findRootNodesByName(j, node, propName) {
 	return node.find(j.Property, { key: { name: propName } });
 }
 
@@ -128,7 +128,7 @@ function findRootNodesByName(j: IJSCodeshift, node: INode, propName: string): IN
  * @returns {Node}
  */
 
-function createProperty(j: IJSCodeshift, key: string | number, value: valueType): INode {
+function createProperty(j, key, value) {
 	return j.property(
 		"init",
 		createIdentifierOrLiteral(j, key),
@@ -145,8 +145,8 @@ function createProperty(j: IJSCodeshift, key: string | number, value: valueType)
  * @returns {Node}
  */
 
-function createLiteral(j: IJSCodeshift, val: valueType): INode {
-	let literalVal: valueType = val;
+function createLiteral(j, val) {
+	let literalVal = val;
 	// We'll need String to native type conversions
 	if (typeof val === "string") {
 		// 'true' => true
@@ -168,7 +168,7 @@ function createLiteral(j: IJSCodeshift, val: valueType): INode {
  * @returns {Node}
  */
 
-function createIdentifierOrLiteral(j: IJSCodeshift, val: valueType): INode {
+function createIdentifierOrLiteral(j, val) {
 	// IPath<IIdentifier> | IPath<ILiteral> doesn't work, find another way
 	let literalVal = val;
 	// We'll need String to native type conversions
@@ -221,19 +221,19 @@ function createIdentifierOrLiteral(j: IJSCodeshift, val: valueType): INode {
  */
 
 function addOrUpdateConfigObject(
-	j: IJSCodeshift, rootNode: INode, configProperty: string, key: string, value: valueType,
-): void {
+	j, rootNode, configProperty, key, value,
+) {
 
 	const propertyExists = rootNode.properties.filter(
-		(node: INode): boolean => node.key.name === configProperty,
+		(node) => node.key.name === configProperty,
 	).length;
 
 	if (propertyExists) {
 		rootNode.properties
-			.filter((path: INode) => path.key.name === configProperty)
-			.forEach((path: INode) => {
+			.filter((path) => path.key.name === configProperty)
+			.forEach((path) => {
 				const newProperties = path.value.properties.filter(
-					(p: INode) => p.key.name !== key,
+					(p) => p.key.name !== key,
 				);
 				newProperties.push(
 					j.objectProperty(
@@ -265,14 +265,14 @@ function addOrUpdateConfigObject(
  * @returns {Node | Void} - path to the root webpack configuration object if plugin is found
  */
 
-function findAndRemovePluginByName(j: IJSCodeshift, node: INode, pluginName: string): INode {
-	let rootPath: INode;
+function findAndRemovePluginByName(j, node, pluginName) {
+	let rootPath;
 
 	findPluginsByName(j, node, [pluginName])
-		.filter((path: INode) => safeTraverse(path, ["parent", "value"]))
-		.forEach((path: INode) => {
+		.filter((path) => safeTraverse(path, ["parent", "value"]))
+		.forEach((path) => {
 			rootPath = safeTraverse(path, ["parent", "parent", "parent", "value"]);
-			const arrayPath: INode = path.parent.value;
+			const arrayPath = path.parent.value;
 			if (arrayPath.elements && arrayPath.elements.length === 1) {
 				j(path.parent.parent).remove();
 			} else {
@@ -296,39 +296,39 @@ function findAndRemovePluginByName(j: IJSCodeshift, node: INode, pluginName: str
  * @returns {Void}
  */
 
-function createOrUpdatePluginByName(j: IJSCodeshift, rootNodePath: INode, pluginName: string, options: object): void {
-	const pluginInstancePath: INode = findPluginsByName(j, j(rootNodePath), [
+function createOrUpdatePluginByName(j, rootNodePath, pluginName, options) {
+	const pluginInstancePath = findPluginsByName(j, j(rootNodePath), [
 		pluginName,
 	]);
-	let optionsProps: INode[];
+	let optionsProps;
 	if (options) {
-		optionsProps = Object.keys(options).map((key: string) => {
+		optionsProps = Object.keys(options).map((key) => {
 			return createProperty(j, key, options[key]);
 		});
 	}
 
 	// If plugin declaration already exist
 	if (pluginInstancePath.size()) {
-		pluginInstancePath.forEach((path: INode) => {
+		pluginInstancePath.forEach((path) => {
 			// There are options we want to pass as argument
 			if (optionsProps) {
-				const args: INode[] = path.value.arguments;
+				const args = path.value.arguments;
 				if (args.length) {
 					// Plugin is called with object as arguments
 					// we will merge those objects
-					const currentProps: INode = j(path)
+					const currentProps = j(path)
 						.find(j.ObjectExpression)
 						.get("properties");
 
-					optionsProps.forEach((opt: INode) => {
+					optionsProps.forEach((opt) => {
 						// Search for same keys in the existing object
 						const existingProps = j(currentProps)
 							.find(j.Identifier)
-							.filter((p: INode) => opt.key.value === p.value.name);
+							.filter((p) => opt.key.value === p.value.name);
 
 						if (existingProps.size()) {
 							// Replacing values for the same key
-							existingProps.forEach((p: INode) => {
+							existingProps.forEach((p) => {
 								j(p.parent).replaceWith(opt);
 							});
 						} else {
@@ -343,7 +343,7 @@ function createOrUpdatePluginByName(j: IJSCodeshift, rootNodePath: INode, plugin
 			}
 		});
 	} else {
-		let argumentsArray: INode[] = [];
+		let argumentsArray = [];
 		if (optionsProps) {
 			argumentsArray = [j.objectExpression(optionsProps)];
 		}
@@ -366,8 +366,8 @@ function createOrUpdatePluginByName(j: IJSCodeshift, rootNodePath: INode, plugin
  * @returns {String} variable name - ex. 'const s = require(s) gives "s"`
  */
 
-function findVariableToPlugin(j: IJSCodeshift, rootNode: INode, pluginPackageName: string): string {
-	const moduleVarNames: INode[] = rootNode
+function findVariableToPlugin(j, rootNode, pluginPackageName) {
+	const moduleVarNames = rootNode
 		.find(j.VariableDeclarator)
 		.filter(j.filters.VariableDeclarator.requiresModule(pluginPackageName))
 		.nodes();
@@ -383,13 +383,13 @@ function findVariableToPlugin(j: IJSCodeshift, rootNode: INode, pluginPackageNam
  * @returns {Boolean}
  */
 
-function isType(path: INode, type: string): boolean {
+function isType(path, type) {
 	return path.type === type;
 }
 
-function findObjWithOneOfKeys(p: INode, keyNames: string[]) {
-	return p.value.properties.reduce((predicate: boolean, prop: INode) => {
-		const name: string = prop.key.name;
+function findObjWithOneOfKeys(p, keyNames) {
+	return p.value.properties.reduce((predicate, prop) => {
+		const name = prop.key.name;
 		return keyNames.indexOf(name) > -1 || predicate;
 	}, false);
 }
@@ -403,7 +403,7 @@ function findObjWithOneOfKeys(p: INode, keyNames: string[]) {
  * @returns {Node} - the created ast
  */
 
-function getRequire(j: IJSCodeshift, constName: string, packagePath: string): INode {
+function getRequire(j, constName, packagePath) {
 	return j.variableDeclaration("const", [
 		j.variableDeclarator(
 			j.identifier(constName),
@@ -423,17 +423,17 @@ function getRequire(j: IJSCodeshift, constName: string, packagePath: string): IN
  * @returns {Node} - the created ast
  */
 
-function addProperty(j: IJSCodeshift, p: INode, key: string, value: valueType, action?: string): INode {
+function addProperty(j, p, key, value, action) {
 	if (!p) {
 		return;
 	}
-	let valForNode: valueType;
+	let valForNode;
 	if (Array.isArray(value)) {
-		let arrExp: INode = j.arrayExpression([]);
+		let arrExp = j.arrayExpression([]);
 		if (safeTraverseAndGetType(p) === "ArrayExpression") {
 			arrExp = p.value.value;
 		}
-		value.forEach((val: valueType) => {
+		value.forEach((val) => {
 			addProperty(j, arrExp, null, val);
 		});
 		valForNode = arrExp;
@@ -441,19 +441,19 @@ function addProperty(j: IJSCodeshift, p: INode, key: string, value: valueType, a
 		typeof value === "object" &&
 		!(value.__paths || value instanceof RegExp)
 	) {
-		let objectExp: INode = j.objectExpression([]);
+		let objectExp = j.objectExpression([]);
 		if (safeTraverseAndGetType(p) === "ObjectExpression") {
 			objectExp = p.value.value;
 		}
 		// object -> loop through it
-		Object.keys(value).forEach((prop: string) => {
+		Object.keys(value).forEach((prop) => {
 			addProperty(j, objectExp, prop, value[prop]);
 		});
 		valForNode = objectExp;
 	} else {
 		valForNode = createIdentifierOrLiteral(j, value);
 	}
-	let pushVal: valueType;
+	let pushVal;
 	if (key) {
 		pushVal = j.property("init", j.identifier(key), valForNode);
 	} else {
@@ -488,7 +488,7 @@ function addProperty(j: IJSCodeshift, p: INode, key: string, value: valueType, a
  * @returns {Node} - the created ast
  */
 
-function removeProperty(j: IJSCodeshift, ast: INode, key: string, value: valueType): INode {
+function removeProperty(j, ast, key, value) {
 
 	if (typeof value === "object" && !Array.isArray(value)) {
 		// override for module.rules / loaders
@@ -500,7 +500,7 @@ function removeProperty(j: IJSCodeshift, ast: INode, key: string, value: valueTy
 						value: value.rules[0].loader,
 					},
 				})
-				.forEach((p: INode) => {
+				.forEach((p) => {
 					j(p.parent).remove();
 				});
 		}
@@ -512,7 +512,7 @@ function removeProperty(j: IJSCodeshift, ast: INode, key: string, value: valueTy
 			.find(j.Literal, {
 				value: value[0],
 			})
-			.forEach((p: INode) => {
+			.forEach((p) => {
 				const configKey = safeTraverse(p, ["parent", "parent", "node", "key", "name"]);
 				if (configKey === key) {
 					j(p).remove();
@@ -521,7 +521,7 @@ function removeProperty(j: IJSCodeshift, ast: INode, key: string, value: valueTy
 	}
 
 	// value => literal string / boolean / nested object
-	let objKeyToRemove: string | null = null;
+	let objKeyToRemove = null;
 	if (value === null) {
 		objKeyToRemove = key;
 	} else if (typeof value === "object") {
@@ -536,7 +536,7 @@ function removeProperty(j: IJSCodeshift, ast: INode, key: string, value: valueTy
 				type: "Identifier",
 			},
 		})
-		.forEach((p: INode) => {
+		.forEach((p) => {
 			j(p).remove();
 		});
 }
@@ -553,9 +553,9 @@ function removeProperty(j: IJSCodeshift, ast: INode, key: string, value: valueTy
  * @returns ast - jscodeshift API
  */
 
-function parseTopScope(j: IJSCodeshift, ast: INode, value: string[], action: string): boolean | INode {
-	function createTopScopeProperty(p: INode): boolean {
-		value.forEach((n: string) => {
+function parseTopScope(j, ast, value, action) {
+	function createTopScopeProperty(p) {
+		value.forEach((n) => {
 			if (
 				!p.value.body[0].declarations ||
 				n.indexOf(p.value.body[0].declarations[0].id.name) <= 0
@@ -566,7 +566,7 @@ function parseTopScope(j: IJSCodeshift, ast: INode, value: string[], action: str
 		return false; // TODO: debug later
 	}
 	if (value) {
-		return ast.find(j.Program).filter((p: INode): boolean => createTopScopeProperty(p));
+		return ast.find(j.Program).filter((p) => createTopScopeProperty(p));
 	} else {
 		return ast;
 	}
@@ -584,16 +584,16 @@ function parseTopScope(j: IJSCodeshift, ast: INode, value: string[], action: str
  * @returns ast - jscodeshift API
  */
 
-function parseMerge(j: IJSCodeshift, ast: INode, value: string, action: string): boolean | INode {
-	function createMergeProperty(p: INode) {
+function parseMerge(j, ast, value, action) {
+	function createMergeProperty(p) {
 		// FIXME Use j.callExp()
-		const exportsDecl: INode[] = p.value.body.map((n: INode) => {
+		const exportsDecl = p.value.body.map((n) => {
 			if (n.expression) {
 				return n.expression.right;
 			}
 		});
 		const bodyLength = exportsDecl.length;
-		const newVal: INode = {};
+		const newVal = {};
 		newVal.type = "ExpressionStatement";
 		newVal.expression = {
 			left: {
@@ -613,7 +613,7 @@ function parseMerge(j: IJSCodeshift, ast: INode, value: string, action: string):
 		return false; // TODO: debug later
 	}
 	if (value) {
-		return ast.find(j.Program).filter((p: INode): boolean => createMergeProperty(p));
+		return ast.find(j.Program).filter((p) => createMergeProperty(p));
 	} else {
 		return ast;
 	}
