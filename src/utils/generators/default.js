@@ -1,18 +1,18 @@
 import * as Generator from 'yeoman-generator';
 
 export default class WebpackGenerator extends Generator {
-    private configuration: any;
-    private dependencies: Array<string> = [
+    configuration;
+    dependencies = [
         "webpack",
         "webpack-cli"
     ]
 
-    constructor(args: string | string[], opts: {}) {
+    constructor(args, opts) {
         super(args, opts);
         this.configuration = {
             config: {
                 topScope: [],
-                webpackOptions: {}
+                webpackOptions
             }
         }
     }
