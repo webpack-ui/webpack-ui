@@ -17,8 +17,8 @@ import { INode } from "./types/NodePath";
  * @returns {Array} - An array with keys on which transformations need to be run
  */
 
-function mapOptionsToTransform(config: Config): string[] {
-	return Object.keys(config.webpackOptions).filter((k: string) => propTypes.has(k));
+function mapOptionsToTransform(config) {
+	return Object.keys(config.webpackOptions).filter((k) => propTypes.has(k));
 }
 
 /**
@@ -31,18 +31,18 @@ function mapOptionsToTransform(config: Config): string[] {
  * and writes the file
  */
 
-export default function runTransform(transformConfig: TransformConfig, action: string): Promise<void> {
+export default function runTransform(transformConfig, action) {
 	// webpackOptions.name sent to nameTransform if match
-	const webpackConfig = Object.keys(transformConfig).filter((p: string) => {
+	const webpackConfig = Object.keys(transformConfig).filter((p) => {
 		return p !== "configFile" && p !== "configPath";
 	});
-	const initActionNotDefined: boolean = action && action !== "init" ? true : false;
+	const initActionNotDefined = action && action !== "init" ? true : false;
 
 	return new Promise((resolve, reject) => {
-		webpackConfig.forEach((scaffoldPiece: string) => {
-		const config: Config = transformConfig[scaffoldPiece];
+		webpackConfig.forEach((scaffoldPiece) => {
+		const config = transformConfig[scaffoldPiece];
 
-		const transformations: string[] = mapOptionsToTransform(config);
+		const transformations = mapOptionsToTransform(config);
 
 		if (config.topScope) {
 			transformations.push("topScope");
@@ -52,37 +52,37 @@ export default function runTransform(transformConfig: TransformConfig, action: s
 			transformations.push("merge");
 		}
 
-		const ast: INode = j(
+		const ast = j(
 			initActionNotDefined
 				? transformConfig.configFile
 				: "module.exports = {}",
 		);
 
-		const transformAction: string = action || null;
+		const transformAction = action || null;
 
-		pEachSeries(transformations, (f: string): boolean | INode => {
+		pEachSeries(transformations, (f) => {
 			if (f === "merge" || f === "topScope") {
 				return astTransform(j, ast, f, config[f], transformAction);
 			}
 			return astTransform(j, ast, f, config.webpackOptions[f], transformAction);
 		})
-			.then((value: string[]): void | PromiseLike <void> => {
-				let configurationName: string;
+			.then((value) => {
+				let configurationName;
 				if (!config.configName) {
 					configurationName = "webpack.config.js";
 				} else {
 					configurationName = "webpack." + config.configName + ".js";
 				}
 
-				const outputPath: string = initActionNotDefined
+				const outputPath = initActionNotDefined
 					? transformConfig.configPath
 					: path.join(process.cwd(), configurationName);
-				const source: string = ast.toSource({
+				const source = ast.toSource({
 					quote: "single",
 				});
 				runPrettier(outputPath, source);
 			})
-			.catch((err: Error) => {
+			.catch((err) => {
 				console.error(err.message ? err.message : err);
 			});
 		});
