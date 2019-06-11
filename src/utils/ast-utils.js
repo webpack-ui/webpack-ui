@@ -1,4 +1,3 @@
-import { IJSCodeshift, INode, valueType } from "./types/NodePath";
 import * as validateIdentifier from "./validate-identifier";
 
 /**
