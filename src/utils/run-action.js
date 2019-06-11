@@ -7,21 +7,6 @@ import * as Generator from "yeoman-generator";
 import runTransform from "./scaffold";
 import Questioner from "./questioner";
 
-export interface Config extends Object {
-	item?: {
-		name: string;
-	};
-	topScope?: string[];
-	configName?: string;
-	merge: object;
-	webpackOptions: object;
-}
-
-export interface TransformConfig extends Object {
-	configPath?: string;
-	configFile?: string;
-	config?: Config;
-}
 
 const DEFAULT_WEBPACK_CONFIG_FILENAME = "webpack.config.js";
 
@@ -38,29 +23,29 @@ const DEFAULT_WEBPACK_CONFIG_FILENAME = "webpack.config.js";
  */
 
 export default function runAction(
-	action: string,
-	generator: Generator | typeof Generator,
-	scaffold?: string,
-	configFile: string = DEFAULT_WEBPACK_CONFIG_FILENAME,
-	packages?: string[],
+	action,
+	generator,
+	scaffold,
+	configFile = DEFAULT_WEBPACK_CONFIG_FILENAME,
+	packages,
 )
-	: Promise<void>{
+	{
 
-	let configPath: string | null = null;
+	let configPath = null;
 
 	if (action !== "init") {
 		configPath = path.resolve(process.cwd(), configFile);
-        const webpackConfigExists: boolean = fs.existsSync(configPath);
+        const webpackConfigExists = fs.existsSync(configPath);
 	}
 
 	const env = yeoman.createEnv("webpack", null);
 	const generatorName = scaffold?`webpack-ui-${scaffold}-generator`:`webpack-ui-${scaffold}-generator`;
 
 	if (!generator) {
-		(generator as any) = class extends Generator {
-			public initializing(): void {
+		generator = class extends Generator {
+			initializing() {
 				packages.forEach(
-					(pkgPath: string): Generator => {
+					(pkgPath) => {
 						return this.composeWith(require.resolve(pkgPath), {});
 					}
 				);
@@ -69,22 +54,22 @@ export default function runAction(
 	}
 
     const questioner = new Questioner();
-	(generator as any).prototype.prompt = questioner.question; // for changing prototype
+	generator.prototype.prompt = questioner.question; // for changing prototype
 
-	env.registerStub((generator as Generator), generatorName);
+	env.registerStub(generator, generatorName);
 
 	return new Promise((resolve, reject) => {
 		env.run(generatorName, () => {
-			let configModule: object;
+			let configModule;
 			try {
 				const confPath = path.resolve(process.cwd(), ".yo-rc.json");
 				configModule = require(confPath);
 				
 				// Change structure of the config to be transformed
-				const tmpConfig: object = {};
-				Object.keys(configModule).forEach((prop: string): void => {
+				const tmpConfig = {};
+				Object.keys(configModule).forEach((prop) => {
 					const configs = Object.keys(configModule[prop].configuration);
-					configs.forEach((conf: string): void => {
+					configs.forEach((conf) => {
 						tmpConfig[conf] = configModule[prop].configuration[conf];
 					});
 				});
@@ -94,7 +79,7 @@ export default function runAction(
 				return false;
 			}
 	
-			const transformConfig: TransformConfig = Object.assign(
+			const transformConfig = Object.assign(
 				{
 					configFile: !configPath ? null : fs.readFileSync(configPath, "utf8"),
 					configPath,
