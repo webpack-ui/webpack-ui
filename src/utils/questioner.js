@@ -2,7 +2,6 @@ import * as http from "http";
 import * as ws from 'websocket';
 
 export default class Questioner {
-
 	hasStarted;
 	httpServer;
 	client;
