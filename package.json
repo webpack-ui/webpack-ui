@@ -1,8 +1,8 @@
 {
   "name": "webpack-ui",
-  "productName": "Webpack UI",
-  "version": "1.0.0",
-  "description": "Webpack UI",
+  "productName": "webpack UI",
+  "version": "0.0.1",
+  "description": "webpack UI",
   "main": "src/index.js",
   "scripts": {
     "start22": "webpack-dev-server --mode development --open",
