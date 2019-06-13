@@ -1,28 +1,21 @@
-// import express/mongoose
-const express = require('express');
-const app = express();
+const fs = require('fs');
 const path = require('path');
+
+const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const PORT = 8080;
-const fs = require('fs');
 const acorn = require('acorn');
 const { generate } = require('astring');
 
+const app = express();
+const PORT = 8080;
 require('dotenv').config();
 
 app.use(cors());
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(express.static(path.join(__dirname, '../../build/')));
 
-// app.get('/', webpackUIRouter);
-// app.get('/', (req, res) => {
-//   res.sendFile(path.join(__dirname , '/../../build/index.html'))
-// })
-// run server w/ port 3000
 app.get('/AST', async (req, res) => {
   const ASTObj = {};
   fs.readFile(__dirname + '/src_custom_config/webpack.config.js', (err, data) => {
