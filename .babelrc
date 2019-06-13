@@ -1,4 +1,5 @@
 {
+  "exclude": ["./src/server"],
   "presets": [
     "mobx",
     "@babel/preset-env",
@@ -18,5 +19,11 @@
         "loose": true
       }
     ]
-  ]
+  ],
+  "overrides": [{
+    "include": ["./src/server", "./src/utils"],
+    "presets": [
+      ["@babel/preset-env", {"targets": {"node": "current"}}]
+    ]
+  }]
 }

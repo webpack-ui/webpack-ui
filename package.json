@@ -8,8 +8,9 @@
     "start22": "webpack-dev-server --mode development --open",
     "start": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.js",
     "build:prod": "cross-env NODE_ENV=development webpack --config webpack.config.js",
+    "build:babel": "babel src -d build --ignore=\"src/client/*\"",
     "buildwebpack": "rimraf dist && webpack --watch --config ./webpack.config.js --progress --colors --profile --json > webpack-stats.json",
-    "server": "nodemon src/server/server.js",
+    "server": "nodemon --ignore \"./build\" --exec \"npm run build:babel && node build/server/server.js\"",
     "webpackui": "concurrently --kill-others \"npm run buildwebpack\" \"npm run start\" \"npm run server\""
   },
   "author": "Dave Marquess, Ken Lam",
@@ -46,6 +47,7 @@
     "webpack-dev-server": "^3.3.1"
   },
   "dependencies": {
+    "@babel/cli": "^7.4.4",
     "@material/drawer": "^0.42.0",
     "acorn": "^6.1.1",
     "astravel": "^0.5.0",
