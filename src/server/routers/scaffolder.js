@@ -12,3 +12,7 @@ const router = Router();
 
 router.get('/refresh', (req, res) => { res.json({ status: '200' }) });
 
+router.post('/save', (req, res) => {
+    writeFileSync(resolve(USER_DIRECTORY, WEBPACK_CONFIG_PATH), req.body.webpack);
+    res.json( { status: '200' });
+})
