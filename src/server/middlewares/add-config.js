@@ -1,5 +1,5 @@
-const { existsSync, readFileSync } = require('fs');
-const { resolve } = require('path');
+import { existsSync, readFileSync } from 'fs';
+import { resolve } from 'path';
 
 const WEBPACK_CONFIG_PATH = process.env.WEBPACK_CONFIG_PATH ? process.env.WEBPACK_CONFIG_PATH : "./webpack.config.js";
 
