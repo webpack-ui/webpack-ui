@@ -37,7 +37,7 @@ router.post('/init', async (req, res) => {
     res.json({value: true});    
 });
 
-router.post('/build', (req, res) => {
+router.post('/build', async (req, res) => {
     try {
         await execSync(`cd ${USER_DIRECTORY} && npx webpack --config ${process.env.CONFIG_PATH}`);
         res.json({value: true});

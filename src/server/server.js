@@ -1,5 +1,5 @@
 import { join } from 'path';
-import express, { static } from 'express';
+import express from 'express';
 import { json, urlencoded } from 'body-parser';
 import cors from 'cors';
 import OldScaffolderRouter from "./routers/oldScaffolder.js";
@@ -11,7 +11,7 @@ require('dotenv').config();
 app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: false }));
-app.use(static(join(__dirname, '../../build/')));
+app.use(express.static(join(__dirname, '../../build/')));
 
 app.use('/', OldScaffolderRouter);
 
