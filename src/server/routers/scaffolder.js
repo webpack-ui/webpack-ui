@@ -1,1 +1,1 @@
-const  { writeFileSync, existsSync } = require("fs");
+import { writeFileSync, existsSync } from "fs";
