@@ -1,18 +1,17 @@
-const path = require('path');
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+import { join } from 'path';
+import express, { static } from 'express';
+import { json, urlencoded } from 'body-parser';
+import cors from 'cors';
+import OldScaffolderRouter from "./routers/oldScaffolder.js";
 
 const app = express();
 const PORT = 8080;
-const OldScaffolderRouter = require("./routers/oldScaffolder.js");
-
 require('dotenv').config();
 
 app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, '../../build/')));
+app.use(json());
+app.use(urlencoded({ extended: false }));
+app.use(static(join(__dirname, '../../build/')));
 
 app.use('/', OldScaffolderRouter);
 
