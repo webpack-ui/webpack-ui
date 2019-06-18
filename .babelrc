@@ -1,5 +1,4 @@
 {
-  "exclude": ["./src/server"],
   "presets": [
     "mobx",
     "@babel/preset-env",
@@ -21,9 +20,13 @@
     ]
   ],
   "overrides": [{
-    "include": ["./src/server", "./src/utils"],
+    "include": ["./src/server/*", "./src/utils"],
+    "exclude": ["*/webpack.config.js"],
     "presets": [
-      ["@babel/preset-env", {"targets": {"node": "current"}}]
+      ["@babel/preset-env", {"targets": {"node": true}}],
+    ],
+    "plugins": [
+      ["@babel/plugin-transform-runtime"]
     ]
   }]
 }
