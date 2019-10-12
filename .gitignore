@@ -6,3 +6,4 @@ package-lock.json
 stats.json
 webpack-stats.json
 yarn.lock
+.vscode/
