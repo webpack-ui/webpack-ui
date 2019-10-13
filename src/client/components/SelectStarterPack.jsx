@@ -1,17 +1,16 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
-import { FiChevronLeft } from "react-icons/fi";
-import { withRouter } from "react-router-dom";
+import { FiChevronLeft } from 'react-icons/fi';
+import { withRouter } from 'react-router-dom';
 import styles from '../stylesheets/modules/SelectStarterPack.module';
+import Scaffolding from './search/Scaffolding';
 
 @inject('store')
 @observer
 class SelectStarterPack extends React.Component {
-
   constructor(props) {
     super(props);
-    this.state = {
-    }
+    this.state = {};
   }
 
   render() {
@@ -19,8 +18,11 @@ class SelectStarterPack extends React.Component {
     return (
       <div className={styles.mainContainer}>
         <div className={styles.headerContainer}>
-          <div onClick={()=>{this.props.history.push("/newProject")}}>
-            <FiChevronLeft className={styles.chevronLeft}/>
+          <div
+            onClick={() => {
+              this.props.history.push('/newProject');
+            }}>
+            <FiChevronLeft className={styles.chevronLeft} />
           </div>
           <div className={styles.header}>Select Starter Pack</div>
         </div>
@@ -28,25 +30,19 @@ class SelectStarterPack extends React.Component {
           <div className={styles.lowerLeftContainer}>
             <div className={styles.lowerLeftTopContainer}>
               <button className={styles.optionContainer} disabled={true}>
-                <div className={styles.optionHeader}>
-                  Quick Start
-                </div>
-                <div className={styles.description}>
-                  Get started in one click with the recommended settings.
-                </div>
+                <div className={styles.optionHeader}>Quick Start</div>
+                <div className={styles.description}>Get started in one click with the recommended settings.</div>
               </button>
-              <button className={styles.optionContainer} onClick={()=>{this.props.history.push("/defaultStarter")}}>
-                <div className={styles.optionHeader}>
-                  Basic
-                </div>
-                <div className={styles.description}>
-                  Create a project with the default starter pack.
-                </div>
+              <button
+                className={styles.optionContainer}
+                onClick={() => {
+                  this.props.history.push('/defaultStarter');
+                }}>
+                <div className={styles.optionHeader}>Basic</div>
+                <div className={styles.description}>Create a project with the default starter pack.</div>
               </button>
               <button className={styles.optionContainer} disabled={true}>
-                <div className={styles.optionHeader}>
-                  Advanced
-                </div>
+                <div className={styles.optionHeader}>Advanced</div>
                 <div className={styles.description}>
                   Customized your webpack configuration with loaders, plugins etc.
                 </div>
@@ -55,12 +51,11 @@ class SelectStarterPack extends React.Component {
           </div>
           <div className={styles.lowerRightContainer}>
             <div className={styles.searchContainer}>
-              <div>
-                  Search starter packs...
-              </div>
+              <div>Search starter packs...</div>
               <hr />
+              <Scaffolding />
             </div>
-          </div>  
+          </div>
         </div>
       </div>
     );
