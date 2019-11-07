@@ -39,7 +39,7 @@ export default function runAction(
 	}
 
 	const env = yeoman.createEnv("webpack", null);
-	const generatorName = scaffold?`webpack-ui-${scaffold}-generator`:`webpack-ui-${scaffold}-generator`;
+	const generatorName = scaffold?`webpack-ui-${scaffold}-generator`:`webpack-ui-generator`;
 
 	if (!generator) {
 		generator = class extends Generator {

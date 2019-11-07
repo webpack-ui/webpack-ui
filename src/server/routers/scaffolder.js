@@ -33,13 +33,13 @@ router.post('/init', async (req, res) => {
     Generator.prototype.templatePath = (file) => `${USER_DIRECTORY}/node_modules/${req.body.type}/templates/${file}`;
     Generator.prototype.destinationPath = (file) => `${USER_DIRECTORY}/${file}`;
 
-    runAction('init', Generator, req.body.type, );
+    runAction('init', Generator, req.body.type, WEBPACK_CONFIG_PATH);
     res.json({value: true});    
 });
 
-router.post('/build', async (req, res) => {
+router.post('/build', (req, res) => {
     try {
-        await execSync(`cd ${USER_DIRECTORY} && npx webpack --config ${process.env.CONFIG_PATH}`);
+        execSync(`cd ${USER_DIRECTORY} && npx webpack --config ${process.env.CONFIG_PATH}`);
         res.json({value: true});
     } catch (err) {
         res.json({value: err.message})
