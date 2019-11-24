@@ -56,10 +56,6 @@ class SelectStarterPack extends React.Component {
           </div>
           <div className={styles.lowerRightContainer}>
             <Scaffolding />
-            {/**<div className={styles.searchContainer}>
-              <div>Search starter packs...</div>
-              <hr /> 
-            </div>**/}
           </div>
         </div>
       </div>
