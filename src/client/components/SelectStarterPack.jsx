@@ -48,7 +48,7 @@ class SelectStarterPack extends React.Component {
               <button className={styles.optionContainer} disabled={true}>
                 <div className={styles.optionHeader}>Advanced</div>
                 <div className={styles.description}>
-                  Customized your webpack configuration with loaders, plugins
+                  Customize your webpack configuration with loaders, plugins
                   etc.
                 </div>
               </button>

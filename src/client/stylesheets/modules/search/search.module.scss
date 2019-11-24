@@ -1,3 +1,5 @@
+@import '../../utils/styles';
+
 .ais-Hits-list {
   list-style: none;
   display: flex;
@@ -15,14 +17,15 @@
   height: 50px;
 }
 
-input,
-input:focus {
+.search-input,
+.search-input:focus {
   width: 310px;
   border: none;
   outline: none;
   font-size: 16px;
   margin-bottom: -10px;
   padding-left: 22px;
+  color: $text-black;
 }
 
 .search-wrapper {
@@ -50,11 +53,18 @@ ul.ais-Hits-list {
   right: 0;
   fill: getColor(white);
   background-color: getColor(elephant);
+  display: none;
+}
+
+.ais-SearchBox-submitIcon path,
+.ais-SearchBox-resetIcon path {
+  fill: red;
 }
 
 .ais-SearchBox-submit,
 .ais-SearchBox-reset {
   display: none;
+  visibility: hidden;
 }
 
 button.ais-SearchBox-submit {
@@ -121,10 +131,6 @@ li {
 
 .searchContainer {
   width: 310px;
-}
-
-button {
-  display: none;
 }
 
 .svg-icon {
