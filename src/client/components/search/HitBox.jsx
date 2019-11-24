@@ -26,17 +26,15 @@ class HitBox extends Component {
         : `https://npmjs.com/package/${hit.name}`;
 
     return (
-      <article className="hit-card">
+      <article className={styles['btn-container']}>
         {hit && (
           <div className={styles['product-wrapper']}>
-            <button
-              onClick={() => this.getScaffold(scaffoldUrl)}
-              className={styles['scaffold-button']}>
-              <h3 className={styles['product-title']}>{hit.name}</h3>
+            <a onClick={() => this.getScaffold(scaffoldUrl)}>
+              <p className={styles['product-title']}>{hit.name}</p>
               {/* <img className={styles['product-title']} src={hit.owner.avatar} height='40' width='40' />*/}
-              <h3 className={styles['product-name']}>{hit.owner.name}</h3>
+              <p className={styles['product-name']}>{hit.owner.name}</p>
               {/* <p className={styles['product-desc']}>{htmlDecode(hit.description)}</p>*/}
-            </button>
+            </a>
           </div>
         )}
       </article>

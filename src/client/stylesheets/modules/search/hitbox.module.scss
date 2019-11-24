@@ -1,17 +1,35 @@
+@import '../../utils/styles';
+
 .product-title,
 .product-name,
 .product-desc,
 .product-avatar {
-  color: black;
+  color: rgba(255, 255, 255, 0.774);
   margin: 0 0 12px;
 }
 
 .product-wrapper {
-  margin: 46px 0;
+  // margin: 46px 0;
 }
 
 .scaffold-button {
   height: 90px;
   width: 250px;
   padding-bottom: 0;
+}
+
+.btn-container {
+  background-color: #1d78c1;
+  border-radius: 6px;
+  border: 1px solid opacify($text-black, 0.1);
+  font-size: 14px;
+  padding: 10px 10px 2px;
+  cursor: pointer;
+  opacity: 0.92;
+  transition: opacity 0.2s;
+  margin-bottom: 40px;
+}
+
+.btn-container:hover {
+  opacity: 1;
 }
