@@ -1,17 +1,65 @@
+@import '../../utils/styles';
+
 .product-title,
 .product-name,
 .product-desc,
 .product-avatar {
-  color: black;
+  color: darken($text-black, 10%);
   margin: 0 0 12px;
 }
 
+.product-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.product-name {
+  font-size: 12px;
+}
+
 .product-wrapper {
-  margin: 46px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .scaffold-button {
   height: 90px;
   width: 250px;
   padding-bottom: 0;
+}
+
+.btn-container {
+  border-bottom: 0.5px solid rgba($text-black, 0.7);
+  font-size: 14px;
+  padding-bottom: 0;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  margin-bottom: 40px;
+}
+
+.hit-btn,
+.hit-icon {
+  display: flex;
+  flex-direction: column;
+}
+
+.hit-icon {
+  color: $text-black, 10%;
+  padding-top: 2px;
+}
+
+.svg-icon {
+  position: relative;
+  color: darken($text-black, 10%);
+  width: 1.8em;
+  height: 1.8em;
+  stroke: #888888;
+  fill: #888888;
+  stroke-width: 0.5;
+}
+
+.btn-container:hover {
+  opacity: 1;
 }

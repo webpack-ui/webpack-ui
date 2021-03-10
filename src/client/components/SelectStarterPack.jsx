@@ -31,7 +31,9 @@ class SelectStarterPack extends React.Component {
             <div className={styles.lowerLeftTopContainer}>
               <button className={styles.optionContainer} disabled={true}>
                 <div className={styles.optionHeader}>Quick Start</div>
-                <div className={styles.description}>Get started in one click with the recommended settings.</div>
+                <div className={styles.description}>
+                  Get started in one click with the recommended settings.
+                </div>
               </button>
               <button
                 className={styles.optionContainer}
@@ -39,22 +41,21 @@ class SelectStarterPack extends React.Component {
                   this.props.history.push('/defaultStarter');
                 }}>
                 <div className={styles.optionHeader}>Basic</div>
-                <div className={styles.description}>Create a project with the default starter pack.</div>
+                <div className={styles.description}>
+                  Create a project with the default starter pack.
+                </div>
               </button>
               <button className={styles.optionContainer} disabled={true}>
                 <div className={styles.optionHeader}>Advanced</div>
                 <div className={styles.description}>
-                  Customized your webpack configuration with loaders, plugins etc.
+                  Customize your webpack configuration with loaders, plugins
+                  etc.
                 </div>
               </button>
             </div>
           </div>
           <div className={styles.lowerRightContainer}>
-            <div className={styles.searchContainer}>
-              <div>Search starter packs...</div>
-              <hr />
-              <Scaffolding />
-            </div>
+            <Scaffolding />
           </div>
         </div>
       </div>

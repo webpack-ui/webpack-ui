@@ -1,20 +1,37 @@
+@import '../../utils/styles';
+
 .ais-Hits-list {
   list-style: none;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
 }
+
 .ais-SearchBox-input {
-  appearance: none;
   padding: 1em 3em;
   width: 100%;
   position: relative;
   background-color: getColor(elephant);
-  border: 1px solid #c4c8d8;
-  border-radius: 5px;
+  border: none;
   color: getColor(white);
   height: 50px;
 }
+
+.search-input,
+.search-input:focus {
+  width: 310px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  margin-bottom: -10px;
+  padding-left: 22px;
+  color: $text-black;
+}
+
+.search-wrapper {
+  width: 310px;
+}
+
 ul.ais-Hits-list {
   padding: 0;
 }
@@ -23,16 +40,31 @@ ul.ais-Hits-list {
   height: 100%;
 }
 
-.ais-SearchBox-reset svg,
+.ais-SearchBox-reset svg {
+  position: relative;
+  right: 0;
+  fill: getColor(white);
+  background-color: getColor(elephant);
+  display: none;
+}
+
 .ais-SearchBox-submit svg {
   position: relative;
   right: 0;
   fill: getColor(white);
   background-color: getColor(elephant);
+  display: none;
 }
 
+.ais-SearchBox-submitIcon path,
+.ais-SearchBox-resetIcon path {
+  fill: red;
+}
+
+.ais-SearchBox-submit,
 .ais-SearchBox-reset {
   display: none;
+  visibility: hidden;
 }
 
 button.ais-SearchBox-submit {
@@ -41,6 +73,7 @@ button.ais-SearchBox-submit {
   left: 5px;
   bottom: 38px;
   background-color: getColor(elephant);
+  display: none;
 }
 
 .ais-Hits-item {
@@ -60,7 +93,7 @@ button.ais-SearchBox-submit {
 
 .product-title,
 .product-name {
-  padding: .5em 1em 1em 0.2em;
+  padding: 0.5em 1em 1em 0.2em;
 }
 
 .product-avatar {
@@ -82,7 +115,41 @@ button.ais-SearchBox-submit {
 
 .hits-wrapper {
   height: 400px;
-  width: 340px;
-  padding-right: 15px;
+  width: 300px;
+  padding-right: 60px;
   overflow: auto;
+  margin-top: 16px;
+}
+
+ul {
+  padding-left: 0;
+}
+
+li {
+  list-style: none;
+}
+
+.searchContainer {
+  width: 310px;
+}
+
+.svg-icon {
+  width: 1.2em;
+  height: 1.2em;
+  position: absolute;
+  top: 104px;
+  right: 365px;
+  stroke: #888888;
+  stroke-width: 0.5;
+}
+
+.svg-icon path,
+.svg-icon polygon,
+.svg-icon rect {
+  fill: #888888;
+}
+
+.svg-icon circle {
+  stroke: #888888;
+  stroke-width: 1;
 }
