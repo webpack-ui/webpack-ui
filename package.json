@@ -12,7 +12,7 @@
     "server": "nodemon src/server/server.js",
     "webpackui": "concurrently --kill-others \"npm run buildwebpack\" \"npm run start\" \"npm run server\""
   },
-  "author": "Dave Marquess, Ken Lam",
+  "author": "Even Stensberg",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.4.3",
