@@ -1,6 +1,6 @@
 import * as React from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { paraisoLight } from 'react-syntax-highlighter/dist/styles/hljs';
+import { paraisoLight } from 'react-syntax-highlighter/dist/dist/esm/styles/hljs';
 import Button from '../universals/Button';
 import { FaCheck } from 'react-icons/fa';
 import styles from '../../stylesheets/modules/tab3/WhiteCardConfigBuildConfig.module';

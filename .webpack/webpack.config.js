@@ -1,11 +1,11 @@
 const path = require('path');
-const HtmlWebPackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const isDevelopment = process.env.NODE_ENV !== 'production';
 const webpack = require('webpack');
 
-const htmlWebpackPlugin = new HtmlWebPackPlugin({
+const htmlWebpackPlugin = new HtmlWebpackPlugin({
   template: './src/index.html',
   filename: './index.html'
 });
@@ -21,8 +21,9 @@ module.exports = {
     'babel-polyfill',
     './src/index.js'
   ],
+  context: path.resolve(__dirname, '..'),
   output: {
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, '..', 'build'),
     filename: 'webpack-bundle.js'
   },
   node: {
@@ -41,14 +42,12 @@ module.exports = {
     rules: [
       {
         test: /\.module\.s(a|c)ss$/,
-        loader: [
+        use: [
           isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {
               modules: true,
-              localIdentName: '[name]__[local]___[hash:base64:5]',
-              camelCase: true,
               sourceMap: isDevelopment
             }
           },
@@ -63,7 +62,7 @@ module.exports = {
       {
         test: /\.s(a|c)ss$/,
         exclude: /\.module.(s(a|c)ss)$/,
-        loader: [
+        use: [
           isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
           {
@@ -127,9 +126,9 @@ module.exports = {
     inline: true
   },
   plugins: [
-    new CleanWebpackPlugin([
-      'dist'
-    ]),
+    new CleanWebpackPlugin({
+      cleanAfterEveryBuildPatterns: ['dist']
+    }),
     htmlWebpackPlugin,
     new MiniCssExtractPlugin({
       filename: isDevelopment ? '[name].css' : '[name].[hash].css',

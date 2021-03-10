@@ -2,7 +2,7 @@ import React from 'react';
 import { observer, inject } from 'mobx-react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { paraisoLight, docco, dark } from 'react-syntax-highlighter/dist/styles/hljs';
+import { paraisoLight, docco, dark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { generate } from 'astring';
 import styles from '../stylesheets/modules/DefaultStarter.module';
 
