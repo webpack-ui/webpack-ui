@@ -12,7 +12,9 @@ class DefaultStarter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      displayFramework: true,
+      displayEditor: false,
+      displayUploadFolder: true,
+      displayFramework: false,
       displayLoader: false,
       displayPlugin: false,
       displaySavePage: false,
@@ -29,6 +31,7 @@ class DefaultStarter extends React.Component {
       checkedMomentLocale: false,
       checkedMiniCssExtract: false,
       formattedCode: '',
+      rootFolder: '',
       customAST: null,
       ReactAST: null,
       CSSAST: null,
@@ -1050,6 +1053,14 @@ class DefaultStarter extends React.Component {
   render() {
     const { store } = this.props;
 
+
+    const UploadFolder = (
+      <div>
+        <h1>Select your package.json file</h1>
+        <input directory="" webkitdirectory="" type="file" />
+      </div>
+    );
+
     const frameWorkQuestion = (
       <div className={styles.questionContainer}>
         <div className={styles.question}>What type of project would you want?</div>
@@ -1236,13 +1247,14 @@ class DefaultStarter extends React.Component {
         </div>
         <div className={styles.lowerContainer}>
           <div className={styles.lowerLeftContainer}>
+            {this.state.displayUploadFolder && UploadFolder}
             {this.state.displayFramework && frameWorkQuestion}
             {this.state.displayLoader && LoaderMenu}
             {this.state.displayPlugin && PluginsMenu}
             {this.state.displaySavePage && SaveMenu}
           </div>
           <div style={{ position: 'relative' }} className={styles.lowerRightContainer}>
-            <SyntaxHighlighter
+            {this.state.displayEditor && (<SyntaxHighlighter
               language='javascript'
               style={dark}
               customStyle={{
@@ -1255,7 +1267,7 @@ class DefaultStarter extends React.Component {
                 marginTop: '28px'
               }}>
               {this.state.formattedCode}
-            </SyntaxHighlighter>
+            </SyntaxHighlighter>)}
             {this.state.displaySavePage && (
               <button style={{ position: 'absolute', top: '417', left: '450' }} onClick={this.saveWebpackConfig}>
                 Download
