@@ -5,12 +5,10 @@
   "description": "webpack UI",
   "main": "src/index.js",
   "scripts": {
-    "start22": "webpack-dev-server --mode development --open",
     "start": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.js",
-    "build:prod": "cross-env NODE_ENV=development webpack --config webpack.config.js",
-    "buildwebpack": "rimraf dist && webpack --watch --config ./webpack.config.js --progress --colors --profile --json > webpack-stats.json",
+    "build": "rimraf dist && webpack --watch --config ./webpack.config.js --progress --colors --profile --json > webpack-stats.json",
     "server": "nodemon src/server/server.js",
-    "webpackui": "concurrently --kill-others \"npm run buildwebpack\" \"npm run start\" \"npm run server\""
+    "ui": "concurrently --kill-others \"npm run build\" \"npm run start\" \"npm run server\""
   },
   "author": "Even Stensberg",
   "license": "MIT",

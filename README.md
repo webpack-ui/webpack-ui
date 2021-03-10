@@ -22,5 +22,5 @@ git clone https://github.com/catsnakeui/webpack-ui.git
 **2.** Open the repository on your local machine, open your terminal and navigate to the repo, and run the following commands to download all required libraries/packages and launch webpack UI:
 ```
 npm install
-npm run webpackui
+npm run ui
 ```
