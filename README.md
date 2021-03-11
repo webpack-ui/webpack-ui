@@ -16,7 +16,7 @@ This is the webpack UI project, which tries to help developers having a better e
 
 **1.** Clone or Download the repository.
 ```
-git clone https://github.com/catsnakeui/webpack-ui.git
+git clone https://github.com/evenstensberg/webpack-ui.git
 ```
 
 **2.** Open the repository on your local machine, open your terminal and navigate to the repo, and run the following commands to download all required libraries/packages and launch webpack UI:
