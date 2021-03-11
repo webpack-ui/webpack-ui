@@ -1057,7 +1057,7 @@ class DefaultStarter extends React.Component {
     const UploadFolder = (
       <div>
         <h2>Select your package.json file</h2>
-        <input aria-label="package.json file" directory="" webkitdirectory="" type="file" />
+        <input className={styles.uploadInput}  aria-label="package.json file" directory="" webkitdirectory="" type="file" />
       </div>
     );
 
