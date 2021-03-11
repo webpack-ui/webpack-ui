@@ -24,7 +24,7 @@ class Nav extends React.Component {
             <img alt="Webpack logo" className={styles.logo}src={logo} />
           </NavLink>
           <button>
-            <span>+</span> New Project
+            + &nbsp;New Project
           </button>
         </div>
       </nav>

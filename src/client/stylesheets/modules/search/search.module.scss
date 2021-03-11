@@ -29,6 +29,7 @@
 }
 
 .search-wrapper {
+  position: relative;
   width: 310px;
 }
 
@@ -115,10 +116,15 @@ button.ais-SearchBox-submit {
 
 .hits-wrapper {
   height: 400px;
-  width: 300px;
-  padding-right: 60px;
+  width: 100%;
+  padding-right: 2rem;
   overflow: auto;
   margin-top: 16px;
+  
+  @media (min-width: 580px) {
+    padding-right: 60px;
+    max-width: 300px;
+  }
 }
 
 ul {
@@ -137,8 +143,6 @@ li {
   width: 1.2em;
   height: 1.2em;
   position: absolute;
-  top: 104px;
-  right: 365px;
   stroke: #888888;
   stroke-width: 0.5;
 }
