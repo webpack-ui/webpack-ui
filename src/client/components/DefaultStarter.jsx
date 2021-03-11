@@ -1056,8 +1056,8 @@ class DefaultStarter extends React.Component {
 
     const UploadFolder = (
       <div>
-        <h1>Select your package.json file</h1>
-        <input directory="" webkitdirectory="" type="file" />
+        <h2>Select your package.json file</h2>
+        <input aria-label="package.json file" directory="" webkitdirectory="" type="file" />
       </div>
     );
 
@@ -1238,12 +1238,15 @@ class DefaultStarter extends React.Component {
       <div className={styles.mainContainer}>
         <div className={styles.headerContainer}>
           <div
+            aria-label="Go back"
             onClick={() => {
               this.props.history.push('/selectStarterPack');
-            }}>
+            }}
+            role="button"
+            tabIndex={0}>
             <FiChevronLeft className={styles.chevronLeft} />
           </div>
-          <div className={styles.header}>Default Starter</div>
+          <h1 className={styles.header}>Default Starter</h1>
         </div>
         <div className={styles.lowerContainer}>
           <div className={styles.lowerLeftContainer}>

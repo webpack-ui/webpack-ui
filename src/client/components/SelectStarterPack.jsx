@@ -19,12 +19,15 @@ class SelectStarterPack extends React.Component {
       <div className={styles.mainContainer}>
         <div className={styles.headerContainer}>
           <div
+            aria-label="Go back"
             onClick={() => {
-              this.props.history.push('/newProject');
-            }}>
+              this.props.history.push('/');
+            }}
+            role="button"
+            tabIndex={0}>
             <FiChevronLeft className={styles.chevronLeft} />
           </div>
-          <div className={styles.header}>Select Starter Pack</div>
+          <h1 className={styles.header}>Select Starter Pack</h1>
         </div>
         <div className={styles.lowerContainer}>
           <div className={styles.lowerLeftContainer}>
