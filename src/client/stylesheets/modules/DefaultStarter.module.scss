@@ -26,6 +26,11 @@
   font-size: 33px;
 }
 
+.uploadInput {
+  background-color: #f1f6fa93;
+  border: 1px solid darken(#f1f6fa93, 20%);
+}
+
 .optionContainer {
   display: flex;
   flex-direction: column;
