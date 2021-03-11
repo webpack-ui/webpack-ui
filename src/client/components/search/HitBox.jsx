@@ -28,10 +28,13 @@ class HitBox extends Component {
     return (
       <article className={styles['btn-container']}>
         {hit && (
-          <div className={styles['product-wrapper']}>
+          <div
+            className={styles['product-wrapper']}
+            onClick={() => this.getScaffold(scaffoldUrl)}
+            role="button"
+            tabIndex={0}>
             <a
-              className={styles['hit-btn']}
-              onClick={() => this.getScaffold(scaffoldUrl)}>
+              className={styles['hit-btn']}>
               <p className={styles['product-title']}>{hit.name}</p>
               {/* <img className={styles['product-title']} src={hit.owner.avatar} height='40' width='40' />*/}
               <p className={styles['product-name']}>{hit.owner.name}</p>

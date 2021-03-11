@@ -16,7 +16,7 @@ class Home extends React.Component {
     const { store } = this.props;
     return (
       <div className={styles.mainContainer}>
-        <div className={styles.header}>Dashboard</div>
+        <h1 className={styles.header}>Dashboard</h1>
         <div className={styles.lowerContainer}>
           <div className={styles.leftContainer}>
             <img className={styles.hero} src={hero} alt='' />

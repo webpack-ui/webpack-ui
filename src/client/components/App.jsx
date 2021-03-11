@@ -21,7 +21,7 @@ class Nav extends React.Component {
       <nav className={styles.Nav}>
         <div className={styles.NavItemContainer}>
           <NavLink to="/" activeClassName="is-active" exact={true}>
-            <img className={styles.logo}src={logo} />
+            <img alt="Webpack logo" className={styles.logo}src={logo} />
           </NavLink>
           <button>
             <span>+</span> New Project
@@ -39,7 +39,7 @@ export default class App extends React.Component {
       <Router>
         <div className={styles.fullAppContainer}>
           <Nav />
-          <div className={styles.mainContainer}>
+          <main className={styles.mainContainer}>
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/newProject" component={NewProject} />
@@ -47,11 +47,11 @@ export default class App extends React.Component {
               <Route exact path="/defaultStarter" component={DefaultStarter} />
               {/* <Route exact path="/configeneration" component={ConfigGeneration} /> */}
             </Switch>
-          </div>
-          <div className={styles.footer}>
+          </main>
+          <footer className={styles.footer}>
             <div>Developed by Webpack.js.org</div>
             <div>© 2019</div>
-          </div>
+          </footer>
         </div>
       </Router>
     )
