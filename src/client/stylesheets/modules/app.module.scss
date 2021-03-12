@@ -35,17 +35,17 @@ button {
   background-color: #1d78c1;
   border: none;
   border-radius: 5px;
-  color: rgba(255, 255, 255, 0.774);
+  color: white;
   padding: 10px 15px;
   font-size: 13px;
   height: 40px;
   cursor: pointer;
-  opacity: .92;
-  transition: opacity .2s;
+  border: 2px solid transparent;
+  transition: border-color .2s;
 }
 
 button:hover {
-  opacity: 1;
+  border-color: #79c3ff;
 }
 
 .logo {

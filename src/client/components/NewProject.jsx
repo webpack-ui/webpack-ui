@@ -18,12 +18,15 @@ class NewProject extends React.Component {
       <div className={styles.mainContainer}>
         <div className={styles.headerContainer}>
           <div
+            aria-label="Go back"
             onClick={() => {
               this.props.history.push('/');
-            }}>
+            }}
+            role="button"
+            tabIndex={0}>
             <FiChevronLeft className={styles.chevronLeft} />
           </div>
-          <div className={styles.header}>New Project</div>
+          <h1 className={styles.header}>New Project</h1>
         </div>
         <div className={styles.lowerContainer}>
           <div className={styles.optionContainer}>
