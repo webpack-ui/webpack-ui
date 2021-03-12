@@ -28,12 +28,11 @@ class Home extends React.Component {
               onClick={() => {
                 this.props.history.push('/newProject');
               }}>
-              <span>+</span> Create Project
+              + &nbsp;Create Project
             </button>
           </div>
           <div className={styles.rightContainer}>
-            <div style={{ width: '320px' }}>No Activity here. Create a project to get started</div>
-            <hr />
+            <div className={styles.noActivity}>No Activity here. Create a project to get started</div>
           </div>
         </div>
       </div>

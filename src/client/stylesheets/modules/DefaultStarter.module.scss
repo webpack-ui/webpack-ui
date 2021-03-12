@@ -7,9 +7,12 @@
 
 .lowerContainer {
   padding-top: 30px;
-  padding-left: 10px;
   display: flex;
   flex-direction: row;
+
+  @media (min-width: 1160px) {
+    padding-left: 10px;
+  }
 
   .questionContainer {
     display: flex;
@@ -18,8 +21,10 @@
   }
 }
 
-.lowerRightContainer {
-  margin-left: 50px;
+@media (min-width: 1160px) {
+  .lowerRightContainer {
+    margin-left: 50px;
+  }
 }
 
 .header {

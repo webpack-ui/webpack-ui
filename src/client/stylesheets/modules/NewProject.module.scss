@@ -6,10 +6,15 @@
 }
 
 .lowerContainer {
+  align-items: center;
   padding-top: 30px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
+
+  @media (min-width: 580px) {
+    flex-direction: row;
+  }
 }
 
 .header {
@@ -23,21 +28,31 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 380px;
-  width: 380px;
+  height: 300px;
+  width: 100%;
   background-color: #f1f6fa93;
   border: 1px solid darken(#f1f6fa93, 20%);
   border-radius: 7px;
-  margin: 30px;
+  margin: 1rem 2rem;
   cursor: pointer;
+
+  @media (min-width: 580px) {
+    margin: 2rem;
+    height: 380px;
+    width: 380px;
+  }
 }
 
 .description {
   font-size: 18px;
-  width: 200px;
   text-align: center;
   color: #999999;
   margin: 20px;
+  width: 80%;
+
+  @media (min-width: 1160px) {
+    width: 200px;
+  }
 }
 
 .optionIcon {
