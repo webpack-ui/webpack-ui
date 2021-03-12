@@ -23,7 +23,7 @@ app.use(express.static(path.join(__dirname, '../../build/')));
 //   res.sendFile(path.join(__dirname , '/../../build/index.html'))
 // })
 // run server w/ port 3000
-app.get('/AST', async (req, res) => {
+app.get('/ast', async (req, res) => {
   const ASTObj = {};
   fs.readFile(__dirname + '/src_custom_config/webpack.config.js', (err, data) => {
     ASTObj.customAST = acorn.parse(data.toString(), {
@@ -113,5 +113,5 @@ app.get('/mod', (req, res) => {
 //
 app.listen(PORT, (err) => {
   if (err) console.log(err);
-  console.log(`Listening on PORT 3000`);
+  console.log(`Listening on PORT ${PORT}`);
 });

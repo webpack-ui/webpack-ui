@@ -12,9 +12,8 @@ class DefaultStarter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      displayEditor: false,
-      displayUploadFolder: true,
-      displayFramework: false,
+      displayEditor: true,
+      displayFramework: true,
       displayLoader: false,
       displayPlugin: false,
       displaySavePage: false,
@@ -1052,14 +1051,6 @@ class DefaultStarter extends React.Component {
 
   render() {
     const { store } = this.props;
-
-
-    const UploadFolder = (
-      <div>
-        <h1>Select your package.json file</h1>
-        <input className={styles.uploadInput} directory="" webkitdirectory="" type="file" />
-      </div>
-    );
 
     const frameWorkQuestion = (
       <div className={styles.questionContainer}>
