@@ -3,7 +3,6 @@ import { observer, inject } from 'mobx-react';
 import { FiChevronLeft } from 'react-icons/fi';
 import { withRouter } from 'react-router-dom';
 import styles from '../stylesheets/modules/SelectStarterPack.module';
-import Scaffolding from './search/Scaffolding';
 
 @inject('store')
 @observer
@@ -56,9 +55,6 @@ class SelectStarterPack extends React.Component {
                 </div>
               </button>
             </div>
-          </div>
-          <div className={styles.lowerRightContainer}>
-            <Scaffolding />
           </div>
         </div>
       </div>
